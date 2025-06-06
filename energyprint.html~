@@ -6,46 +6,61 @@
     <title>Energicertifikat</title>
     <style>
       :root {
-        --primary-green: #2ac02c;
+        --primary-green: #339A65;
       }
 
-      /* Ta bort yttre marginaler mellan boxar */
+      /* Use border-box to prevent overflow */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Remove outer margins from fieldsets and ensure full width */
       .box,
       .box_w {
         margin: 0;
+        width: 100%;
       }
 
-      /* Fältset med tunn grön ram */
+      /* Thin green border around standard sections */
       .box {
         border: 2px solid var(--primary-green);
         padding: 1em;
       }
 
-      /* Fältset med extra tjock grön ram */
+      /* Thick green border (no inner padding) */
       .box_w {
         border: 20px solid var(--primary-green);
         padding: 0;
       }
 
-      /* Centera titeln */
-      .box h1 {
-        text-align: center;
+      /* “Byggnad” as bold, underlined text (green) */
+      .byggnad-title {
+        font-weight: bold;
+        text-decoration: underline;
         color: var(--primary-green);
-        margin: 0;
+        margin: 0 0 0.5em 0;
       }
 
-      /* Grön ”hr” som syns även vid utskrift */
+      /* Green horizontal rule visible on screen and print */
       hr.green-hr {
-        height: 20px;
+        display: block;
+        width: 100%;
+        height: 10px;
         background-color: var(--primary-green);
         border: none;
         margin: 0;
-        /* Försäkra att färgen skrivs ut */
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
 
-      /* Inga spinnerpilar på number-input */
+      /* Remove spinner arrows on number inputs */
       input[type="number"]::-webkit-outer-spin-button,
       input[type="number"]::-webkit-inner-spin-button {
         -webkit-appearance: none;
@@ -55,194 +70,272 @@
         -moz-appearance: textfield;
       }
 
-      /* Grön text för rubriker, etiketter, <th> */
-      .box h2,
+      /* Green text for labels and table headers */
       .box label,
       .box strong,
       .box th {
         color: var(--primary-green);
       }
 
-      /* EP-värdet självt (siffran) ska vara svart */
+      /* EP value itself (number) stays black on white */
       #ep-value {
         color: black;
         background: white;
         padding: 0 0.3em;
       }
 
-      /* Användarinput ska vara svart på vit, och utan utskrifts‐konturer */
+      /* Regular text inputs remain black on white */
       input[type="text"],
-      input[type="number"],
-      input[type="date"] {
+      input[type="number"] {
         color: black;
         background: white;
+        border: 1px solid #ccc;
+        padding: 0.2em 0.3em;
       }
 
-      /* EP-tabellens celler: grön kant */
-      #ep-table td,
+      /* Stack radio options vertically */
+      .radio-container label {
+        display: block;
+        margin-bottom: 0.5em;
+        color: var(--primary-green);
+        cursor: pointer;
+      }
+
+      /* EP table styling */
+      #ep-table {
+        border-collapse: collapse;
+        width: 100%;
+        table-layout: fixed;
+      }
       #ep-table th {
         border: 1px solid var(--primary-green);
+        padding: 0.5em 0;
+        color: var(--primary-green);
+        font-weight: normal;
+        background-color: white;
       }
-
-      /* Se till att färgade rutor (bar + triangel) syns fullt ut */
       #ep-table td {
-        overflow: visible;
+        border: 1px solid var(--primary-green);
         padding: 0;
+        position: relative;
+        height: 30px;
+        overflow: visible;
+        background-color: white;
+      }
+      /* First column (EP-värde) text green on white */
+      #ep-table td:first-child {
+        color: var(--primary-green);
       }
 
-      /* Skriv ut‐css */
+      /* Bar + triangle classes (triangle pointing right) */
+      .bar {
+        height: 30px;
+        display: flex;
+        align-items: center;
+        padding-left: 0.5em;
+        font-weight: bold;
+        color: white !important; /* Ensure white letters */
+        background-color: transparent; /* set by JS */
+        position: relative;
+      }
+      .bar .triangle {
+        position: absolute;
+        right: -29px; /* overlap by 1px to prevent gap */
+        top: 0;
+        width: 0;
+        height: 0;
+        border-top: 15px solid transparent;
+        border-bottom: 15px solid transparent;
+        border-left: 30px solid transparent; /* set by JS */
+      }
+
+      /* Selected EP-cell arrow (black with white text) pointing left */
+      .selected-arrow {
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: black;
+        color: white !important; /* Ensure white letters */
+        font-weight: bold;
+        position: relative;
+      }
+      .selected-arrow .triangle-sel {
+        position: absolute;
+        left: -14px; /* overlap by 1px */
+        top: 0;
+        width: 0;
+        height: 0;
+        border-top: 15px solid transparent;
+        border-bottom: 15px solid transparent;
+        border-right: 15px solid black;
+      }
+
+      /* Make the EP descriptive text (in box_w) green except the number */
+      .box_w strong,
+      .box_w div {
+        color: var(--primary-green);
+      }
+
+      /* Print-specific rules */
       @media print {
-        /* Ta bort konturer och skuggor på alla inputs */
+        /* Remove borders/outlines on ALL inputs */
         input {
           border: none !important;
           outline: none !important;
         }
-        /* Dölj element märkta som .no-print */
-        .no-print {
+        /* Hide print button */
+        #printButton {
           display: none !important;
         }
-        /* Säkerställ att färger skrivs ut */
+        /* Ensure colors actually print */
         * {
           -webkit-print-color-adjust: exact;
           print-color-adjust: exact;
         }
       }
 
-      /* Större, centrerad knapp */
+      /* Print button: larger and centered */
       #printButton {
         display: block;
         margin: 1.5em auto;
-        padding: 0.8em 2em;
-        font-size: 1.2em;
+        padding: 1em 2em;
+        font-size: 1.5em;
         background: var(--primary-green);
         color: white;
         border: none;
         cursor: pointer;
       }
       #printButton:hover {
-        background: #259e27;
+        background: #287f53;
+      }
+
+      /* Hög förbrukning text in footer (green) */
+      .footer-cell {
+        color: var(--primary-green);
+      }
+
+      /* Signature fieldset: remove padding so table fills it entirely */
+      .signature {
+        padding: 0;
+      }
+      .signature table {
+        width: 100%;
+        height: 100%;
+        border-collapse: collapse;
+      }
+      .signature td {
+        padding: 0.5em;
+        border: 1px solid var(--primary-green);
+        vertical-align: top;
       }
     </style>
   </head>
   <body>
-    <!-- TITLE -->
+    <!-- Title -->
     <fieldset class="box">
-      <h1>ENERGICERTIFIKAT</h1>
+      <h1 style="text-align:center; color: var(--primary-green); margin:0;">
+        ENERGICERTIFIKAT
+      </h1>
     </fieldset>
 
-    <!-- Grön horisontell linje under titel -->
-    <hr class="green-hr no-print" />
+    <!-- Green horizontal rule under title -->
+    <hr class="green-hr" />
 
-    <!-- Byggnadsinformation -->
+    <!-- Building Information -->
     <fieldset class="box">
-      <h2>Byggnad</h2>
+      <p class="byggnad-title">Byggnad</p>
       <div style="display: flex; gap: 2em;">
-        <!-- Kolumn 1 -->
+        <!-- Column 1 -->
         <div style="flex: 1; display: flex; flex-direction: column; gap: 0.5em;">
           <div style="display: flex; align-items: center; gap: 0.5em;">
             <label for="byggnadType" style="width: 8em;">Typ av byggnad:</label>
-            <input
-              type="text"
-              id="byggnadType"
-              placeholder="t.ex. Småhus"
-              style="flex: 1;"
-            />
+            <input type="text" id="byggnadType" style="flex: 1;" />
           </div>
           <div>
             <div style="display: flex; align-items: center; gap: 0.5em;">
+
               <label style="width: 8em;">Adress:</label>
-              <input type="text" placeholder="Rad 1" style="flex: 1;" />
+              <input type="text" style="flex: 1;" />
             </div>
             <div
               style="
-                margin-left: 8em;
+margin-left: calc(8em + 0.5em);
                 display: flex;
                 flex-direction: column;
                 gap: 0.2em;
               "
             >
-              <input type="text" placeholder="Rad 2" style="width: 100%;" />
-              <input type="text" placeholder="Rad 3" style="width: 100%;" />
+              <input type="text" style="width: 100%;" />
+              <input type="text" style="width: 100%;" />
             </div>
           </div>
         </div>
 
-        <!-- Kolumn 2 -->
+        <!-- Column 2 -->
         <div style="flex: 1; display: flex; flex-direction: column; gap: 0.5em;">
           <div style="display: flex; align-items: center; gap: 0.5em;">
             <label for="byggnadYear" style="width: 12em;">Byggnadsår:</label>
-            <input
-              type="number"
-              id="byggnadYear"
-              placeholder="t.ex. 2022"
-              style="flex: 1;"
-            />
+            <input type="number" id="byggnadYear" style="flex: 1;" />
           </div>
           <div style="display: flex; align-items: center; gap: 0.5em;">
             <label for="byggnadsBet" style="width: 12em;"
               >Byggnadsbeteckning:</label
             >
-            <input
-              type="text"
-              id="byggnadsBet"
-              placeholder="t.ex. 22100"
-              style="flex: 1;"
-            />
+            <input type="text" id="byggnadsBet" style="flex: 1;" />
           </div>
           <div style="display: flex; align-items: center; gap: 0.5em;">
             <label for="antalBostader" style="width: 12em;"
               >Antal bostäder:</label
             >
-            <input
-              type="number"
-              id="antalBostader"
-              placeholder="t.ex. 1"
-              style="flex: 1;"
-            />
+            <input type="number" id="antalBostader" style="flex: 1;" />
           </div>
         </div>
       </div>
     </fieldset>
 
-    <!-- Utfärdande -->
+    <!-- Issuance Information -->
     <fieldset class="box">
-      <b>
-        Energicertifikatet grundar sig på den kalkylerade
-        energiförbrukningen och har utfärdats
-      </b
+      <strong>
+        Energicertifikatet grundar sig på den kalkylerade energiförbrukningen
+        och har utfärdats
+      </strong
       ><br />
-      <input type="radio" id="checkboxLov" name="utfardad" />
-      <label for="checkboxLov" style="display: inline-block; max-width: 100%;"
-        >Certifikatet har utfärdats i samband med bygglovsförfarandet</label
-      >
-      <br />
-      <input type="radio" id="checkboxInspektion" name="utfardad" />
-      <label for="checkboxInspektion"
-        >Certifikatet har utfärdats i samband med en separat inspektion</label
-      >
+      <div class="radio-container" style="margin-top: 0.5em;">
+        <label>
+          <input type="radio" id="checkboxLov" name="utfardad" />
+          Certifikatet har utfärdats i samband med bygglovsförfarandet
+        </label>
+        <label>
+          <input type="radio" id="checkboxInspektion" name="utfardad" />
+          Certifikatet har utfärdats i samband med en separat inspektion
+        </label>
+      </div>
     </fieldset>
 
-    <!-- EP-tabell (dold i svaret, men genereras av JS) -->
-    <fieldset class="box">
-      <table
-        id="ep-table"
-        style="border-collapse: collapse; width: 100%; table-layout: fixed;"
-      >
+    <!-- EP Table + EP Value inside thick green box -->
+    <fieldset class="box_w">
+      <!-- EP Table -->
+      <table id="ep-table">
         <tr>
           <th style="width: 15%;">EP-värde</th>
           <th style="width: 70%;">Låg förbrukning</th>
           <th style="width: 15%;">EP-klass</th>
         </tr>
       </table>
-    </fieldset>
 
-    <!-- Grön linje innan EP-värde/info -->
-    <hr class="green-hr no-print" />
+      <!-- Green line before EP value/info -->
+      <hr class="green-hr" />
 
-    <!-- EP-värde-område -->
-    <fieldset class="box">
+      <!-- EP value area (all text green except the number) -->
       <div
-        style="display: flex; justify-content: space-between; align-items: baseline;"
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          margin-top: 0.5em;
+          padding: 0 1em;
+        "
       >
         <div>
           <strong
@@ -253,12 +346,12 @@
           <span id="ep-value"></span>
         </div>
       </div>
-      <div>
+      <div style="margin: 0.5em 1em 0 1em;">
         <strong id="housetype-label"
           >Skala för klassificering av energiprestanda:</strong
         >
       </div>
-      <div>
+      <div style="margin: 0.3em 1em 1em 1em;">
         Klassificeringen av energiprestanda grundar sig på byggnadens
         kalkylerade energiförbrukning.<br />
         Den faktiska energiförbrukningen är beroende av byggnadens läge,
@@ -266,65 +359,43 @@
       </div>
     </fieldset>
 
-    <!-- Signatur -->
-    <fieldset class="box">
-      <table
-        style="
-          width: 100%;
-          border-collapse: collapse;
-          border: 1px solid var(--primary-green);
-        "
-      >
+    <!-- Signature Section (2x2 grid) -->
+    <fieldset class="box signature">
+      <table>
         <tr>
-          <td
-            style="
-              width: 50%;
-              border: 1px solid var(--primary-green);
-              vertical-align: top;
-              padding: 0.5em;
-            "
-          >
+          <!-- Left cell: Certifikatutfärdare + Underskrift -->
+          <td>
             <strong>Certifikatutfärdare:</strong><br />
-            <input
-              type="text"
-              placeholder="Namn och företag"
-              style="width: 100%;"
-            /><br /><br />
+            <input type="text" style="width: 100%;" /><br /><br />
             <strong>Underskrift:</strong><br />
-            <input type="text" placeholder="Signatur" style="width: 100%;" />
+            <input type="text" style="width: 100%;" />
           </td>
-          <td
-            style="
-              width: 50%;
-              border: 1px solid var(--primary-green);
-              vertical-align: top;
-              padding: 0.5em;
-            "
-          >
+          <!-- Right cell: Certifikatbeställare -->
+          <td>
             <strong>Certifikatbeställare:</strong><br />
-            <input type="text" placeholder="Namn" style="width: 100%;" />
+            <input type="text" style="width: 100%;" />
           </td>
         </tr>
         <tr>
-          <td style="border: 1px solid var(--primary-green); padding: 0.5em;">
+          <!-- Left cell: Datum för utfärdande -->
+          <td>
             <strong>Datum för utfärdande:</strong><br />
-            <input type="date" style="width: 100%;" />
+            <input type="text" style="width: 100%;" />
           </td>
-          <td style="border: 1px solid var(--primary-green); padding: 0.5em;">
+          <!-- Right cell: Sista giltighetsdag -->
+          <td>
             <strong>Sista giltighetsdag:</strong><br />
-            <input type="date" style="width: 100%;" />
+            <input type="text" style="width: 100%;" />
           </td>
         </tr>
       </table>
     </fieldset>
 
-    <!-- Utskriftsknapp -->
-    <button id="printButton" class="no-print" onclick="window.print()">
-      Skriv ut
-    </button>
+    <!-- Print Button -->
+    <button id="printButton" onclick="window.print()">Skriv ut</button>
 
     <script>
-      // Läs in ep och housetype från URL
+      // Read ep and housetype from URL
       const params = new URLSearchParams(window.location.search);
       const ep = parseFloat(params.get("ep")) || 0;
       const housetype = (params.get("housetype") || "").toUpperCase();
@@ -335,13 +406,13 @@
       };
       const displayType = housetypeNames[housetype] || "Okänd typ";
 
-      // Sätt EP-värde och byggnadstyp
+      // Set EP value and building type
       document.getElementById("ep-value").textContent = ep;
       document.getElementById("byggnadType").value = displayType;
       document.getElementById("housetype-label").textContent =
         "Skala för klassificering av energiprestanda: " + displayType;
 
-      // EP-tabell-data
+      // EP table data
       const eptable = {
         A: { min: 0, max: 150, color: "#2ac02c", width: "20%" },
         B: { min: 151, max: 170, color: "#6cc04a", width: "30%" },
@@ -356,46 +427,44 @@
       for (const [key, val] of Object.entries(eptable)) {
         const tr = document.createElement("tr");
 
-        // Kolumn 1: EP-värde-intervall
+        // Column 1: EP range
         const td1 = document.createElement("td");
         td1.textContent =
           val.max === Infinity ? `${val.min} –` : `${val.min} – ${val.max}`;
         td1.style.textAlign = "center";
 
-        // Kolumn 2: färgad ruta + triangel
+        // Column 2: colored bar + triangle (triangle on right)
         const td2 = document.createElement("td");
         td2.style.position = "relative";
         td2.style.padding = "0";
 
-        const box = document.createElement("div");
-        box.style.height = "30px";
-        box.style.width = val.width;
-        box.style.backgroundColor = val.color;
-        box.style.display = "flex";
-        box.style.alignItems = "center";
-        box.style.paddingLeft = "0.5em";
-        box.style.fontWeight = "bold";
-        box.style.color = "#000";
-        box.textContent = key;
+        const bar = document.createElement("div");
+        bar.classList.add("bar");
+        bar.style.width = val.width;
+        bar.style.backgroundColor = val.color;
+        bar.textContent = key;
 
-        // Triangel
         const triangle = document.createElement("div");
-        triangle.style.position = "absolute";
-        triangle.style.right = "-30px";
-        triangle.style.top = "0";
-        triangle.style.width = "0";
-        triangle.style.height = "0";
-        triangle.style.borderTop = "15px solid transparent";
-        triangle.style.borderBottom = "15px solid transparent";
-        triangle.style.borderLeft = `30px solid ${val.color}`;
+        triangle.classList.add("triangle");
+        triangle.style.borderLeftColor = val.color;
 
-        box.appendChild(triangle);
-        td2.appendChild(box);
+        bar.appendChild(triangle);
+        td2.appendChild(bar);
 
-        // Kolumn 3: markerad klass
+        // Column 3: selected cell arrow if matches
         const td3 = document.createElement("td");
         td3.style.textAlign = "center";
-        td3.textContent = ep >= val.min && ep <= val.max ? key : "";
+        td3.style.position = "relative";
+        if (ep >= val.min && ep <= val.max) {
+          const arrow = document.createElement("div");
+          arrow.classList.add("selected-arrow");
+          arrow.style.width = "100%";
+          arrow.textContent = key;
+          const triSel = document.createElement("div");
+          triSel.classList.add("triangle-sel");
+          arrow.appendChild(triSel);
+          td3.appendChild(arrow);
+        }
 
         tr.appendChild(td1);
         tr.appendChild(td2);
@@ -403,9 +472,12 @@
         table.appendChild(tr);
       }
 
-      // Sidfot: sista raden
+      // Footer row
       const footer = document.createElement("tr");
-      footer.innerHTML = `<td></td><td style="text-align:center;">Hög förbrukning</td><td></td>`;
+      footer.innerHTML = `
+        <td></td>
+        <td class="footer-cell" style="text-align:center;">Hög förbrukning</td>
+        <td></td>`;
       table.appendChild(footer);
     </script>
   </body>
