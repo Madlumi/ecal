@@ -1,5 +1,4 @@
 
-
 :root {
   font-size: 16px;
 }
@@ -16,6 +15,34 @@ body {
   width: 100%;
 }
 
+/* Language selector at top right */
+#langSelector {
+  text-align: right;
+  margin-bottom: 0.5rem;
+}
+.lang-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-left: 0.25rem;
+}
+
+/* Center‐justify title and subtitle */
+h1 {
+  text-align: center;
+  margin: 0.5rem 0;
+}
+#disclaimerBox {
+  border: 0.06rem solid #888;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  background: #fdfdfd;
+  font-size: 0.9rem;
+}
+
+/* Main form and results */
 form#houseForm {
   border: 0.06rem solid #888;
   padding: 0.5rem;
@@ -33,6 +60,7 @@ form#houseForm input {
   font-size: 0.9rem;
 }
 
+/* Energy table */
 form#houseForm table {
   border-collapse: collapse;
   margin-top: 0.5rem;
@@ -63,6 +91,70 @@ form#houseForm select {
   box-sizing: border-box;
 }
 
+/* “Energyfaktorer:” label */
+label#energyTableLabel {
+  display: block;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Permalink + Copy button (flex layout) */
+textarea#permalink {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: monospace;
+  font-size: 0.9rem;
+  padding: 0.25rem;
+  resize: vertical;
+  margin-bottom: 0.5rem;
+}
+
+.help-box {
+  background: #eef;
+  border: 0.06rem solid #99c;
+  padding: 0.4rem;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  display: none;
+  white-space: normal;
+}
+
+.info-icon {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-left: 0.25rem;
+  font-weight: normal;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 30rem) { /* ~480px */
+  form#houseForm table,
+  #limitsTable {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+.warning-icon {
+  color: red;
+  margin-left: 0.5rem;
+  font-size: 1.2rem;
+  vertical-align: middle;
+  cursor: default;
+}
+
+button.clear-btn,
+button.copy-btn {
+  margin-top: 0.5rem;
+  margin-right: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
 #results {
   border: 0.06rem solid #888;
   padding: 0.5rem;
@@ -85,54 +177,4 @@ form#houseForm select {
   text-align: left;
   overflow: hidden;
   white-space: nowrap;
-}
-
-textarea#permalink {
-  width: 100%;
-  box-sizing: border-box;
-  font-family: monospace;
-  font-size: 0.9rem;
-  padding: 0.25rem;
-  resize: vertical;
-}
-
-.help-box {
-  background: #eef;
-  border: 0.06rem solid #99c;
-  padding: 0.4rem;
-  font-size: 0.85rem;
-  margin-top: 0.25rem;
-  display: none;
-  white-space: normal;
-}
-
-.info-icon {
-  color: #00f;
-  cursor: pointer;
-  margin-left: 0.25rem;
-  font-weight: bold;
-  font-size: 0.9rem;
-}
-
-@media (max-width: 30rem) { /* ~480px */
-  form#houseForm table,
-  #limitsTable {
-    display: block;
-    overflow-x: auto;
-  }
-}
-
-.warning-icon {
-  color: red;
-  margin-left: 0.5rem;
-  font-size: 1.2rem;
-  vertical-align: middle;
-  cursor: default;
-}
-
-button.clear-btn {
-  margin-top: 0.5rem;
-  padding: 0.3rem 0.6rem;
-  font-size: 0.9rem;
-  cursor: pointer;
 }

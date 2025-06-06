@@ -1,0 +1,412 @@
+
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Energicertifikat</title>
+    <style>
+      :root {
+        --primary-green: #2ac02c;
+      }
+
+      /* Ta bort yttre marginaler mellan boxar */
+      .box,
+      .box_w {
+        margin: 0;
+      }
+
+      /* Fältset med tunn grön ram */
+      .box {
+        border: 2px solid var(--primary-green);
+        padding: 1em;
+      }
+
+      /* Fältset med extra tjock grön ram */
+      .box_w {
+        border: 20px solid var(--primary-green);
+        padding: 0;
+      }
+
+      /* Centera titeln */
+      .box h1 {
+        text-align: center;
+        color: var(--primary-green);
+        margin: 0;
+      }
+
+      /* Grön ”hr” som syns även vid utskrift */
+      hr.green-hr {
+        height: 20px;
+        background-color: var(--primary-green);
+        border: none;
+        margin: 0;
+        /* Försäkra att färgen skrivs ut */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      /* Inga spinnerpilar på number-input */
+      input[type="number"]::-webkit-outer-spin-button,
+      input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      input[type="number"] {
+        -moz-appearance: textfield;
+      }
+
+      /* Grön text för rubriker, etiketter, <th> */
+      .box h2,
+      .box label,
+      .box strong,
+      .box th {
+        color: var(--primary-green);
+      }
+
+      /* EP-värdet självt (siffran) ska vara svart */
+      #ep-value {
+        color: black;
+        background: white;
+        padding: 0 0.3em;
+      }
+
+      /* Användarinput ska vara svart på vit, och utan utskrifts‐konturer */
+      input[type="text"],
+      input[type="number"],
+      input[type="date"] {
+        color: black;
+        background: white;
+      }
+
+      /* EP-tabellens celler: grön kant */
+      #ep-table td,
+      #ep-table th {
+        border: 1px solid var(--primary-green);
+      }
+
+      /* Se till att färgade rutor (bar + triangel) syns fullt ut */
+      #ep-table td {
+        overflow: visible;
+        padding: 0;
+      }
+
+      /* Skriv ut‐css */
+      @media print {
+        /* Ta bort konturer och skuggor på alla inputs */
+        input {
+          border: none !important;
+          outline: none !important;
+        }
+        /* Dölj element märkta som .no-print */
+        .no-print {
+          display: none !important;
+        }
+        /* Säkerställ att färger skrivs ut */
+        * {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+      }
+
+      /* Större, centrerad knapp */
+      #printButton {
+        display: block;
+        margin: 1.5em auto;
+        padding: 0.8em 2em;
+        font-size: 1.2em;
+        background: var(--primary-green);
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      #printButton:hover {
+        background: #259e27;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- TITLE -->
+    <fieldset class="box">
+      <h1>ENERGICERTIFIKAT</h1>
+    </fieldset>
+
+    <!-- Grön horisontell linje under titel -->
+    <hr class="green-hr no-print" />
+
+    <!-- Byggnadsinformation -->
+    <fieldset class="box">
+      <h2>Byggnad</h2>
+      <div style="display: flex; gap: 2em;">
+        <!-- Kolumn 1 -->
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 0.5em;">
+          <div style="display: flex; align-items: center; gap: 0.5em;">
+            <label for="byggnadType" style="width: 8em;">Typ av byggnad:</label>
+            <input
+              type="text"
+              id="byggnadType"
+              placeholder="t.ex. Småhus"
+              style="flex: 1;"
+            />
+          </div>
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5em;">
+              <label style="width: 8em;">Adress:</label>
+              <input type="text" placeholder="Rad 1" style="flex: 1;" />
+            </div>
+            <div
+              style="
+                margin-left: 8em;
+                display: flex;
+                flex-direction: column;
+                gap: 0.2em;
+              "
+            >
+              <input type="text" placeholder="Rad 2" style="width: 100%;" />
+              <input type="text" placeholder="Rad 3" style="width: 100%;" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Kolumn 2 -->
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 0.5em;">
+          <div style="display: flex; align-items: center; gap: 0.5em;">
+            <label for="byggnadYear" style="width: 12em;">Byggnadsår:</label>
+            <input
+              type="number"
+              id="byggnadYear"
+              placeholder="t.ex. 2022"
+              style="flex: 1;"
+            />
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5em;">
+            <label for="byggnadsBet" style="width: 12em;"
+              >Byggnadsbeteckning:</label
+            >
+            <input
+              type="text"
+              id="byggnadsBet"
+              placeholder="t.ex. 22100"
+              style="flex: 1;"
+            />
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5em;">
+            <label for="antalBostader" style="width: 12em;"
+              >Antal bostäder:</label
+            >
+            <input
+              type="number"
+              id="antalBostader"
+              placeholder="t.ex. 1"
+              style="flex: 1;"
+            />
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Utfärdande -->
+    <fieldset class="box">
+      <b>
+        Energicertifikatet grundar sig på den kalkylerade
+        energiförbrukningen och har utfärdats
+      </b
+      ><br />
+      <input type="radio" id="checkboxLov" name="utfardad" />
+      <label for="checkboxLov" style="display: inline-block; max-width: 100%;"
+        >Certifikatet har utfärdats i samband med bygglovsförfarandet</label
+      >
+      <br />
+      <input type="radio" id="checkboxInspektion" name="utfardad" />
+      <label for="checkboxInspektion"
+        >Certifikatet har utfärdats i samband med en separat inspektion</label
+      >
+    </fieldset>
+
+    <!-- EP-tabell (dold i svaret, men genereras av JS) -->
+    <fieldset class="box">
+      <table
+        id="ep-table"
+        style="border-collapse: collapse; width: 100%; table-layout: fixed;"
+      >
+        <tr>
+          <th style="width: 15%;">EP-värde</th>
+          <th style="width: 70%;">Låg förbrukning</th>
+          <th style="width: 15%;">EP-klass</th>
+        </tr>
+      </table>
+    </fieldset>
+
+    <!-- Grön linje innan EP-värde/info -->
+    <hr class="green-hr no-print" />
+
+    <!-- EP-värde-område -->
+    <fieldset class="box">
+      <div
+        style="display: flex; justify-content: space-between; align-items: baseline;"
+      >
+        <div>
+          <strong
+            >Byggnadens energiprestandavärde (EP-värde, kWh/brm²/år):</strong
+          >
+        </div>
+        <div style="font-size: 1.8em; font-weight: bold;">
+          <span id="ep-value"></span>
+        </div>
+      </div>
+      <div>
+        <strong id="housetype-label"
+          >Skala för klassificering av energiprestanda:</strong
+        >
+      </div>
+      <div>
+        Klassificeringen av energiprestanda grundar sig på byggnadens
+        kalkylerade energiförbrukning.<br />
+        Den faktiska energiförbrukningen är beroende av byggnadens läge,
+        antal boende och konsumtionsvanor.
+      </div>
+    </fieldset>
+
+    <!-- Signatur -->
+    <fieldset class="box">
+      <table
+        style="
+          width: 100%;
+          border-collapse: collapse;
+          border: 1px solid var(--primary-green);
+        "
+      >
+        <tr>
+          <td
+            style="
+              width: 50%;
+              border: 1px solid var(--primary-green);
+              vertical-align: top;
+              padding: 0.5em;
+            "
+          >
+            <strong>Certifikatutfärdare:</strong><br />
+            <input
+              type="text"
+              placeholder="Namn och företag"
+              style="width: 100%;"
+            /><br /><br />
+            <strong>Underskrift:</strong><br />
+            <input type="text" placeholder="Signatur" style="width: 100%;" />
+          </td>
+          <td
+            style="
+              width: 50%;
+              border: 1px solid var(--primary-green);
+              vertical-align: top;
+              padding: 0.5em;
+            "
+          >
+            <strong>Certifikatbeställare:</strong><br />
+            <input type="text" placeholder="Namn" style="width: 100%;" />
+          </td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid var(--primary-green); padding: 0.5em;">
+            <strong>Datum för utfärdande:</strong><br />
+            <input type="date" style="width: 100%;" />
+          </td>
+          <td style="border: 1px solid var(--primary-green); padding: 0.5em;">
+            <strong>Sista giltighetsdag:</strong><br />
+            <input type="date" style="width: 100%;" />
+          </td>
+        </tr>
+      </table>
+    </fieldset>
+
+    <!-- Utskriftsknapp -->
+    <button id="printButton" class="no-print" onclick="window.print()">
+      Skriv ut
+    </button>
+
+    <script>
+      // Läs in ep och housetype från URL
+      const params = new URLSearchParams(window.location.search);
+      const ep = parseFloat(params.get("ep")) || 0;
+      const housetype = (params.get("housetype") || "").toUpperCase();
+      const housetypeNames = {
+        SMALL: "Småhus",
+        MULTI: "Flerbostadshus",
+        LOCAL: "Lokalbyggnad"
+      };
+      const displayType = housetypeNames[housetype] || "Okänd typ";
+
+      // Sätt EP-värde och byggnadstyp
+      document.getElementById("ep-value").textContent = ep;
+      document.getElementById("byggnadType").value = displayType;
+      document.getElementById("housetype-label").textContent =
+        "Skala för klassificering av energiprestanda: " + displayType;
+
+      // EP-tabell-data
+      const eptable = {
+        A: { min: 0, max: 150, color: "#2ac02c", width: "20%" },
+        B: { min: 151, max: 170, color: "#6cc04a", width: "30%" },
+        C: { min: 171, max: 190, color: "#dbdb29", width: "40%" },
+        D: { min: 191, max: 230, color: "#f0b928", width: "50%" },
+        E: { min: 231, max: 270, color: "#f08d1c", width: "60%" },
+        F: { min: 271, max: 320, color: "#e65400", width: "70%" },
+        G: { min: 321, max: Infinity, color: "#d90000", width: "80%" }
+      };
+
+      const table = document.getElementById("ep-table");
+      for (const [key, val] of Object.entries(eptable)) {
+        const tr = document.createElement("tr");
+
+        // Kolumn 1: EP-värde-intervall
+        const td1 = document.createElement("td");
+        td1.textContent =
+          val.max === Infinity ? `${val.min} –` : `${val.min} – ${val.max}`;
+        td1.style.textAlign = "center";
+
+        // Kolumn 2: färgad ruta + triangel
+        const td2 = document.createElement("td");
+        td2.style.position = "relative";
+        td2.style.padding = "0";
+
+        const box = document.createElement("div");
+        box.style.height = "30px";
+        box.style.width = val.width;
+        box.style.backgroundColor = val.color;
+        box.style.display = "flex";
+        box.style.alignItems = "center";
+        box.style.paddingLeft = "0.5em";
+        box.style.fontWeight = "bold";
+        box.style.color = "#000";
+        box.textContent = key;
+
+        // Triangel
+        const triangle = document.createElement("div");
+        triangle.style.position = "absolute";
+        triangle.style.right = "-30px";
+        triangle.style.top = "0";
+        triangle.style.width = "0";
+        triangle.style.height = "0";
+        triangle.style.borderTop = "15px solid transparent";
+        triangle.style.borderBottom = "15px solid transparent";
+        triangle.style.borderLeft = `30px solid ${val.color}`;
+
+        box.appendChild(triangle);
+        td2.appendChild(box);
+
+        // Kolumn 3: markerad klass
+        const td3 = document.createElement("td");
+        td3.style.textAlign = "center";
+        td3.textContent = ep >= val.min && ep <= val.max ? key : "";
+
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        tr.appendChild(td3);
+        table.appendChild(tr);
+      }
+
+      // Sidfot: sista raden
+      const footer = document.createElement("tr");
+      footer.innerHTML = `<td></td><td style="text-align:center;">Hög förbrukning</td><td></td>`;
+      table.appendChild(footer);
+    </script>
+  </body>
+</html>

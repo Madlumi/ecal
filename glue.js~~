@@ -12,64 +12,67 @@
   window.SELECTED_LANG = lang;
 })();
 
-// Returns STRINGS[key][selectedLanguage], with fallbacks:
-//   • If key doesn’t exist → "[no string found]"
-//   • If translation for selectedLang is non‐empty → that
-//   • Else fallback to Swedish if non-empty → that
-//   • Else return "" (so empty helps remain hidden)
+// Returns STRINGS[key][selectedLanguage], with fallbacks: chosen → “sv” → "[no string found]"
 function getString(key) {
   if (!STRINGS.hasOwnProperty(key)) {
     return "[no string found]";
   }
   const entry = STRINGS[key];
+  // If the author accidentally provided a plain string instead of an object:
   if (typeof entry === "string") {
     return entry;
   }
-  let val = entry[window.SELECTED_LANG];
-  if (val !== undefined && val !== "") {
-    return val;
+  // 1) If chosen language exists and non­empty, return that
+  if (entry.hasOwnProperty(window.SELECTED_LANG) && entry[window.SELECTED_LANG]) {
+    return entry[window.SELECTED_LANG];
   }
-  // fallback to Swedish
-  val = entry["sv"];
-  if (val !== undefined && val !== "") {
-    return val;
+  // 2) Fallback to Swedish
+  if (entry.hasOwnProperty("sv") && entry["sv"]) {
+    return entry["sv"];
   }
-  return "";
+  // 3) If even Swedish is missing, show placeholder
+  return "[no string found]";
 }
 
 // =====================
 // LOCKED_COMBINATIONS
+// (An array you can use to disable certain measure/source combinations.)
+// Example: disallow “Fjärrkyla” in “Värme.”
+//
+// EType.FJARRKYLA is the enum index for “Fjärrkyla.”
+// EType.XXX are indices 0..5 in your energy.js file.
 // =====================
-// Disallow “Fjärrkyla” under “Värme”, and “Fjärrvärme” under “Kylning”.
 const LOCKED_COMBINATIONS = [
-  { measureKey: "heat",  sourceIndex: EType.FJARRKYLA },
-  { measureKey: "cool",  sourceIndex: EType.FJARRVARME }
+  // { measureKey: "heat", sourceIndex: EType.FJARRKYLA },
+  // { measureKey: "heat", sourceIndex: EType.BIOBRANSLE },
+  // … etc.
+  // You can iterate over this array and disable (or hide) the corresponding <input> fields.
 ];
 
 // =====================
-// APPLY STRINGS TO DOM
+// APPLY STRINGS TO DOM & INITIAL SETUP
 // =====================
 function applyStrings() {
-  // 1) Language Selector Buttons (opacity = 1 for selected, 0.5 otherwise)
+  // 1) Language Selector (no need to translate flags, but we can highlight the current)
   document.querySelectorAll(".lang-button").forEach(btn => {
     btn.style.opacity = (btn.dataset.lang === window.SELECTED_LANG) ? "1" : "0.5";
   });
 
-  // 2) App Title
-  document.getElementById("appTitle").innerHTML = getString("app_title");
-
-  // 3) Disclaimer (centered under title; show only if non‐empty)
+  // 2) Disclaimer
   const discBox = document.getElementById("disclaimerBox");
   const discText = getString("disclaimer");
   if (discText) {
-    discBox.innerHTML = discText;
+    discBox.textContent = discText;
     discBox.style.display = "block";
   } else {
     discBox.style.display = "none";
   }
 
+  // 3) Application Title
+  document.getElementById("appTitle").innerHTML = getString("app_title");
+
   // 4) Geography
-  document.getElementById("geographyLabel").innerHTML = getString("geography_label");
+  document.getElementById("geographyLabel").textContent = getString("geography_label");
   const geoIcon = document.getElementById("geoInfo");
   const geoHelpText = getString("geography_help");
   if (geoHelpText) {
@@ -85,7 +88,7 @@ function applyStrings() {
   }
 
   // 5) House Type
-  document.getElementById("housetypeLabel").innerHTML = getString("housetype_label");
+  document.getElementById("housetypeLabel").textContent = getString("housetype_label");
   const typeIcon = document.getElementById("typeInfo");
   const typeHelpText = getString("housetype_help");
   if (typeHelpText) {
@@ -101,10 +104,10 @@ function applyStrings() {
   }
 
   // 6) Footnotes heading + labels
-  document.getElementById("lbl_footnotes_heading").innerHTML = getString("footnotes_heading");
+  document.getElementById("lbl_footnotes_heading").textContent = getString("footnotes_heading");
 
   // Footnote 4
-  document.getElementById("foot4Label").innerHTML = getString("foot4_label");
+  document.getElementById("foot4Label").textContent = getString("foot4_label");
   const f4Icon = document.getElementById("foot4Info");
   const f4HelpText = getString("foot4_help");
   if (f4HelpText) {
@@ -120,7 +123,7 @@ function applyStrings() {
   }
 
   // Footnote 5
-  document.getElementById("foot5Label").innerHTML = getString("foot5_label");
+  document.getElementById("foot5Label").textContent = getString("foot5_label");
   const f5Icon = document.getElementById("foot5Info");
   const f5HelpText = getString("foot5_help");
   if (f5HelpText) {
@@ -136,7 +139,7 @@ function applyStrings() {
   }
 
   // 7) Flow (q)
-  document.getElementById("flowLabel").innerHTML = getString("flow_label");
+  document.getElementById("flowLabel").textContent = getString("flow_label");
   const flowIcon = document.getElementById("flowInfo");
   const flowHelpText = getString("flow_help");
   if (flowHelpText) {
@@ -151,7 +154,7 @@ function applyStrings() {
   }
 
   // 8) Atemp
-  document.getElementById("atempLabel").innerHTML = getString("atemp_label");
+  document.getElementById("atempLabel").textContent = getString("atemp_label");
   const aIcon = document.getElementById("atempInfo");
   const aHelpText = getString("atemp_help");
   if (aHelpText) {
@@ -166,11 +169,11 @@ function applyStrings() {
     aIcon.style.display = "none";
   }
 
-  // 9) “Energyfaktorer (kW/år):” label
+  // 9) “Energyfaktorer:” label
   document.getElementById("energyTableLabel").textContent = getString("energy_table_label");
 
   // 10) Permalänk
-  document.getElementById("permalinkLabel").innerHTML = getString("permalink_label");
+  document.getElementById("permalinkLabel").textContent = getString("permalink_label");
   const pIcon = document.getElementById("permalinkInfo");
   const pHelpText = getString("permalink_help");
   if (pHelpText) {
@@ -189,7 +192,7 @@ function applyStrings() {
   document.getElementById("clearBtn").textContent = getString("clear_button");
   document.getElementById("copyBtn").textContent  = getString("copy_button");
 
-  // 12) EPpet label + help
+  // 12) EPpet + limits
   const printedEPEl = document.getElementById("printedEP");
   printedEPEl.innerHTML = getString("ep_label");
   const epIcon = document.getElementById("epInfo");
@@ -227,7 +230,7 @@ function getEnergyTable() {
   if (!table) return;
   table.innerHTML = "";
 
-  // Header row
+  // 1) Header row
   const thead = document.createElement("thead");
   const headerRow = document.createElement("tr");
   const cornerTh = document.createElement("th");
@@ -243,7 +246,7 @@ function getEnergyTable() {
   thead.appendChild(headerRow);
   table.appendChild(thead);
 
-  // Body rows
+  // 2) Body rows
   const tbody = document.createElement("tbody");
   const measures = [
     { key: "heat",  labelKey: "energy_row_heat", helpKey: "energy_row_heat_help" },
@@ -264,27 +267,16 @@ function getEnergyTable() {
     const labelTd = document.createElement("td");
     labelTd.textContent = getString(meas.labelKey);
     const rowHelpText = getString(meas.helpKey);
-
-      if (rowHelpText) {
-        const icon = document.createElement("span");
-        icon.className = "info-icon";
-        icon.textContent = getString("info_icon");
-        icon.title = rowHelpText;
-
-        icon.addEventListener("click", () => {
-          const helpBox = document.getElementById("energyRowHelpBox");
-          // If it’s already visible and showing the same text, hide it:
-          if (helpBox.style.display === "block" && helpBox.innerHTML === rowHelpText) {
-            helpBox.style.display = "none";
-          } else {
-            // Otherwise, update and show
-            helpBox.innerHTML = rowHelpText;
-            helpBox.style.display = "block";
-          }
-        });
-
-        labelTd.appendChild(icon);
-      }
+    if (rowHelpText && rowHelpText !== "[no string found]") {
+      const icon = document.createElement("span");
+      icon.className = "info-icon";
+      icon.textContent = getString("info_icon");
+      icon.title = rowHelpText;
+      icon.addEventListener("click", () => {
+        alert(rowHelpText);
+      });
+      labelTd.appendChild(icon);
+    }
     tr.appendChild(labelTd);
 
     // One <input> per energy source
@@ -296,14 +288,6 @@ function getEnergyTable() {
       const sourceKey = E_name[i].toLowerCase().replace(/\s+/g, "_");
       input.id   = `${meas.key}-${sourceKey}`;
       input.name = input.id;
-
-      // If this (measure, source) is in LOCKED_COMBINATIONS, disable:
-      for (const lock of LOCKED_COMBINATIONS) {
-        if (lock.measureKey === meas.key && lock.sourceIndex === i) {
-          input.disabled = true;
-        }
-      }
-
       td.appendChild(input);
       tr.appendChild(td);
 
@@ -330,7 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
   getTableoptions();
   getEnergyTable();
 
-  // 3) Grab references
+  // 3) Grab references to dynamic elements
   const houseTypeEl   = document.getElementById("housetype");
   const footnoteBox   = document.getElementById("footnoteBox");
   const foot4El       = document.getElementById("foot4");
@@ -345,7 +329,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const permalinkHelpBox = document.getElementById("permalinkHelp");
   const epHelpBox     = document.getElementById("epHelp");
 
-  // 4) Show/hide footnotes on housetype change
+  // 4) Show/hide footnotes when housetype changes
   houseTypeEl.addEventListener("change", () => {
     if (houseTypeEl.value === "MULTI") {
       footnoteBox.style.display = "block";
@@ -367,7 +351,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const limitsTableEl = document.getElementById("limitsTable");
   const clearBtn      = document.getElementById("clearBtn");
   const copyBtn       = document.getElementById("copyBtn");
-  const printBtn      = document.getElementById("printBtn");
   const formEl        = document.getElementById("houseForm");
 
   // 6) Main calculate() function
@@ -385,14 +368,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const f4 = foot4El.checked;
     const f5 = foot5El.checked;
 
-    // Build the House object
     const h = new House(typeNum, atemp, locationObj);
     h.flow   = flowVal;
     h.qavg   = qavg;
     h.foot4  = f4;
     h.foot5  = f5;
 
-    // Read energy inputs
     for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
       h.E.heat[i] = parseFloat(heatEls[i].value) || 0;
       h.E.cool[i] = parseFloat(coolEls[i].value) || 0;
@@ -404,54 +385,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const ep = EPpet(h);
     const lim = limit(h);
 
-    // 8) Display EPpet (with warning if > limit)
+    // 8) Display EPpet, with warning if above limit
     if (ep > lim.EP) {
       printedEPEl.innerHTML = `${getString("ep_label")} ${ep} <span class="warning-icon" title="${getString("warning_tooltip")}">⚠</span>`;
     } else {
       printedEPEl.innerHTML = `${getString("ep_label")} ${ep}`;
     }
 
-    // 9) Populate Limits table.
+    // 9) Populate Limits table, replacing -1 with blank and 9999 with “Inget krav”
+    let llDisplay = "";
+    if (lim.LL === -1) {
+      llDisplay = "";
+    } else {
+      llDisplay = lim.LL.toFixed(2);
+    }
     let epLimitDisp = (lim.EP === 9999) ? getString("no_requirement") : lim.EP.toFixed(1);
     let elLimitDisp = (lim.EL === 9999) ? getString("no_requirement") : lim.EL.toFixed(1);
-    let umLimitDisp = lim.UM.toFixed(2);
-
-    let llCellHtml;
-    if (lim.LL === -1) {
-      // Show a dash “–” with a “?” icon
-      llCellHtml = `– <span class="info-icon" id="llIcon">${getString("info_icon")}</span>`;
-    } else {
-      llCellHtml = lim.LL.toFixed(2);
-    }
 
     limitsTableEl.innerHTML = `
       <tr><th>${getString("limit_ep")}</th><td>${epLimitDisp}</td></tr>
       <tr><th>${getString("limit_el")}</th><td>${elLimitDisp}</td></tr>
-      <tr><th>${getString("limit_um")}</th><td>${umLimitDisp}</td></tr>
-      <tr><th>${getString("limit_ll")}</th><td>${llCellHtml}</td></tr>
+      <tr><th>${getString("limit_um")}</th><td>${lim.UM.toFixed(2)}</td></tr>
+      <tr><th>${getString("limit_ll")}</th><td>${llDisplay}</td></tr>
     `;
 
-    if (lim.LL === -1) {
-      // Insert (or re‐insert) the hidden help‐box right below the limits table
-      let existing = document.getElementById("limitLLHelp");
-      if (existing) existing.remove();
-      const helpDiv = document.createElement("div");
-      helpDiv.id = "limitLLHelp";
-      helpDiv.className = "help-box";
-      helpDiv.style.marginTop = "0.5rem";
-      helpDiv.style.marginBottom = "0.5rem";
-      helpDiv.innerHTML = getString("limit_ll_help");
-      limitsTableEl.parentNode.insertBefore(helpDiv, limitsTableEl.nextSibling);
-
-      // Attach click on #llIcon to toggle that box
-      const llIcon = document.getElementById("llIcon");
-      llIcon.addEventListener("click", () => {
-        const box = document.getElementById("limitLLHelp");
-        box.style.display = box.style.display === "block" ? "none" : "block";
-      });
-    }
-
-    // 10) Build Permalink (do NOT auto‐append &lang=; user can add that manually)
+    // 10) Build Permalink (do NOT include ?lang= here—it’s up to user to add manually)
     const params = new URLSearchParams();
     params.set("geography", locName);
     params.set("housetype", typeStr);
@@ -465,14 +423,15 @@ document.addEventListener("DOMContentLoaded", () => {
       if (h.E.watr[i] !== 0)  params.set(`watr${i}`,  h.E.watr[i]);
       if (h.E.fast[i] !== 0)  params.set(`fast${i}`,  h.E.fast[i]);
     }
+    // We do NOT append “lang=” here—if the user wants the English (or Finnish) version, they must add &lang=en or &lang=fi themselves.
     const base = window.location.pathname + "?" + params.toString();
     permalinkEl.value = base;
   }
 
-  // 11) Auto‐calculate on any input change
+  // 11) Auto-calculate whenever any input changes
   formEl.addEventListener("input", calculate);
 
-  // 12) Pre‐populate form from URL on load
+  // 12) Pre-populate form fields from URL on load
   const qs = new URLSearchParams(window.location.search);
   if (qs.has("geography")) {
     geographyEl.value = qs.get("geography");
@@ -511,7 +470,7 @@ document.addEventListener("DOMContentLoaded", () => {
     calculate();
   }
 
-  // 13) Clear button resets everything
+  // 13) Clear button resets form + results
   clearBtn.addEventListener("click", () => {
     formEl.reset();
     footnoteBox.style.display    = "none";
@@ -525,9 +484,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("energyTable").querySelectorAll("input").forEach(inp => inp.value = "");
     printedEPEl.textContent = "";
     limitsTableEl.innerHTML = "";
-    // remove any existing limitLLHelp
-    let existing = document.getElementById("limitLLHelp");
-    if (existing) existing.remove();
     permalinkEl.value = "";
     window.history.replaceState(null, "", window.location.pathname);
   });
@@ -547,68 +503,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 15) Print button
-
-  printBtn.addEventListener("click", () => {
-    const locName    = geographyEl.value;
-    const locationObj = locations.find(loc => loc.name === locName);
-
-    const typeStr  = houseTypeEl.value;      // "SMALL" / "MULTI" / "LOCAL"
-    const typeNum  = HouseType[typeStr];     // convert string → enum index
-
-    const atempVal = parseInt(atempEl.value, 10) || 0;
-    const flowVal  = parseFloat(flowEl.value)   || 0;
-    const qavgVal  = parseFloat(flowEl.value)   || 0;
-
-    const f4       = foot4El.checked;
-    const f5       = foot5El.checked;
-
-    // Build a temporary House instance
-    const tempHouse = new House(typeNum, atempVal, locationObj);
-    tempHouse.flow  = flowVal;
-    tempHouse.qavg  = qavgVal;
-    tempHouse.foot4 = f4;
-    tempHouse.foot5 = f5;
-
-    // Read energy‐use inputs into tempHouse.E arrays
-    for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
-      tempHouse.E.heat[i] = parseFloat(heatEls[i].value) || 0;
-      tempHouse.E.cool[i] = parseFloat(coolEls[i].value) || 0;
-      tempHouse.E.watr[i] = parseFloat(watrEls[i].value) || 0;
-      tempHouse.E.fast[i] = parseFloat(fastEls[i].value) || 0;
-    }
-
-    // Compute EPpet:
-    const epVal = EPpet(tempHouse);
-
-    // Redirect to the print page, passing epVal & housetype
-    const printUrl = `energyprint.html?ep=${epVal}&housetype=${typeStr}`;
-    window.location.href = printUrl;
-  });
-
-  // 16) Language switcher buttons
+  // 15) Language switcher buttons
   document.querySelectorAll(".lang-button").forEach(btn => {
     btn.addEventListener("click", () => {
-      // Use the permalink if it exists; otherwise, fallback to current URL
-      const permalinkVal = document.getElementById("permalink").value;
-      let baseUrl;
-      if (permalinkVal) {
-        // If permalink begins with “/…?”, keep everything after the “?”
-        const questionIdx = permalinkVal.indexOf("?");
-        if (questionIdx >= 0) {
-          baseUrl = permalinkVal.substring(0, questionIdx + 1);
-          const qsExisting = permalinkVal.substring(questionIdx + 1);
-          const params = new URLSearchParams(qsExisting);
-          params.set("lang", btn.dataset.lang);
-          window.location.href = baseUrl + params.toString();
-          return;
-        } else {
-          // No “?” found, just use it and add lang param
-          window.location.href = permalinkVal + "?lang=" + btn.dataset.lang;
-          return;
-        }
-      }
-      // Fallback: if no permalink yet, preserve existing form‐ derived URL params
+      // Build a new URL that retains all existing query params except "lang",
+      // then append &lang=selectedLang, and reload the page.
       const currentParams = new URLSearchParams(window.location.search);
       currentParams.set("lang", btn.dataset.lang);
       const newUrl = window.location.pathname + "?" + currentParams.toString();

@@ -1,3 +1,6 @@
+//============================
+// Core logic for the app
+//============================
 
 //============================
 //=Energy sources=============
@@ -41,8 +44,8 @@ class Location {
 }
 
 const locations = [
-  new Location("default", 1.0),
-  new Location("Åland",   1.1)
+  new Location("Åland",   1.1),
+  new Location("none", 1.0)
 ];
 
 //============================
