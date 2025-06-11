@@ -1,5 +1,9 @@
 
 //============================
+// Core logic for the app
+//============================
+
+//============================
 //=Energy sources=============
 //============================
 const EType = {
@@ -42,7 +46,7 @@ class Location {
 
 const locations = [
   new Location("Åland",   1.1),
-  new Location("none", 1.0)
+  new Location("none",    1.0)
 ];
 
 //============================
@@ -84,8 +88,10 @@ class House {
     this.L      = location;  // Location object
     this.flow   = 0.0;       // Instantaneous airflow (q) [l/s·m²]
     this.qavg   = 0.0;       // Average airflow (q_medel) [l/s·m²]
-    this.foot4  = false;     // Footnote-4 flag
-    this.foot5  = false;     // Footnote-5 flag
+    this.foot2  = false;     // Footnote‐2 flag (LOCAL)
+    this.foot3  = false;     // Footnote‐3 flag (LOCAL)
+    this.foot4  = false;     // Footnote‐4 flag (MULTI)
+    this.foot5  = false;     // Footnote‐5 flag (MULTI)
   }
 }
 
@@ -130,21 +136,22 @@ function el3(F_geo, flow, atemp) {
 }
 
 function ep4(F_geo, flow, qavg, atemp, Foot4) {
-  // ...i flerbostadshus där Atemp är 50 m² eller större
+  qavg = flow; // treat instantaneous as average here
+  // ... i flerbostadshus där Atemp är 50 m² eller större
   if (atemp < 50) { return 0; }
   // q_medel är uteluftsflödet i temperaturreglerade utrymmen överstiger 0,35 l/s·m²
   if (qavg <= 0.35) { return 0; }
   // Tillägget kan enbart användas på grund av krav på ventilation i särskilda utrymmen som badrum, toalett och kök
   if (!Foot4) { return 0; }
   // får högst tillgodoräknas upp till 0,6 l/s·m²
-  if (flow > 0.6) { flow = 0.6; }
+  if (qavg > 0.6) { qavg = 0.6; }
   return 40 * (qavg - 0.35);
 }
 
 function el5(F_geo, flow, atemp, Foot5) {
-  // ...i flerbostadshus där Atemp är 50 m² eller större
+  // ... i flerbostadshus där Atemp är 50 m² eller större
   if (atemp < 50) { return 0; }
-  // Tillägget kan enbart användas då det maximala uteluftsflödet vid DVUT i temperaturreglerade utrymmen q överstiger 0,35 l/s·m²
+  // Tillägget kan enbart användas då det maximala uteluftsflödet vid DVUT ... överstiger 0,35 l/s·m²
   if (flow <= 0.35) { return 0; }
   // på grund av krav på ventilation i särskilda utrymmen som badrum, toalett och kök
   // och som till övervägande delen (>50 % Atemp) inrymmer lägenheter med en boarea om högst 35 m² vardera
@@ -203,7 +210,8 @@ function limit(house) {
       l.UM = 0.33;
       l.LL = 0.60;
     }
-  } else if (house.type === HouseType.MULTI) {
+  }
+  else if (house.type === HouseType.MULTI) {
     if (atemp >= 0) {
       l.EP = 75.0 + ep4(F_geo, flow, qavg, atemp, house.foot4);
       l.EL = elBase(F_geo)
@@ -212,12 +220,18 @@ function limit(house) {
       l.UM = 0.40;
       l.LL = seSec;
     }
-  } else if (house.type === HouseType.LOCAL) {
+  }
+  else if (house.type === HouseType.LOCAL) {
     if (atemp > 50) {
-      l.EP = 70.0 + ep2(qavg);
+      // Only add ep2(qavg) if foot2 is checked
+      const ep_add = house.foot2 ? ep2(qavg) : 0;
+      // Only add el3(...) if foot3 is checked
+      const el_add = house.foot3 ? el3(F_geo, flow, atemp) : 0;
+
+      l.EP = 70.0 + ep_add;
       l.EL = elBase(F_geo)
              + el1(F_geo, atemp)
-             + el3(F_geo, flow, atemp);
+             + el_add;
       l.UM = 0.50;
       l.LL = seSec;
     } else /* atemp >= 0 */ {
@@ -239,7 +253,7 @@ function printHouse(house) {
   console.log(`Atemp: ${house.Atemp} m²`);
   console.log(`Location: ${house.L.name} (F_geo = ${house.L.F_geo.toFixed(2)})`);
   console.log(`Flow (q): ${house.flow.toFixed(2)}   qavg (q_medel): ${house.qavg.toFixed(2)}`);
-  console.log(`Foot4: ${house.foot4 ? "Yes" : "No"}   Foot5: ${house.foot5 ? "Yes" : "No"}`);
+  console.log(`Foot2: ${house.foot2 ? "Yes" : "No"}   Foot3: ${house.foot3 ? "Yes" : "No"}   Foot4: ${house.foot4 ? "Yes" : "No"}   Foot5: ${house.foot5 ? "Yes" : "No"}`);
   console.log("Energy use:");
   for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
     let line = "";
@@ -260,15 +274,18 @@ function printHouse(house) {
 //============================
 (function main() {
   // Create a House (Åland, SMALL, Atemp = 100)
-  const h = new House(HouseType.SMALL, 100, locations[1]);
 
+	/*
   // Example inputs:
+  const h = new House(HouseType.SMALL, 100, locations[1]);
   h.E.heat[EType.ELECTRIC]   = 120.0;
   h.E.cool[EType.FJARRKYLA]  = 40.0;
   h.flow     = 0.5;    // example instantaneous airflow (q)
   h.qavg     = 0.4;    // example average airflow (q_medel)
-  h.foot4    = true;   // footnote-4 applies
-  h.foot5    = true;   // footnote-5 applies
+  h.foot2    = true;   // footnote‐2 applies (LOCAL)
+  h.foot3    = true;   // footnote‐3 applies (LOCAL)
+  h.foot4    = true;   // footnote‐4 applies (MULTI)
+  h.foot5    = true;   // footnote‐5 applies (MULTI)
 
-  printHouse(h);
+  printHouse(h);*/
 })();

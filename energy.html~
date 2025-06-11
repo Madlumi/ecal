@@ -1,145 +1,151 @@
 
 <!DOCTYPE html>
 <html lang="sv">
-<head>
-  <meta charset="UTF-8" />
-  <title>Energy</title>
-  <link rel="stylesheet" href="style.css">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Energy</title>
+		<link rel="stylesheet" href="style.css">
+		<script src="strings.js"></script>
+		<script src="energy.js"></script>
+		<script src="glue.js" defer ></script>
+	</head>
+	<body>
+		<div class="container">
 
-  <!-- 1) Load strings first -->
-  <script src="strings.js"></script>
-  <!-- 2) Load your compiled energy logic (energy.js) -->
-  <script src="energy.js"></script>
-  <!-- 3) Load glue.js to wire everything up -->
-  <script src="glue.js"></script>
-</head>
-<body>
-  <div class="container">
+			<!-- Language Selector (🇸🇪 / 🇬🇧 / 🇫🇮) -->
+			<div id="langSelector">
+				<button class="lang-button" data-lang="sv" aria-label="Svenska">🇸🇪</button>
+				<button class="lang-button" data-lang="en" aria-label="English">🇬🇧</button>
+				<button class="lang-button" data-lang="fi" aria-label="Suomi">🇫🇮</button>
+			</div>
 
-    <!-- Language Selector (🇸🇪 / 🇬🇧 / 🇫🇮) -->
-    <div id="langSelector">
-      <button class="lang-button" data-lang="sv" aria-label="Svenska">🇸🇪</button>
-      <button class="lang-button" data-lang="en" aria-label="English">🇬🇧</button>
-      <button class="lang-button" data-lang="fi" aria-label="Suomi">🇫🇮</button>
-    </div>
+			<h1 id="app_title"></h1>
 
-    <!-- Page Title (centered) -->
-    <h1 id="appTitle"></h1>
+			<div id="disclaimer" class="disclaimer-box"></div>
 
-    <!-- Disclaimer (centered under title; hidden if empty) -->
-    <div id="disclaimerBox"></div>
+			<form id="houseForm">
+				<label for="geography" id="lbl_geography">
+					<span id="geography_label"></span>
+					<span class="info-icon" id="geography_help_icon"></span>
+				</label>
+				<select id="geography" name="geography"></select>
+				<div id="geography_help" class="help-box"></div>
+				<br />
 
-    <form id="houseForm">
-      <!-- Geography selector -->
-      <label for="geography" id="lbl_geography">
-        <span id="geographyLabel"></span>
-        <span class="info-icon" id="geoInfo"></span>
-      </label>
-      <select id="geography" name="geography"></select>
-      <div id="geoHelp" class="help-box"></div>
-      <br />
+				<label for="housetype" id="lbl_housetype">
+					<span id="housetype_label"></span>
+					<span class="info-icon" id="housetype_help_icon"></span>
+				</label>
+				<select id="housetype" name="housetype">
+					<option value="SMALL" id="option_housetype_SMALL">småhus</option>
+					<option value="MULTI" id="option_housetype_MULTI">flerbostadshus</option>
+					<option value="LOCAL" id="option_housetype_LOCAL">lokal</option>
+				</select>
+				<div id="housetype_help" class="help-box"></div>
+				<br />
 
-      <!-- Housetype selector -->
-      <label for="housetype" id="lbl_housetype">
-        <span id="housetypeLabel"></span>
-        <span class="info-icon" id="typeInfo"></span>
-      </label>
-      <select id="housetype" name="housetype">
-        <option value="SMALL">småhus</option>
-        <option value="MULTI">flerbostadshus</option>
-        <option value="LOCAL">lokal</option>
-      </select>
-      <div id="typeHelp" class="help-box"></div>
-      <br />
+			<!-- Box only shown in certain cases -->
+				<div id="footnoteBox" style="display: none; border: 1px solid #aaa; padding: 0.5rem; margin-top: 0.5rem; background: #f9f9f9;">
+					<p id="footnotes_heading" class="footnotes-heading"></p>
 
-      <!-- Footnote Box (only for flerbostadshus) -->
-      <div id="footnoteBox"
-           style="display: none; border: 0.06rem solid #aaa; padding: 0.5rem; margin-top: 0.5rem; background: #f9f9f9;">
-        <p id="lbl_footnotes_heading"
-           style="margin: 0 0 0.25rem 0; font-size: 0.9rem; font-weight: bold;"></p>
+					<label id="lbl_foot2" style="display: none;">
+						<input type="checkbox" id="foot2" name="foot2">
+						<span id="foot2_label"></span>
+						<span class="info-icon" id="foot2_help_icon"></span>
+					</label>
+					<div id="foot2_help" class="help-box"></div>
 
-        <!-- Footnote 4 -->
-        <label style="display: inline-block; font-size: 0.85rem; margin-right: 1rem;" id="lbl_foot4">
-          <input type="checkbox" id="foot4" name="foot4">
-          <span id="foot4Label"></span>
-          <span class="info-icon" id="foot4Info"></span>
-        </label>
-        <div id="foot4Help" class="help-box"></div>
+					<label id="lbl_foot3" style="display: none;">
+						<input type="checkbox" id="foot3" name="foot3">
+						<span id="foot3_label"></span>
+						<span class="info-icon" id="foot3_help_icon"></span>
+					</label>
+					<div id="foot3_help" class="help-box"></div>
 
-        <!-- Footnote 5 -->
-        <label style="display: inline-block; font-size: 0.85rem; margin-right: 1rem;" id="lbl_foot5">
-          <input type="checkbox" id="foot5" name="foot5">
-          <span id="foot5Label"></span>
-          <span class="info-icon" id="foot5Info"></span>
-        </label>
-        <div id="foot5Help" class="help-box"></div>
+					<label id="lbl_foot4" style="display: none;">
+						<input type="checkbox" id="foot4" name="foot4">
+						<span id="foot4_label"></span>
+						<span class="info-icon" id="foot4_help_icon"></span>
+					</label>
+					<div id="foot4_help" class="help-box"></div>
 
-        <!-- Flow (q) on its own line -->
-        <div style="margin-top: 0.5rem;">
-          <label id="lbl_flow" style="display: inline-block; font-size: 0.85rem;">
-            <span id="flowLabel"></span>
-            <span class="info-icon" id="flowInfo"></span>
-          </label>
-          <input type="number" id="flow" name="flow" step="0.01">
-        </div>
-      </div>
-      <br />
+					<label id="lbl_foot5" style="display: none;">
+						<input type="checkbox" id="foot5" name="foot5">
+						<span id="foot5_label"></span>
+						<span class="info-icon" id="foot5_help_icon"></span>
+					</label>
+					<div id="foot5_help" class="help-box"></div>
 
-      <!-- Atemp with tooltip (inline so “?” is on same line) -->
-      <label for="atemp" id="lbl_atemp" style="display: inline-block;">
-        <span id="atempLabel"></span>
-        <span class="info-icon" id="atempInfo"></span>
-      </label>
-      <input type="number" id="atemp" name="atemp" min="0">
-      <div id="atempHelp" class="help-box"></div>
-      <br /><br />
 
-      <!-- “Energyfaktorer (kW/år):” label -->
-      <label id="energyTableLabel"></label><br />
 
-      <!-- Energy‐use table (populated dynamically) -->
-      <table id="energyTable"></table>
-      <!-- This is where we will inject row‐help text for the “?” clicks -->
-      <div id="energyRowHelpBox" class="help-box"></div>
-      <br />
 
-      <!-- Permalänk + Copy button (right‐justified) -->
-      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-        <!-- Make this DIV flex:1 so textarea can expand fully -->
-        <div style="flex: 1; display: flex; flex-direction: column; margin-right: 0.5rem;">
-          <label for="permalink" id="lbl_permalink" style="display: inline-block;">
-            <span id="permalinkLabel"></span>
-            <span class="info-icon" id="permalinkInfo"></span>
-          </label>
-          <div id="permalinkHelp" class="help-box"></div>
-          <textarea id="permalink" rows="3" readonly></textarea>
-        </div>
-        <div>
-          <button type="button" class="copy-btn" id="copyBtn"></button>
-        </div>
-      </div>
-      <br />
+<div id="flowContainer" style="display:none; margin-top:0.5rem;">
+  <label id="lbl_flow">
+    <span id="flow_label"></span>
+    <span class="info-icon" id="flow_help_icon"></span>
+  </label>
+  <input type="number" id="flow" name="flow" step="0.01">
+  <div id="flow_help" class="help-box"></div>
+</div>
 
-      <!-- Clear Form button -->
-      <button type="button" class="clear-btn" id="clearBtn"></button>
-    </form>
+				</div>
+				<br />
 
-    <div id="results">
-      <!-- EPpet display (inline so “?” stays on same line) -->
-      <h2 style="display: inline-block;" id="printedEP"></h2>
-      <span class="info-icon" id="epInfo"></span>
-      <div id="epHelp" class="help-box"></div>
+				<!--  -->
+				<label for="atemp" id="lbl_atemp">
+					<span id="atemp_label"></span>
+					<span class="info-icon" id="atemp_help_icon"></span>
+				</label>
+				<input type="number" id="atemp" name="atemp" min="0">
+				<div id="atemp_help" class="help-box"></div>
+				<br /><br />
 
-      <!-- Limits table -->
-      <table id="limitsTable"></table>
+				<label id="energy_table_label"></label><br />
 
-      <!-- Print button at bottom -->
-      <div style="text-align: center; margin-top: 1rem;">
-        <button id="printBtn" style="padding: 0.4rem 0.8rem; font-size: 0.9rem; cursor: pointer;">
-          Skriv ut / Print
-        </button>
-      </div>
-    </div>
-  </div>
-</body>
+				<!-- Lock improbable combos -->
+				<script>
+					const LOCKED_COMBINATIONS = [
+						{ measureKey: "heat", sourceIndex: EType.FJARRKYLA },
+						{ measureKey: "cool", sourceIndex: EType.FJARRVARME }
+					];
+				</script>
+				<!--(table built in code)-->
+				<table id="energyTable"></table>
+				<div id="energyRowHelpBox" class="help-box"></div>
+
+				</br>
+
+
+				<label for="permalink" id="lbl_permalink">
+					<span id="permalink_label"></span>
+
+					<span class="info-icon" id="permalink_help_icon"></span>
+					<div id="permalink_help" class="help-box"></div>
+				</label>
+				<textarea id="permalink" rows="3" readonly></textarea>
+				<button id="copy_button" class="copy-btn" style="display: block; margin: 0.5rem auto;" > </button>
+
+
+				<br />
+				<hr />
+				<button id="clear_button" class="clear-btn" style="display: block; margin: 0.5rem auto;" > </button>
+
+			</form>
+
+			<div id="results">
+				<h2 id="ep_label" style="display:inline;"></h2>
+				<span class="info-icon" id="ep_help_icon"></span>
+				<div id="ep_help" class="help-box"></div>
+
+				<h3 id="upper_limits_heading" ></h2>
+				<p id="upperLimitLabel" style="margin-top: 1rem; font-weight: bold;"></p>
+				<table id="limitsTable"></table>
+
+				<div style="text-align: center; margin-top: 1rem;">
+					<button id="print_button" style="padding: 0.4rem 0.8rem; font-size: 0.9rem; cursor: pointer;"> </button>
+				</div>
+			</div>
+
+		</div>
+	</body>
 </html>

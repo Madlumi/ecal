@@ -1,618 +1,411 @@
-
 // =====================
-// LANGUAGE DETECTION & HELPERS
+// 
+// Manage the dom
+// 
 // =====================
-// Immediately read “lang” from URL. Default to “sv”. If invalid, fallback to “sv”.
-(function() {
-  const urlParams = new URLSearchParams(window.location.search);
-  let lang = urlParams.get("lang") || "sv";
-  if (!["sv","en","fi"].includes(lang)) {
-    lang = "sv";
-  }
-  window.SELECTED_LANG = lang;
-})();
+const geo      = document.getElementById("geography");
+const type     = document.getElementById("housetype");
+const at       = document.getElementById("atemp");
+const fl       = document.getElementById("flow");
+const f2       = document.getElementById("foot2");
+const f3       = document.getElementById("foot3");
+const f4       = document.getElementById("foot4");
+const f5       = document.getElementById("foot5");
+const clear    	= document.getElementById("clear_button");
+const copy     	= document.getElementById("copy_button");
+const print       = document.getElementById("print_button");    
+const form     	  = document.getElementById("houseForm");
+const footnoteBox = document.getElementById("footnoteBox");
+const foot2Lbl    = document.getElementById("lbl_foot2");
+const foot3Lbl    = document.getElementById("lbl_foot3");
+const foot4Lbl    = document.getElementById("lbl_foot4");
+const foot5Lbl    = document.getElementById("lbl_foot5");
+const heatEls  = window.heatEls, coolEls  = window.coolEls, watrEls  = window.watrEls, fastEls  = window.fastEls;
+const outEP    = document.getElementById("ep_label"), limitsT  = document.getElementById("limitsTable");
+const table = document.getElementById("energyTable");
 
-// Returns STRINGS[key][selectedLanguage], with fallbacks:
-//   • If key doesn’t exist → "[no string found]"
-//   • If translation for selectedLang is non‐empty → that
-//   • Else fallback to Swedish if non-empty → that
-//   • Else return "" (so empty helps remain hidden)
+
+
+const flowContainer = document.getElementById("flowContainer");
+
+function detectLang() {
+	const urlParams = new URLSearchParams(window.location.search);
+	let lang = urlParams.get("lang") || "sv";
+	if (!["sv","en","fi"].includes(lang)) lang = "sv";
+	window.SELECTED_LANG = lang;
+}
+
+
+function registerListeners(){
+	//language select
+
+	document.querySelectorAll(".lang-button").forEach(btn => {
+		btn.addEventListener("click", () => {
+			// grab either the full permalink's query or the current page's
+			const src = document.getElementById("permalink").value.split("?")[1] || location.search.slice(1);
+			const q   = new URLSearchParams(src);
+			q.set("lang", btn.dataset.lang);
+			location.search = q;  // reloads preserving all other params + new lang
+		});
+	});
+
+
+
+
+	type.addEventListener("change", updateFootnotes);
+	form.addEventListener("input", calculate);
+
+	//clear
+	clear.addEventListener("click", clearUI);
+	//print
+	print.addEventListener("click",()=>{ window.location.href = `energyprint.html?ep=${calculate()}&housetype=${type.value}`; });
+	//copy
+	copy.addEventListener("click",()=>{
+		const ta=document.getElementById("permalink");
+		ta.select(); ta.setSelectionRange(0,99999);
+		document.execCommand("copy");
+		copy.textContent=getString("copy_button")+" ✔";
+		setTimeout(()=>copy.textContent=getString("copy_button"),1500);
+	});
+}
+
+
+
+function clearUI() {
+	history.replaceState(null, "", location.pathname);
+	prefillFromURL();
+	updateFootnotes();
+	calculate();
+}
+
+
+
+
 function getString(key) {
-  if (!STRINGS.hasOwnProperty(key)) {
-    return "[no string found]";
-  }
-  const entry = STRINGS[key];
-  if (typeof entry === "string") {
-    return entry;
-  }
-  let val = entry[window.SELECTED_LANG];
-  if (val !== undefined && val !== "") {
-    return val;
-  }
-  // fallback to Swedish
-  val = entry["sv"];
-  if (val !== undefined && val !== "") {
-    return val;
-  }
-  return "";
+	if (typeof STRINGS === "undefined" || !STRINGS.hasOwnProperty(key)) { return "[no string found]"; }
+	const entry = STRINGS[key];
+	if (typeof entry === "string") { return entry; }
+	const val = entry[window.SELECTED_LANG];
+	if (val !== undefined) { return val; }
+	if (entry.sv !== undefined) { return entry.sv; }
+	return "";
+}
+
+function setupHelp(iconId, boxId, key) {
+	try {
+		const icon = document.getElementById(iconId);
+		const box  = document.getElementById(boxId);
+
+		// Bail out if either element is missing
+		if (!icon || !box) {
+			console.warn(`setupHelp: missing element`, { iconId, boxId });
+			return;
+		}
+
+		const txt = getString(key) || "";
+		if (!txt) {
+			// No help text → hide the icon
+			icon.style.display = "none";
+			return;
+		}
+
+		// We have help text: wire it up
+		icon.textContent = getString("info_icon");
+		icon.title = "";  // clear any old tooltip
+		icon.onclick = () => {
+			box.innerHTML = txt;
+			box.style.display = box.style.display === "block" ? "none" : "block";
+		};
+	} catch (err) {
+		console.error(`setupHelp(${iconId}, ${boxId}, ${key}) failed:`, err);
+		// don't rethrow—just leave the icon hidden
+		const icon = document.getElementById(iconId);
+		if (icon) icon.style.display = "none";
+	}
+}
+
+
+
+function applyLanguage() {
+	// Language‐selector opacity
+	document.querySelectorAll(".lang-button").forEach(btn => { btn.style.opacity = btn.dataset.lang === window.SELECTED_LANG ? "1" : "0.5"; });
+
+	const keys = [];
+	const helpBases = []; 
+
+
+
+
+	Object.keys(STRINGS).forEach(k => {
+		const txt = getString(k).trim();  // strip whitespace
+		if (k.endsWith("_help")) {
+			// only register help if there's real content
+			if (txt !== "") {
+				helpBases.push(k.slice(0, -5)); // e.g. "geography_help" → "geography"
+			}
+		} else {
+			// register every non-help key for UI rendering, even if empty
+			keys.push(k);
+		}
+	});
+
+	// 3) Apply all non‐help keys
+	keys.forEach(key => {
+		const el = document.getElementById(key);
+		if (!el) return;
+		const str = getString(key) || "";
+
+		if (key === "disclaimer") {
+			el.innerHTML = str;
+			el.style.display = str ? "block" : "none";
+		} else {
+			el.innerHTML = str;
+		}
+	});
+
+	// 4) Attach help popups only for bases that had non‐empty help text
+	helpBases.forEach(base => {
+		setupHelp(
+			`${base}_help_icon`,
+			`${base}_help`,
+			`${base}_help`
+		);
+	});
 }
 
 // =====================
-// LOCKED_COMBINATIONS
+// Populate elements
 // =====================
-// Disallow “Fjärrkyla” under “Värme”, and “Fjärrvärme” under “Kylning”.
-const LOCKED_COMBINATIONS = [
-  { measureKey: "heat",  sourceIndex: EType.FJARRKYLA },
-  { measureKey: "cool",  sourceIndex: EType.FJARRVARME }
-];
+function loadGeograpgy() {
+	const sel = document.getElementById("geography");
+	sel.innerHTML = "";
+	locations.forEach(loc => { sel.add(new Option(loc.name, loc.name)); });
+}
 
-// =====================
-// APPLY STRINGS TO DOM
-// =====================
-function applyStrings() {
-  // 1) Language Selector Buttons (opacity = 1 for selected, 0.5 otherwise)
-  document.querySelectorAll(".lang-button").forEach(btn => {
-    btn.style.opacity = (btn.dataset.lang === window.SELECTED_LANG) ? "1" : "0.5";
-  });
+function loadEnergyTable() {
+	const table = document.getElementById("energyTable");
+	table.innerHTML = "";
 
-  // 2) App Title
-  document.getElementById("appTitle").innerHTML = getString("app_title");
+	// Prepare your per‐key element‐arrays dynamically
+	const measureKeys = ["heat","cool","watr","fast"];
+	const measureEls  = {};
+	measureKeys.forEach(k => measureEls[k] = []);
 
-  // 3) Disclaimer (centered under title; show only if non‐empty)
-  const discBox = document.getElementById("disclaimerBox");
-  const discText = getString("disclaimer");
-  if (discText) {
-    discBox.innerHTML = discText;
-    discBox.style.display = "block";
+	// Header
+	const thead = table.createTHead();
+	const hr    = thead.insertRow();
+	hr.insertCell().textContent = "";
+	E_name.forEach(name => hr.insertCell().textContent = name);
+
+	const tbody = table.createTBody();
+	measureKeys.forEach(key => {
+		const labelKey = `energy_row_${key}`;
+		const helpKey  = `${labelKey}_help`;
+		const row      = tbody.insertRow();
+		const cell     = row.insertCell();
+
+		// Row label
+		cell.textContent = getString(labelKey);
+
+		// Generate help
+		const helpText = getString(helpKey).trim();
+		if (helpText) {
+			const icon = document.createElement("span");
+			icon.className   = "info-icon";
+			icon.textContent = getString("info_icon");
+			icon.onclick = () => {
+				const box = document.getElementById("energyRowHelpBox");
+				if (box.innerHTML === helpText && box.style.display === "block") {
+					box.style.display = "none";
+				} else {
+					box.innerHTML     = helpText;
+					box.style.display = "block";
+				}
+			};
+			cell.appendChild(icon);
+		}
+
+		//add cells
+		for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
+			const c = row.insertCell();
+			const id = `${key}-${E_name[i].toLowerCase().replace(/\s+/g, "_")}`;
+			const inp = Object.assign( document.createElement("input"), { type: "number", step: "any", id, name: id });
+			if (LOCKED_COMBINATIONS.some(l => l.measureKey === key && l.sourceIndex === i)) { inp.disabled = true; }
+			c.appendChild(inp);
+			measureEls[key].push(inp);
+		}
+	});
+
+	// Expose for later use on window if you still need the globals
+	window.heatEls = measureEls.heat;
+	window.coolEls = measureEls.cool;
+	window.watrEls = measureEls.watr;
+	window.fastEls = measureEls.fast;
+
+	// hide the row‐help box initially
+	document.getElementById("energyRowHelpBox").style.display = "none";
+}
+//expandable footnote additon box
+
+function updateFootnotes() {
+  const t = type.value; // SMALL, MULTI or LOCAL
+
+  if (t === "MULTI" || t === "LOCAL") {
+    footnoteBox.style.display     = "block";
+    flowContainer.style.display   = "block";
+
+    // show 2 & 3 only for LOCAL
+    foot2Lbl.style.display = t === "LOCAL" ? "inline-block" : "none";
+    foot3Lbl.style.display = t === "LOCAL" ? "inline-block" : "none";
+
+    // show 4 & 5 only for MULTI
+    foot4Lbl.style.display = t === "MULTI" ? "inline-block" : "none";
+    foot5Lbl.style.display = t === "MULTI" ? "inline-block" : "none";
   } else {
-    discBox.style.display = "none";
-  }
-
-  // 4) Geography
-  document.getElementById("geographyLabel").innerHTML = getString("geography_label");
-  const geoIcon = document.getElementById("geoInfo");
-  const geoHelpText = getString("geography_help");
-  if (geoHelpText) {
-    geoIcon.textContent = getString("info_icon");
-    geoIcon.title = geoHelpText;
-    document.getElementById("geoHelp").textContent = geoHelpText;
-    geoIcon.addEventListener("click", () => {
-      const box = document.getElementById("geoHelp");
-      box.style.display = box.style.display === "block" ? "none" : "block";
-    });
-  } else {
-    geoIcon.style.display = "none";
-  }
-
-  // 5) House Type
-  document.getElementById("housetypeLabel").innerHTML = getString("housetype_label");
-  const typeIcon = document.getElementById("typeInfo");
-  const typeHelpText = getString("housetype_help");
-  if (typeHelpText) {
-    typeIcon.textContent = getString("info_icon");
-    typeIcon.title = typeHelpText;
-    document.getElementById("typeHelp").textContent = typeHelpText;
-    typeIcon.addEventListener("click", () => {
-      const box = document.getElementById("typeHelp");
-      box.style.display = box.style.display === "block" ? "none" : "block";
-    });
-  } else {
-    typeIcon.style.display = "none";
-  }
-
-  // 6) Footnotes heading + labels
-  document.getElementById("lbl_footnotes_heading").innerHTML = getString("footnotes_heading");
-
-  // Footnote 4
-  document.getElementById("foot4Label").innerHTML = getString("foot4_label");
-  const f4Icon = document.getElementById("foot4Info");
-  const f4HelpText = getString("foot4_help");
-  if (f4HelpText) {
-    f4Icon.textContent = getString("info_icon");
-    f4Icon.title = f4HelpText;
-    document.getElementById("foot4Help").textContent = f4HelpText;
-    f4Icon.addEventListener("click", () => {
-      const box = document.getElementById("foot4Help");
-      box.style.display = box.style.display === "block" ? "none" : "block";
-    });
-  } else {
-    f4Icon.style.display = "none";
-  }
-
-  // Footnote 5
-  document.getElementById("foot5Label").innerHTML = getString("foot5_label");
-  const f5Icon = document.getElementById("foot5Info");
-  const f5HelpText = getString("foot5_help");
-  if (f5HelpText) {
-    f5Icon.textContent = getString("info_icon");
-    f5Icon.title = f5HelpText;
-    document.getElementById("foot5Help").textContent = f5HelpText;
-    f5Icon.addEventListener("click", () => {
-      const box = document.getElementById("foot5Help");
-      box.style.display = box.style.display === "block" ? "none" : "block";
-    });
-  } else {
-    f5Icon.style.display = "none";
-  }
-
-  // 7) Flow (q)
-  document.getElementById("flowLabel").innerHTML = getString("flow_label");
-  const flowIcon = document.getElementById("flowInfo");
-  const flowHelpText = getString("flow_help");
-  if (flowHelpText) {
-    flowIcon.textContent = getString("info_icon");
-    flowIcon.title = flowHelpText;
-    flowIcon.addEventListener("click", () => {
-      const box = document.getElementById("flowHelp");
-      if (box) box.style.display = box.style.display === "block" ? "none" : "block";
-    });
-  } else {
-    flowIcon.style.display = "none";
-  }
-
-  // 8) Atemp
-  document.getElementById("atempLabel").innerHTML = getString("atemp_label");
-  const aIcon = document.getElementById("atempInfo");
-  const aHelpText = getString("atemp_help");
-  if (aHelpText) {
-    aIcon.textContent = getString("info_icon");
-    aIcon.title = aHelpText;
-    document.getElementById("atempHelp").textContent = aHelpText;
-    aIcon.addEventListener("click", () => {
-      const box = document.getElementById("atempHelp");
-      box.style.display = box.style.display === "block" ? "none" : "block";
-    });
-  } else {
-    aIcon.style.display = "none";
-  }
-
-  // 9) “Energyfaktorer (kW/år):” label
-  document.getElementById("energyTableLabel").textContent = getString("energy_table_label");
-
-  // 10) Permalänk
-  document.getElementById("permalinkLabel").innerHTML = getString("permalink_label");
-  const pIcon = document.getElementById("permalinkInfo");
-  const pHelpText = getString("permalink_help");
-  if (pHelpText) {
-    pIcon.textContent = getString("info_icon");
-    pIcon.title = pHelpText;
-    document.getElementById("permalinkHelp").textContent = pHelpText;
-    pIcon.addEventListener("click", () => {
-      const box = document.getElementById("permalinkHelp");
-      box.style.display = box.style.display === "block" ? "none" : "block";
-    });
-  } else {
-    pIcon.style.display = "none";
-  }
-
-  // 11) Clear & Copy buttons
-  document.getElementById("clearBtn").textContent = getString("clear_button");
-  document.getElementById("copyBtn").textContent  = getString("copy_button");
-
-  // 12) EPpet label + help
-  const printedEPEl = document.getElementById("printedEP");
-  printedEPEl.innerHTML = getString("ep_label");
-  const epIcon = document.getElementById("epInfo");
-  const epHelpText = getString("ep_help");
-  if (epHelpText) {
-    epIcon.textContent = getString("info_icon");
-    epIcon.title = epHelpText;
-    document.getElementById("epHelp").textContent = epHelpText;
-    epIcon.addEventListener("click", () => {
-      const box = document.getElementById("epHelp");
-      box.style.display = box.style.display === "block" ? "none" : "block";
-    });
-  } else {
-    epIcon.style.display = "none";
+    footnoteBox.style.display   = "none";
+    flowContainer.style.display = "none";
   }
 }
 
-// =====================
-// DYNAMIC TABLE CREATION
-// =====================
-function getTableoptions() {
-  const geoSelect = document.getElementById("geography");
-  if (!geoSelect) return;
-  geoSelect.innerHTML = "";
-  locations.forEach((loc) => {
-    const opt = document.createElement("option");
-    opt.value = loc.name;
-    opt.textContent = loc.name;
-    geoSelect.appendChild(opt);
-  });
+
+//Connect to energy.js and display output, and build the perma link
+function calculate() {
+	const locObj = locations.find(l=>l.name===geo.value);
+	const htNum  = HouseType[type.value];
+	const atv    = parseInt(at.value,10)||0;
+	const fv     = parseFloat(fl.value)||0;
+	const h      = new House(htNum, atv, locObj);
+	h.flow = fv; h.qavg = fv;
+	h.foot2 = f2.checked; h.foot3 = f3.checked;
+	h.foot4 = f4.checked; h.foot5 = f5.checked;
+
+
+
+	for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
+		h.E.heat[i] = parseFloat( window.heatEls[i]?.value ) || 0;
+		h.E.cool[i] = parseFloat( window.coolEls[i]?.value ) || 0;
+		h.E.watr[i] = parseFloat( window.watrEls[i]?.value ) || 0;
+		h.E.fast[i] = parseFloat( window.fastEls[i]?.value ) || 0;
+	}
+
+	const epv = EPpet(h) | 0;
+	const lim = limit(h);
+
+	if (epv > lim.EP) {
+		outEP.innerHTML = `${getString("ep_label")} ${epv} <span class="warning-icon" title="${getString("warning_tooltip")}">⚠</span>`;
+	} else {
+		outEP.innerHTML = `${getString("ep_label")} ${epv}`;
+	}
+
+
+	// --- populate limits table ---
+	let epLimitDisp = (lim.EP === 9999) ? getString("no_requirement") : lim.EP.toFixed(1);
+	let elLimitDisp = (lim.EL === 9999) ? getString("no_requirement") : lim.EL.toFixed(1);
+	let umLimitDisp = lim.UM.toFixed(2);
+
+	// LL: dash + toggle if -1, else the number
+	let llCellHtml;
+	if (lim.LL === -1) {
+		llCellHtml = `– <span class="info-icon" id="llIcon">${getString("info_icon")}</span>`;
+	} else {
+		llCellHtml = lim.LL.toFixed(2);
+	}
+
+	limitsTable.innerHTML = `
+  <tr><th>${getString("limit_ep")}</th><td>${epLimitDisp}</td></tr>
+  <tr><th>${getString("limit_el")}</th><td>${elLimitDisp}</td></tr>
+  <tr><th>${getString("limit_um")}</th><td>${umLimitDisp}</td></tr>
+  <tr><th>${getString("limit_ll")}</th><td>${llCellHtml}</td></tr>
+`;
+
+	// If LL was –1, hook up the help-box toggle
+	if (lim.LL === -1) {
+		// remove old help-box if present
+		const old = document.getElementById("limitLLHelp");
+		if (old) old.remove();
+
+		// insert new help-box right after the table
+		const helpDiv = document.createElement("div");
+		helpDiv.id = "limitLLHelp";
+		helpDiv.className = "help-box";
+		helpDiv.style.marginTop = "0.5rem";
+		helpDiv.innerHTML = getString("limit_ll_help");
+		limitsTable.parentNode.insertBefore(helpDiv, limitsTable.nextSibling);
+
+		// toggle visibility when “?” clicked
+		document.getElementById("llIcon").addEventListener("click", () => {
+			const hb = document.getElementById("limitLLHelp");
+			hb.style.display = hb.style.display === "block" ? "none" : "block";
+		});
+	}
+	// --- end populate limits table ---
+
+	// Build permalink
+	const ps = new URLSearchParams();
+	ps.set("geography",geo.value);
+	ps.set("housetype",type.value);
+	ps.set("atemp",atv);
+	if(!isNaN(fv))ps.set("flow",fv);
+	if(f2.checked)ps.set("foot2","1");
+	if(f3.checked)ps.set("foot3","1");
+	if(f4.checked)ps.set("foot4","1");
+	if(f5.checked)ps.set("foot5","1");
+	for (let i=0;i<EType.E_TYPE_COUNT;i++){
+		if(h.E.heat[i])ps.set(`heat${i}`, h.E.heat[i]);
+		if(h.E.cool[i])ps.set(`cool${i}`, h.E.cool[i]);
+		if(h.E.watr[i])ps.set(`watr${i}`, h.E.watr[i]);
+		if(h.E.fast[i])ps.set(`fast${i}`, h.E.fast[i]);
+	}
+	document.getElementById("permalink").value = window.location.pathname + "?" + ps;
+	return epv;
 }
 
-function getEnergyTable() {
-  const table = document.getElementById("energyTable");
-  if (!table) return;
-  table.innerHTML = "";
 
-  // Header row
-  const thead = document.createElement("thead");
-  const headerRow = document.createElement("tr");
-  const cornerTh = document.createElement("th");
-  cornerTh.textContent = ""; // blank corner cell
-  headerRow.appendChild(cornerTh);
 
-  // Column headers from energy.js → E_name[]
-  for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
-    const th = document.createElement("th");
-    th.textContent = E_name[i];
-    headerRow.appendChild(th);
-  }
-  thead.appendChild(headerRow);
-  table.appendChild(thead);
 
-  // Body rows
-  const tbody = document.createElement("tbody");
-  const measures = [
-    { key: "heat",  labelKey: "energy_row_heat", helpKey: "energy_row_heat_help" },
-    { key: "cool",  labelKey: "energy_row_cool", helpKey: "energy_row_cool_help" },
-    { key: "watr",  labelKey: "energy_row_watr", helpKey: "energy_row_watr_help" },
-    { key: "fast",  labelKey: "energy_row_fast", helpKey: "energy_row_fast_help" }
-  ];
 
-  window.heatEls = {};
-  window.coolEls = {};
-  window.watrEls = {};
-  window.fastEls = {};
 
-  measures.forEach((meas) => {
-    const tr = document.createElement("tr");
+// 
+function prefillFromURL() {
+	const params = new URLSearchParams(window.location.search);
 
-    // Label cell + optional “?” icon if help exists
-    const labelTd = document.createElement("td");
-    labelTd.textContent = getString(meas.labelKey);
-    const rowHelpText = getString(meas.helpKey);
+	geo.value = params.get("geography") || "Åland";
+	type.value = params.get("housetype") || "SMALL";
+	at.value = params.get("atemp") || "";
+	fl.value = params.get("flow") || "";
 
-      if (rowHelpText) {
-        const icon = document.createElement("span");
-        icon.className = "info-icon";
-        icon.textContent = getString("info_icon");
-        icon.title = rowHelpText;
+	// foot2–foot5 checkboxes: default false if no "1"
+	[f2, f3, f4, f5].forEach((el, idx) => { el.checked = params.get(`foot${idx + 2}`) === "1"; });
 
-        icon.addEventListener("click", () => {
-          const helpBox = document.getElementById("energyRowHelpBox");
-          // If it’s already visible and showing the same text, hide it:
-          if (helpBox.style.display === "block" && helpBox.innerHTML === rowHelpText) {
-            helpBox.style.display = "none";
-          } else {
-            // Otherwise, update and show
-            helpBox.innerHTML = rowHelpText;
-            helpBox.style.display = "block";
-          }
-        });
-
-        labelTd.appendChild(icon);
-      }
-    tr.appendChild(labelTd);
-
-    // One <input> per energy source
-    for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
-      const td = document.createElement("td");
-      const input = document.createElement("input");
-      input.type = "number";
-      input.step = "any";
-      const sourceKey = E_name[i].toLowerCase().replace(/\s+/g, "_");
-      input.id   = `${meas.key}-${sourceKey}`;
-      input.name = input.id;
-
-      // If this (measure, source) is in LOCKED_COMBINATIONS, disable:
-      for (const lock of LOCKED_COMBINATIONS) {
-        if (lock.measureKey === meas.key && lock.sourceIndex === i) {
-          input.disabled = true;
-        }
-      }
-
-      td.appendChild(input);
-      tr.appendChild(td);
-
-      if (meas.key === "heat")  window.heatEls[i] = input;
-      if (meas.key === "cool")  window.coolEls[i] = input;
-      if (meas.key === "watr")  window.watrEls[i] = input;
-      if (meas.key === "fast")  window.fastEls[i] = input;
-    }
-
-    tbody.appendChild(tr);
-  });
-
-  table.appendChild(tbody);
+	// energy inputs: heat0, heat1, … cool0, … etc.
+	["heat","cool","watr","fast"].forEach(key => {
+		for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
+			const paramName = `${key}${i}`;
+			const val = params.get(paramName);
+			// build the same id you used in getEnergyTable()
+			const id = `${key}-${E_name[i].toLowerCase().replace(/\s+/g,"_")}`;
+			const inp = document.getElementById(id);
+			if (!inp) continue;
+			inp.value = val !== null ? val : "";
+		}
+	});
 }
 
-// =====================
-// MAIN LOGIC & EVENT BINDING
-// =====================
-document.addEventListener("DOMContentLoaded", () => {
-  // 1) Apply all strings
-  applyStrings();
 
-  // 2) Build geography dropdown + energy table
-  getTableoptions();
-  getEnergyTable();
 
-  // 3) Grab references
-  const houseTypeEl   = document.getElementById("housetype");
-  const footnoteBox   = document.getElementById("footnoteBox");
-  const foot4El       = document.getElementById("foot4");
-  const foot5El       = document.getElementById("foot5");
-  const flowEl        = document.getElementById("flow");
+function main(){
+	detectLang()
+	applyLanguage();
 
-  const geoHelpBox    = document.getElementById("geoHelp");
-  const typeHelpBox   = document.getElementById("typeHelp");
-  const foot4HelpBox  = document.getElementById("foot4Help");
-  const foot5HelpBox  = document.getElementById("foot5Help");
-  const atempHelpBox  = document.getElementById("atempHelp");
-  const permalinkHelpBox = document.getElementById("permalinkHelp");
-  const epHelpBox     = document.getElementById("epHelp");
+	loadGeograpgy();
+	loadEnergyTable();
 
-  // 4) Show/hide footnotes on housetype change
-  houseTypeEl.addEventListener("change", () => {
-    if (houseTypeEl.value === "MULTI") {
-      footnoteBox.style.display = "block";
-    } else {
-      footnoteBox.style.display = "none";
-      foot4El.checked = false;
-      foot5El.checked = false;
-      flowEl.value = "";
-      if (foot4HelpBox)  foot4HelpBox.style.display  = "none";
-      if (foot5HelpBox)  foot5HelpBox.style.display  = "none";
-    }
-  });
+	prefillFromURL();
 
-  // 5) Other form references
-  const geographyEl   = document.getElementById("geography");
-  const atempEl       = document.getElementById("atemp");
-  const permalinkEl   = document.getElementById("permalink");
-  const printedEPEl   = document.getElementById("printedEP");
-  const limitsTableEl = document.getElementById("limitsTable");
-  const clearBtn      = document.getElementById("clearBtn");
-  const copyBtn       = document.getElementById("copyBtn");
-  const printBtn      = document.getElementById("printBtn");
-  const formEl        = document.getElementById("houseForm");
+	registerListeners();
 
-  // 6) Main calculate() function
-  function calculate() {
-    const locName = geographyEl.value;
-    const locationObj = locations.find(loc => loc.name === locName);
+	updateFootnotes();
+	calculate();
+}
 
-    const typeStr = houseTypeEl.value;
-    const typeNum = HouseType[typeStr];
-
-    const atemp = parseInt(atempEl.value, 10) || 0;
-    let flowVal = parseFloat(flowEl.value) || 0;
-    const qavg   = parseFloat(flowEl.value) || 0;
-
-    const f4 = foot4El.checked;
-    const f5 = foot5El.checked;
-
-    // Build the House object
-    const h = new House(typeNum, atemp, locationObj);
-    h.flow   = flowVal;
-    h.qavg   = qavg;
-    h.foot4  = f4;
-    h.foot5  = f5;
-
-    // Read energy inputs
-    for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
-      h.E.heat[i] = parseFloat(heatEls[i].value) || 0;
-      h.E.cool[i] = parseFloat(coolEls[i].value) || 0;
-      h.E.watr[i] = parseFloat(watrEls[i].value) || 0;
-      h.E.fast[i] = parseFloat(fastEls[i].value) || 0;
-    }
-
-    // 7) Compute EPpet and limits
-    const ep = EPpet(h);
-    const lim = limit(h);
-
-    // 8) Display EPpet (with warning if > limit)
-    if (ep > lim.EP) {
-      printedEPEl.innerHTML = `${getString("ep_label")} ${ep} <span class="warning-icon" title="${getString("warning_tooltip")}">⚠</span>`;
-    } else {
-      printedEPEl.innerHTML = `${getString("ep_label")} ${ep}`;
-    }
-
-    // 9) Populate Limits table.
-    let epLimitDisp = (lim.EP === 9999) ? getString("no_requirement") : lim.EP.toFixed(1);
-    let elLimitDisp = (lim.EL === 9999) ? getString("no_requirement") : lim.EL.toFixed(1);
-    let umLimitDisp = lim.UM.toFixed(2);
-
-    let llCellHtml;
-    if (lim.LL === -1) {
-      // Show a dash “–” with a “?” icon
-      llCellHtml = `– <span class="info-icon" id="llIcon">${getString("info_icon")}</span>`;
-    } else {
-      llCellHtml = lim.LL.toFixed(2);
-    }
-
-    limitsTableEl.innerHTML = `
-      <tr><th>${getString("limit_ep")}</th><td>${epLimitDisp}</td></tr>
-      <tr><th>${getString("limit_el")}</th><td>${elLimitDisp}</td></tr>
-      <tr><th>${getString("limit_um")}</th><td>${umLimitDisp}</td></tr>
-      <tr><th>${getString("limit_ll")}</th><td>${llCellHtml}</td></tr>
-    `;
-
-    if (lim.LL === -1) {
-      // Insert (or re‐insert) the hidden help‐box right below the limits table
-      let existing = document.getElementById("limitLLHelp");
-      if (existing) existing.remove();
-      const helpDiv = document.createElement("div");
-      helpDiv.id = "limitLLHelp";
-      helpDiv.className = "help-box";
-      helpDiv.style.marginTop = "0.5rem";
-      helpDiv.style.marginBottom = "0.5rem";
-      helpDiv.innerHTML = getString("limit_ll_help");
-      limitsTableEl.parentNode.insertBefore(helpDiv, limitsTableEl.nextSibling);
-
-      // Attach click on #llIcon to toggle that box
-      const llIcon = document.getElementById("llIcon");
-      llIcon.addEventListener("click", () => {
-        const box = document.getElementById("limitLLHelp");
-        box.style.display = box.style.display === "block" ? "none" : "block";
-      });
-    }
-
-    // 10) Build Permalink (do NOT auto‐append &lang=; user can add that manually)
-    const params = new URLSearchParams();
-    params.set("geography", locName);
-    params.set("housetype", typeStr);
-    params.set("atemp", atemp);
-    if (!isNaN(flowVal)) params.set("flow", flowVal);
-    if (f4) params.set("foot4", "1");
-    if (f5) params.set("foot5", "1");
-    for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
-      if (h.E.heat[i] !== 0)  params.set(`heat${i}`,  h.E.heat[i]);
-      if (h.E.cool[i] !== 0)  params.set(`cool${i}`,  h.E.cool[i]);
-      if (h.E.watr[i] !== 0)  params.set(`watr${i}`,  h.E.watr[i]);
-      if (h.E.fast[i] !== 0)  params.set(`fast${i}`,  h.E.fast[i]);
-    }
-    const base = window.location.pathname + "?" + params.toString();
-    permalinkEl.value = base;
-  }
-
-  // 11) Auto‐calculate on any input change
-  formEl.addEventListener("input", calculate);
-
-  // 12) Pre‐populate form from URL on load
-  const qs = new URLSearchParams(window.location.search);
-  if (qs.has("geography")) {
-    geographyEl.value = qs.get("geography");
-  }
-  if (qs.has("housetype")) {
-    houseTypeEl.value = qs.get("housetype");
-    houseTypeEl.dispatchEvent(new Event("change"));
-  }
-  if (qs.has("atemp")) {
-    atempEl.value = qs.get("atemp");
-  }
-  if (qs.has("flow")) {
-    flowEl.value = qs.get("flow");
-  }
-  if (qs.has("foot4")) {
-    foot4El.checked = qs.get("foot4") === "1";
-  }
-  if (qs.has("foot5")) {
-    foot5El.checked = qs.get("foot5") === "1";
-  }
-  for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
-    if (qs.has(`heat${i}`)) {
-      heatEls[i].value = qs.get(`heat${i}`);
-    }
-    if (qs.has(`cool${i}`)) {
-      coolEls[i].value = qs.get(`cool${i}`);
-    }
-    if (qs.has(`watr${i}`)) {
-      watrEls[i].value = qs.get(`watr${i}`);
-    }
-    if (qs.has(`fast${i}`)) {
-      fastEls[i].value = qs.get(`fast${i}`);
-    }
-  }
-  if ([...qs.keys()].length > 0) {
-    calculate();
-  }
-
-  // 13) Clear button resets everything
-  clearBtn.addEventListener("click", () => {
-    formEl.reset();
-    footnoteBox.style.display    = "none";
-    geoHelpBox.style.display     = "none";
-    typeHelpBox.style.display    = "none";
-    if (foot4HelpBox)  foot4HelpBox.style.display   = "none";
-    if (foot5HelpBox)  foot5HelpBox.style.display   = "none";
-    if (atempHelpBox)  atempHelpBox.style.display   = "none";
-    if (permalinkHelpBox) permalinkHelpBox.style.display = "none";
-    if (epHelpBox)    epHelpBox.style.display       = "none";
-    document.getElementById("energyTable").querySelectorAll("input").forEach(inp => inp.value = "");
-    printedEPEl.textContent = "";
-    limitsTableEl.innerHTML = "";
-    // remove any existing limitLLHelp
-    let existing = document.getElementById("limitLLHelp");
-    if (existing) existing.remove();
-    permalinkEl.value = "";
-    window.history.replaceState(null, "", window.location.pathname);
-  });
-
-  // 14) Copy button: copy permalink to clipboard
-  copyBtn.addEventListener("click", () => {
-    permalinkEl.select();
-    permalinkEl.setSelectionRange(0, Infinity);
-    try {
-      document.execCommand("copy");
-      copyBtn.textContent = getString("copy_button") + " ✔";
-      setTimeout(() => {
-        copyBtn.textContent = getString("copy_button");
-      }, 1500);
-    } catch (err) {
-      alert("Could not copy to clipboard");
-    }
-  });
-
-  // 15) Print button
-
-  printBtn.addEventListener("click", () => {
-    const locName    = geographyEl.value;
-    const locationObj = locations.find(loc => loc.name === locName);
-
-    const typeStr  = houseTypeEl.value;      // "SMALL" / "MULTI" / "LOCAL"
-    const typeNum  = HouseType[typeStr];     // convert string → enum index
-
-    const atempVal = parseInt(atempEl.value, 10) || 0;
-    const flowVal  = parseFloat(flowEl.value)   || 0;
-    const qavgVal  = parseFloat(flowEl.value)   || 0;
-
-    const f4       = foot4El.checked;
-    const f5       = foot5El.checked;
-
-    // Build a temporary House instance
-    const tempHouse = new House(typeNum, atempVal, locationObj);
-    tempHouse.flow  = flowVal;
-    tempHouse.qavg  = qavgVal;
-    tempHouse.foot4 = f4;
-    tempHouse.foot5 = f5;
-
-    // Read energy‐use inputs into tempHouse.E arrays
-    for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
-      tempHouse.E.heat[i] = parseFloat(heatEls[i].value) || 0;
-      tempHouse.E.cool[i] = parseFloat(coolEls[i].value) || 0;
-      tempHouse.E.watr[i] = parseFloat(watrEls[i].value) || 0;
-      tempHouse.E.fast[i] = parseFloat(fastEls[i].value) || 0;
-    }
-
-    // Compute EPpet:
-    const epVal = EPpet(tempHouse);
-
-    // Redirect to the print page, passing epVal & housetype
-    const printUrl = `energyprint.html?ep=${epVal}&housetype=${typeStr}`;
-    window.location.href = printUrl;
-  });
-
-  // 16) Language switcher buttons
-  document.querySelectorAll(".lang-button").forEach(btn => {
-    btn.addEventListener("click", () => {
-      // Use the permalink if it exists; otherwise, fallback to current URL
-      const permalinkVal = document.getElementById("permalink").value;
-      let baseUrl;
-      if (permalinkVal) {
-        // If permalink begins with “/…?”, keep everything after the “?”
-        const questionIdx = permalinkVal.indexOf("?");
-        if (questionIdx >= 0) {
-          baseUrl = permalinkVal.substring(0, questionIdx + 1);
-          const qsExisting = permalinkVal.substring(questionIdx + 1);
-          const params = new URLSearchParams(qsExisting);
-          params.set("lang", btn.dataset.lang);
-          window.location.href = baseUrl + params.toString();
-          return;
-        } else {
-          // No “?” found, just use it and add lang param
-          window.location.href = permalinkVal + "?lang=" + btn.dataset.lang;
-          return;
-        }
-      }
-      // Fallback: if no permalink yet, preserve existing form‐ derived URL params
-      const currentParams = new URLSearchParams(window.location.search);
-      currentParams.set("lang", btn.dataset.lang);
-      const newUrl = window.location.pathname + "?" + currentParams.toString();
-      window.location.href = newUrl;
-    });
-  });
-});
+document.addEventListener("DOMContentLoaded", main);
