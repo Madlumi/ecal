@@ -8,62 +8,50 @@
 #define D         double
 #define R         return
 
+typedef struct {
+    char name[256];
+    D    factor;
+} EntryD;
+
 typedef enum {
     SMALL,
     MULTI,
     LOCAL,
     HOUSE_TYPE_COUNT
 } HouseType;
+const char *HouseType_name[HOUSE_TYPE_COUNT] = {
+    [SMALL] = "SMALL",
+    [MULTI] = "MULTI",
+    [LOCAL] = "LOCAL"
+};
 //============================
 //=Energy sources=============
 //============================
+
 typedef enum {
-    ELECTRIC,
-    FJARRVARME,
-    FJARRKYLA,
-    BIOBRANSLE,
-    FOSSIL_OLJA,
-    FOSSIL_GAS,
-    E_TYPE_COUNT
+	    ELECTRIC,
+	        FJARRVARME,
+		    FJARRKYLA,
+		        BIOBRANSLE,
+			    FOSSIL_OLJA,
+			        FOSSIL_GAS,
+				    E_TYPE_COUNT
 } EType;
 
-const D E_wght[E_TYPE_COUNT] = {
-    [ELECTRIC]    = 1.8,
-    [FJARRVARME]  = 0.7,
-    [FJARRKYLA]   = 0.6,
-    [BIOBRANSLE]  = 0.6,
-    [FOSSIL_OLJA] = 1.8,
-    [FOSSIL_GAS]  = 1.8
+static const EntryD E_types[E_TYPE_COUNT] = {
+	[ELECTRIC]    = { "El",          1.8 },
+	[FJARRVARME]  = { "Fjärrvärme",  0.7 },
+	[FJARRKYLA]   = { "Fjärrkyla",   0.6 },
+	[BIOBRANSLE]  = { "Biobränslen", 0.6 },
+	[FOSSIL_OLJA] = { "Fossil olja", 1.8 },
+	[FOSSIL_GAS]  = { "Fossil gas",  1.8 }
 };
 
-const char *E_name[E_TYPE_COUNT] = {
-    [ELECTRIC]    = "El",
-    [FJARRVARME]  = "Fjärrvärme",
-    [FJARRKYLA]   = "Fjärrkyla",
-    [BIOBRANSLE]  = "Biobränslen",
-    [FOSSIL_OLJA] = "Fossil olja",
-    [FOSSIL_GAS]  = "Fossil gas"
-};
-
-//============================
-//=Location===================
-//============================
-
-typedef struct {
-    char name[256];
-    D    factor;
-} EntryD;
 
 static const Location locations[] = {
     { "Åland",   1.1 },
     { "none", 1.0 },
 };
-
-//============================
-//=Location===================
-//============================
-
-
 static const EntryD tvvFactors[] = {
     { .name = "Fjärrvärme",                           .factor = 1.00 },
     { .name = "El, direktverkande och elpanna",       .factor = 1.00 },
@@ -75,22 +63,15 @@ static const EntryD tvvFactors[] = {
     { .name = "Gaspanna",                             .factor = 0.90 }
 };
 const double TvvMult[HOUSE_TYPE_COUNT] = {
-    [SMALL] = 20
-    [MULTI] = 25
-    [LOCAL] = 2
+    [SMALL] = 20,
+    [MULTI] = 25,
+    [LOCAL] = 2,
 };
 
 //Tvv=TvvMult[]*atemp/tvvFactors[].factor 
-
-//============================
-//=House Type=================
-//============================
-
-const char *HouseType_name[HOUSE_TYPE_COUNT] = {
-    [SMALL] = "SMALL",
-    [MULTI] = "MULTI",
-    [LOCAL] = "LOCAL"
-};
+D Tvv(House H){
+	R  TvvMult[H.type]*atemp/H.tvvSrc.factor;
+}
 
 
 
@@ -115,8 +96,11 @@ typedef struct {
     const Location *L;         // Location pointer
     D              flow;       // Instantaneous airflow (q) [l/s·m²]
     D              qavg;       // Average airflow (q_medel) [l/s·m²]
+
     I              foot4;      // Footnote-4 flag
     I              foot5;      // Footnote-5 flag
+    EntryD 	   tvvSrc;
+
 } House;
 
 //============================
@@ -238,7 +222,7 @@ I EPpet(const House *h) {
              + h->E.cool[i]
              + h->E.watr[i]
              + h->E.fast[i])
-            * (E_wght[i] / Atemp)
+	    * (E_types[i].factor / Atemp)
         );
     }
     R (I)total;
@@ -315,24 +299,25 @@ void printHouse(const House *h) {
     printf("Flow (q): %.2f   qavg (q_medel): %.2f\n", h->flow, h->qavg);
     printf("Foot4: %s   Foot5: %s\n",
            h->foot4 ? "Yes" : "No",
-           h->foot5 ? "Yes" : "No");
+	   h->foot5 ? "Yes" : "No");
 
     printf("Energy use:\n");
     for (I i = 0; i < E_TYPE_COUNT; i++) {
-        if (h->E.heat[i] != 0.0)
-            printf("  %s heat: %.1f  ", E_name[i], h->E.heat[i]);
-        if (h->E.cool[i] != 0.0)
-            printf("  %s cool: %.1f  ", E_name[i], h->E.cool[i]);
-        if (h->E.watr[i] != 0.0)
-            printf("  %s watr: %.1f  ", E_name[i], h->E.watr[i]);
-        if (h->E.fast[i] != 0.0)
-            printf("  %s fast: %.1f  ", E_name[i], h->E.fast[i]);
-        if (h->E.heat[i] != 0.0 ||
-            h->E.cool[i] != 0.0 ||
-            h->E.watr[i] != 0.0 ||
-            h->E.fast[i] != 0.0)
-            printf("\n");
+	    if (h->E.heat[i] != 0.0)
+		    printf("  %s heat: %.1f  ", E_types[i].name, h->E.heat[i]);
+	    if (h->E.cool[i] != 0.0)
+		    printf("  %s cool: %.1f  ", E_types[i].name, h->E.cool[i]);
+	    if (h->E.watr[i] != 0.0)
+		    printf("  %s watr: %.1f  ", E_types[i].name, h->E.watr[i]);
+	    if (h->E.fast[i] != 0.0)
+		    printf("  %s fast: %.1f  ", E_types[i].name, h->E.fast[i]);
+	    if (h->E.heat[i] != 0.0 ||
+			    h->E.cool[i] != 0.0 ||
+			    h->E.watr[i] != 0.0 ||
+			    h->E.fast[i] != 0.0)
+		    printf("\n");
     }
+
 
     I ep = EPpet(h);
     printf("Calculated EP: %d\n", ep);
@@ -341,13 +326,4 @@ void printHouse(const House *h) {
     printf("Limits → EP: %.1f, EL: %.1f, UM: %.2f, LL: %.2f\n",
            lim.EP, lim.EL, lim.UM, lim.LL);
 }
-
-//============================
-//=PDF Stub===================
-//============================
-void toPDF(I Ep) {
-    // (stub)
-    printf("EPpet (PDF output stub) = %d\n", Ep);
-}
-
 
