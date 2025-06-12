@@ -48,7 +48,7 @@ For any key `x`, a “?” help icon will be shown **if and only if** all of the
 |--------------------|----------------------------------------------------------------|
 | `energy.html`      | Main webpage for user interaction                               |
 | `energyprint.html` | A page to print out energy certificate thingie      |
-| `energy.js`        | Core calculation logic, (transpiled from energy.c using gippy) |
+| `energy.js`        | Core calculation logic, (transpiled from dev/energy.c using gippy) |
 | `glue.js`          | Controls the DOM and ui. |
 | `strings.js`       | User facing strings and translations           |
 | `style.css`        |                                                                  |
