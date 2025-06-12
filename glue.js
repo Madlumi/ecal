@@ -176,7 +176,7 @@ function applyLanguage() {
 // =====================
 // Populate elements
 // =====================
-function loadGeograpgy() {
+function loadGeography() {
 	const sel = document.getElementById("geography");
 	sel.innerHTML = "";
 	locations.forEach(loc => { sel.add(new Option(loc.name, loc.name)); });
@@ -397,7 +397,7 @@ function main(){
 	detectLang()
 	applyLanguage();
 
-	loadGeograpgy();
+    loadGeography();
 	loadEnergyTable();
 
 	prefillFromURL();
