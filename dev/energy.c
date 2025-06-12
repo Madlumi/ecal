@@ -8,6 +8,12 @@
 #define D         double
 #define R         return
 
+typedef enum {
+    SMALL,
+    MULTI,
+    LOCAL,
+    HOUSE_TYPE_COUNT
+} HouseType;
 //============================
 //=Energy sources=============
 //============================
@@ -42,43 +48,43 @@ const char *E_name[E_TYPE_COUNT] = {
 //============================
 //=Location===================
 //============================
-typedef struct {
-    char name[256];
-    D    F_geo;
-} Location;
 
 typedef struct {
     char name[256];
     D    factor;
 } EntryD;
 
-//todo convert to EntryD
 static const Location locations[] = {
     { "Åland",   1.1 },
     { "none", 1.0 },
 };
 
-//format
-static const TvvFactors EntryD[] = {
-    Fjärrvärme 1,0
-    El, direktverkande och elpanna 1,0
-    El, frånluftsvärmepump 1,7
-    El, uteluft-vattenvärmepump 2,0
-    El, markvärmepump (berg, mark, sjö) 2,5
-    Biobränslepanna (pellets, ved, flis m.m.) 0,75
-    Olja 0,85
-    Gaspanna 0,9
+//============================
+//=Location===================
+//============================
+
+
+static const EntryD tvvFactors[] = {
+    { .name = "Fjärrvärme",                           .factor = 1.00 },
+    { .name = "El, direktverkande och elpanna",       .factor = 1.00 },
+    { .name = "El, frånluftsvärmepump",               .factor = 1.70 },
+    { .name = "El, uteluft-vattenvärmepump",          .factor = 2.00 },
+    { .name = "El, markvärmepump (berg, mark, sjö)",  .factor = 2.50 },
+    { .name = "Biobränslepanna (pellets, ved, flis m.m.)", .factor = 0.75 },
+    { .name = "Olja",                                 .factor = 0.85 },
+    { .name = "Gaspanna",                             .factor = 0.90 }
 };
+const double TvvMult[HOUSE_TYPE_COUNT] = {
+    [SMALL] = 20
+    [MULTI] = 25
+    [LOCAL] = 2
+};
+
+//Tvv=TvvMult[]*atemp/tvvFactors[].factor 
 
 //============================
 //=House Type=================
 //============================
-typedef enum {
-    SMALL,
-    MULTI,
-    LOCAL,
-    HOUSE_TYPE_COUNT
-} HouseType;
 
 const char *HouseType_name[HOUSE_TYPE_COUNT] = {
     [SMALL] = "SMALL",
@@ -86,17 +92,8 @@ const char *HouseType_name[HOUSE_TYPE_COUNT] = {
     [LOCAL] = "LOCAL"
 };
 
-static const Location locations[] = {
-    { "Åland",   1.1 },
-    { "none", 1.0 },
-};
 
 
-const double TvvMult[HOUSE_TYPE_COUNT] = {
-    [SMALL] = 20
-    [MULTI] = 25
-    [LOCAL] = 2
-};
 
 //============================
 //=Energy Use=================
