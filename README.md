@@ -57,9 +57,9 @@ Run the automated tests by opening `tests.html` in a browser.
 | `energy.js`        | Core calculation logic, (transpiled from ´dev/energy.c´ using gippy) |
 | `glue.js`          | Controls the DOM and ui. |
 | `strings.js`       | User facing strings and translations           |
-| `style.css`        |                                                                  |
+| `style.css`        |     css                                                             |
 | `dev/`      | marginally useful files for developement|
-| `tests.js/html`      |  test files |
+| `tests.html`      |  test file(not very good) |
 
 
 ---
