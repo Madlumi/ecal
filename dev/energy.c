@@ -119,9 +119,12 @@ typedef struct {
         D              flow;       // Instantaneous airflow (q) [l/s·m²]
         D              qavg;       // Average airflow (q_medel) [l/s·m²]
 
-	I              foot4;      // Footnote-4 flag
-	I              foot5;      // Footnote-5 flag
         TvvEntry     tvvSrc;
+
+        I              foot2;      // Footnote-2 flag
+        I              foot3;      // Footnote-3 flag
+        I              foot4;      // Footnote-4 flag
+        I              foot5;      // Footnote-5 flag
 
 } House;
 
@@ -208,13 +211,16 @@ House newHouse(HouseType type, I atemp, const Location *L, const TvvEntry *tvvSr
 	h.Atemp  = atemp;
 	memset(&h.E, 0, sizeof(Energy));
 	h.L      = L;
+
 	h.flow   = 0.0;
 	h.qavg   = 0.0;
-	h.foot4  = 0;
+	h.foot4  = 0;  h.foot2  = 0;
+        h.foot3  = 0;
 	h.foot5  = 0;
         h.tvvSrc = *tvvSrc;
         h.E.watr[tvvSrc->etype] = Tvv(h);
         R h;
+
 }
 
 //============================
@@ -301,20 +307,22 @@ LimitVals limit(const House *h) {
 			l.LL = seSec;
 		}
 	}
-	ef (h->type == LOCAL) {
-		if (atemp > 50) {
-			l.EP = 70.0 + ep2(qavg);
-			l.EL = elBase(F_geo) + el1(F_geo, atemp) + el3(F_geo, flow, atemp);
-			l.UM = 0.50;
-			l.LL = seSec;
-		}
-		ef (atemp >= 0) {
-			l.EP = NoReq;
-			l.EL = NoReq;
-			l.UM = 0.33;
-			l.LL = 0.60;
-		}
-	}
+        ef (h->type == LOCAL) {
+                if (atemp > 50) {
+                        D ep_add = h->foot2 ? ep2(qavg) : 0.0;
+                        D el_add = h->foot3 ? el3(F_geo, flow, atemp) : 0.0;
+                        l.EP = 70.0 + ep_add;
+                        l.EL = elBase(F_geo) + el1(F_geo, atemp) + el_add;
+                        l.UM = 0.50;
+                        l.LL = seSec;
+                }
+                ef (atemp >= 0) {
+                        l.EP = NoReq;
+                        l.EL = NoReq;
+                        l.UM = 0.33;
+                        l.LL = 0.60;
+                }
+        }
 	R l;
 }
 
@@ -325,10 +333,12 @@ void printHouse(const House *h) {
 	printf("House type: %s\n", HouseType_name[h->type]);
 	printf("Atemp: %d m²\n", h->Atemp);
 	printf("location: %s (F_geo = %.2f)\n", h->L->name, h->L->F_geo);
-	printf("Flow (q): %.2f   qavg (q_medel): %.2f\n", h->flow, h->qavg);
-	printf("Foot4: %s   Foot5: %s\n",
-			h->foot4 ? "Yes" : "No",
-			h->foot5 ? "Yes" : "No");
+        printf("Flow (q): %.2f   qavg (q_medel): %.2f\n", h->flow, h->qavg);
+        printf("Foot2: %s   Foot3: %s   Foot4: %s   Foot5: %s\n",
+                        h->foot2 ? "Yes" : "No",
+                        h->foot3 ? "Yes" : "No",
+                        h->foot4 ? "Yes" : "No",
+                        h->foot5 ? "Yes" : "No");
 
 	printf("Energy use:\n");
 	for (I i = 0; i < E_TYPE_COUNT; i++) {
