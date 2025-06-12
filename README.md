@@ -3,6 +3,9 @@
 
 Calculates EPpet, in accordance with   Landskapsförordning (2015:5) om Ålands byggbestämmelsesamling
 
+Demo hosted at: [https://madlumi.github.io/ecal/energy.html](https://madlumi.github.io/ecal/energy.html). (This site is updated manually and may lag behind the latest commits.)
+
+
 ---
 
 ## Usage
