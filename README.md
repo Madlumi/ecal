@@ -63,3 +63,13 @@ Run the automated tests by opening `tests.html` in a browser.
 
 
 ---
+
+## Screenshots
+
+### Main Interface
+
+![Screenshot of the website](screenshot.png)
+
+### Printed Certificate PDF
+
+![Screenshot of the print output](screenshot_output.png)
