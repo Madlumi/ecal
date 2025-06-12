@@ -7,7 +7,7 @@ Calculates EPpet, in accordance with   Landskapsförordning (2015:5) om Ålands 
 
 ## Usage
 
-just serve the files in your prefered way, all the logic happens client side
+just serve the files in your preferred way, all the logic happens client side
 
 
 ---
@@ -24,7 +24,7 @@ just serve the files in your prefered way, all the logic happens client side
 ## issues
 
 Flerbostadshus, lokal, fotnoter bör dubbelkollas.
-ep limit för class A-G bör dubblekollas
+ep limit för class A-G bör dubbelkollas
 
 css could use some work
 
@@ -47,9 +47,9 @@ For any key `x`, a “?” help icon will be shown **if and only if** all of the
 | Filename           | Description                                                    |
 |--------------------|----------------------------------------------------------------|
 | `energy.html`      | Main webpage for user interaction                               |
-| `energyprint.html` | A page to print out energvy certificate thingie      |
+| `energyprint.html` | A page to print out energy certificate thingie      |
 | `energy.js`        | Core calculation logic, (transpiled from energy.c using gippy) |
-| `glue.js`          | Contols the DOM and ui. |
+| `glue.js`          | Controls the DOM and ui. |
 | `strings.js`       | User facing strings and translations           |
 | `style.css`        |                                                                  |
 
