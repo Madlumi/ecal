@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,6 +13,11 @@
   function log(msg) {
     out.textContent += msg + '\n';
   }
+  const origLog = console.log;
+  console.log = function(...args) {
+    origLog.apply(console, args);
+    log(args.join(' '));
+  };
   function assertStrictEqual(actual, expected, label) {
     if (actual !== expected) {
       throw new Error(label + ': expected ' + expected + ' but got ' + actual);
@@ -25,6 +29,7 @@
 
   try {
     // Case 1: small house with some electric heating and cooling
+    console.log('Case 1');
     const h1 = new House(HouseType.SMALL, 100, locations[1]);
     h1.E.heat[EType.ELECTRIC] = 120;
     h1.E.cool[EType.FJARRKYLA] = 40;
@@ -34,8 +39,10 @@
     assertStrictEqual(round(lim.EL), 4.5, 'EL small house');
     assertStrictEqual(lim.UM, 0.30, 'UM small house');
     assertStrictEqual(lim.LL, -1, 'LL small house');
+    printHouse(h1);
 
     // Case 2: multi dwelling house on Åland with ventilation adjustments
+    console.log('Case 2');
     const h2 = new House(HouseType.MULTI, 200, locations[0]);
     h2.flow = 0.4;
     h2.qavg = 0.4;
@@ -47,8 +54,10 @@
     assertStrictEqual(round(lim.EL), 6.8, 'EL multi house');
     assertStrictEqual(lim.UM, 0.40, 'UM multi house');
     assertStrictEqual(lim.LL, -1, 'LL multi house');
+    printHouse(h2);
 
     // Case 3: local building with footnote adjustments
+    console.log('Case 3');
     const h3 = new House(HouseType.LOCAL, 60, locations[1]);
     h3.qavg = 0.4;
     h3.flow = 0.5;
@@ -60,10 +69,11 @@
     assertStrictEqual(round(lim.EL), 4.698, 'EL local');
     assertStrictEqual(lim.UM, 0.50, 'UM local');
     assertStrictEqual(lim.LL, -1, 'LL local');
+    printHouse(h3);
 
-    log('All tests passed.');
+    console.log('All tests passed.');
   } catch (e) {
-    log('Test failed: ' + e.message);
+    console.log('Test failed: ' + e.message);
     throw e;
   }
 })();
