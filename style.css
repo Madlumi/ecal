@@ -197,10 +197,10 @@ button.copy-btn {
   --page-bg:           #777777;
   --panel-bg:          #eeeeee;
   --border-color:      #cccccc;
-  --header-bg:         #007acc;
+  --header-bg:         #00cc00; /* battery green */
   --header-text:       #ffffff;
   --form-bg:           #fafafa;
-  --hover-bg:          #005a9e;
+  --hover-bg:          #009900;
   --help-bg:           #eef6fc;
   --help-border:       #9999cc;
   --table-bg:          #fafafa;
