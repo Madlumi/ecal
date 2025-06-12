@@ -2,82 +2,129 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Energy tests</title>
+  <title>Energy Calculation Tests</title>
   <script src="energy.js"></script>
+  <style>
+    body { font-family: sans-serif; margin: 1rem; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 1rem; }
+    th, td { border: 1px solid #ccc; padding: 0.4rem; text-align: left; }
+    .pass { color: green; }
+    .fail { color: red; }
+    #log { background: #f9f9f9; padding: 0.5rem; overflow-x: auto; }
+  </style>
 </head>
 <body>
-<pre id="results"></pre>
-<script>
-(function(){
-  const out = document.getElementById('results');
-  function log(msg) {
-    out.textContent += msg + '\n';
-  }
-  const origLog = console.log;
-  console.log = function(...args) {
-    origLog.apply(console, args);
-    log(args.join(' '));
-  };
-  function assertStrictEqual(actual, expected, label) {
-    if (actual !== expected) {
-      throw new Error(label + ': expected ' + expected + ' but got ' + actual);
+  <h1>Energy Calculator Tests</h1>
+  <button id="runTests">Run Tests</button>
+  <div id="summary" style="margin:0.5rem 0;"></div>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Test</th><th>Result</th></tr>
+    </thead>
+    <tbody id="results"></tbody>
+  </table>
+  <pre id="log"></pre>
+  <script>
+    const resultsElem = document.getElementById('results');
+    const logElem = document.getElementById('log');
+    const summaryElem = document.getElementById('summary');
+
+    function log(msg) { logElem.textContent += msg + '\n'; }
+
+    function addRow(name) {
+      const tr = document.createElement('tr');
+      const idxTd = document.createElement('td');
+      idxTd.textContent = resultsElem.children.length + 1;
+      const nameTd = document.createElement('td');
+      nameTd.textContent = name;
+      const resultTd = document.createElement('td');
+      resultTd.textContent = 'pending';
+      tr.appendChild(idxTd);
+      tr.appendChild(nameTd);
+      tr.appendChild(resultTd);
+      resultsElem.appendChild(tr);
+      return resultTd;
     }
-  }
-  function round(x) {
-    return Math.round(x * 1000) / 1000;
-  }
 
-  try {
-    // Case 1: small house with some electric heating and cooling
-    console.log('Case 1');
-    const h1 = new House(HouseType.SMALL, 100, locations[1]);
-    h1.E.heat[EType.ELECTRIC] = 120;
-    h1.E.cool[EType.FJARRKYLA] = 40;
-    assertStrictEqual(EPpet(h1), 2, 'EPpet small house');
-    let lim = limit(h1);
-    assertStrictEqual(lim.EP, 95, 'EP small house');
-    assertStrictEqual(round(lim.EL), 4.5, 'EL small house');
-    assertStrictEqual(lim.UM, 0.30, 'UM small house');
-    assertStrictEqual(lim.LL, -1, 'LL small house');
-    printHouse(h1);
+    function assertEqual(actual, expected, label) {
+      if (actual !== expected) {
+        throw new Error(label + ': expected ' + expected + ' got ' + actual);
+      }
+    }
 
-    // Case 2: multi dwelling house on Åland with ventilation adjustments
-    console.log('Case 2');
-    const h2 = new House(HouseType.MULTI, 200, locations[0]);
-    h2.flow = 0.4;
-    h2.qavg = 0.4;
-    h2.foot4 = true;
-    h2.foot5 = true;
-    assertStrictEqual(EPpet(h2), 0, 'EPpet multi house');
-    lim = limit(h2);
-    assertStrictEqual(lim.EP, 77, 'EP multi house');
-    assertStrictEqual(round(lim.EL), 6.8, 'EL multi house');
-    assertStrictEqual(lim.UM, 0.40, 'UM multi house');
-    assertStrictEqual(lim.LL, -1, 'LL multi house');
-    printHouse(h2);
+    function assertApprox(actual, expected, eps, label) {
+      if (Math.abs(actual - expected) > eps) {
+        throw new Error(label + ': expected ' + expected + ' got ' + actual);
+      }
+    }
 
-    // Case 3: local building with footnote adjustments
-    console.log('Case 3');
-    const h3 = new House(HouseType.LOCAL, 60, locations[1]);
-    h3.qavg = 0.4;
-    h3.flow = 0.5;
-    h3.foot2 = true;
-    h3.foot3 = true;
-    assertStrictEqual(EPpet(h3), 0, 'EPpet local');
-    lim = limit(h3);
-    assertStrictEqual(lim.EP, 72, 'EP local');
-    assertStrictEqual(round(lim.EL), 4.698, 'EL local');
-    assertStrictEqual(lim.UM, 0.50, 'UM local');
-    assertStrictEqual(lim.LL, -1, 'LL local');
-    printHouse(h3);
+    const tests = [
+      function testSmallHouse() {
+        const h1 = new House(HouseType.SMALL, 100, locations[1]);
+        h1.E.heat[EType.ELECTRIC] = 120;
+        h1.E.cool[EType.FJARRKYLA] = 40;
+        assertEqual(EPpet(h1), 2, 'EPpet small house');
+        const lim = limit(h1);
+        assertEqual(lim.EP, 95, 'EP small house');
+        assertApprox(lim.EL, 4.5, 0.001, 'EL small house');
+        assertApprox(lim.UM, 0.30, 0.001, 'UM small house');
+        assertEqual(lim.LL, -1, 'LL small house');
+      },
+      function testMultiHouse() {
+        const h2 = new House(HouseType.MULTI, 200, locations[0]);
+        h2.flow = 0.4;
+        h2.qavg = 0.4;
+        h2.foot4 = true;
+        h2.foot5 = true;
+        assertEqual(EPpet(h2), 0, 'EPpet multi house');
+        const lim = limit(h2);
+        assertEqual(lim.EP, 77, 'EP multi house');
+        assertApprox(lim.EL, 6.8, 0.001, 'EL multi house');
+        assertApprox(lim.UM, 0.40, 0.001, 'UM multi house');
+        assertEqual(lim.LL, -1, 'LL multi house');
+      },
+      function testLocalHouse() {
+        const h3 = new House(HouseType.LOCAL, 60, locations[1]);
+        h3.qavg = 0.4;
+        h3.flow = 0.5;
+        h3.foot2 = true;
+        h3.foot3 = true;
+        assertEqual(EPpet(h3), 0, 'EPpet local');
+        const lim = limit(h3);
+        assertEqual(lim.EP, 72, 'EP local');
+        assertApprox(lim.EL, 4.698, 0.001, 'EL local');
+        assertApprox(lim.UM, 0.50, 0.001, 'UM local');
+        assertEqual(lim.LL, -1, 'LL local');
+      },
+      function testEPRounding() {
+        const h = new House(HouseType.SMALL, 1, locations[1]);
+        h.E.heat[EType.ELECTRIC] = 50.333;
+        assertEqual(EPpet(h), 90, 'EP rounding');
+      }
+    ];
 
-    console.log('All tests passed.');
-  } catch (e) {
-    console.log('Test failed: ' + e.message);
-    throw e;
-  }
-})();
-</script>
+    function runTests() {
+      resultsElem.innerHTML = '';
+      logElem.textContent = '';
+      let passed = 0;
+      tests.forEach((t) => {
+        const resultTd = addRow(t.name || 'unnamed');
+        try {
+          t();
+          resultTd.textContent = 'PASS';
+          resultTd.className = 'pass';
+          passed++;
+        } catch (e) {
+          resultTd.textContent = 'FAIL';
+          resultTd.className = 'fail';
+          log(e.message);
+        }
+      });
+      summaryElem.textContent = passed + ' / ' + tests.length + ' tests passed';
+    }
+
+    document.getElementById('runTests').addEventListener('click', runTests);
+    runTests();
+  </script>
 </body>
 </html>
-
