@@ -1,0 +1,13 @@
+# Ignore editor backup files
+*~
+*~~
+# Vim undo files
+*.un~
+.*.un~
+# Vim swap files
+*.swp
+*.swo
+*.sw?
+
+# Ignore compiled binary
+energy
