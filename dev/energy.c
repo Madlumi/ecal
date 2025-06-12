@@ -9,9 +9,14 @@
 #define R         return
 
 typedef struct {
-	char name[256];
-	D    factor;
+        char name[256];
+        D    factor;
 } EntryD;
+
+typedef struct {
+        char name[256];
+        D    F_geo;
+} Location;
 
 typedef enum {
 	SMALL,
@@ -39,39 +44,56 @@ typedef enum {
 } EType;
 
 static const EntryD E_types[E_TYPE_COUNT] = {
-	[ELECTRIC]    = { "El",          1.8 },
-	[FJARRVARME]  = { "Fjärrvärme",  0.7 },
-	[FJARRKYLA]   = { "Fjärrkyla",   0.6 },
-	[BIOBRANSLE]  = { "Biobränslen", 0.6 },
-	[FOSSIL_OLJA] = { "Fossil olja", 1.8 },
-	[FOSSIL_GAS]  = { "Fossil gas",  1.8 }
+        [ELECTRIC]    = { "El",          1.8 },
+        [FJARRVARME]  = { "Fjärrvärme",  0.7 },
+        [FJARRKYLA]   = { "Fjärrkyla",   0.6 },
+        [BIOBRANSLE]  = { "Biobränslen", 0.6 },
+        [FOSSIL_OLJA] = { "Fossil olja", 1.8 },
+        [FOSSIL_GAS]  = { "Fossil gas",  1.8 }
 };
 
+typedef struct {
+        char  name[256];
+        D     factor;
+        EType etype;
+} TvvEntry;
 
-static const entryD locations[] = {
+
+static const Location locations[] = {
 	{ "Åland",   1.1 },
 	{ "none", 1.0 },
 };
-static const EntryD tvvFactors[] = {
-	{ .name = "Fjärrvärme",                           .factor = 1.00 },
-	{ .name = "El, direktverkande och elpanna",       .factor = 1.00 },
-	{ .name = "El, frånluftsvärmepump",               .factor = 1.70 },
-	{ .name = "El, uteluft-vattenvärmepump",          .factor = 2.00 },
-	{ .name = "El, markvärmepump (berg, mark, sjö)",  .factor = 2.50 },
-	{ .name = "Biobränslepanna (pellets, ved, flis m.m.)", .factor = 0.75 },
-	{ .name = "Olja",                                 .factor = 0.85 },
-	{ .name = "Gaspanna",                             .factor = 0.90 }
+static const TvvEntry tvvFactors[] = {
+        { .name = "Fjärrvärme",
+          .factor = 1.00,
+          .etype = FJARRVARME },
+        { .name = "El, direktverkande och elpanna",
+          .factor = 1.00,
+          .etype = ELECTRIC },
+        { .name = "El, frånluftsvärmepump",
+          .factor = 1.70,
+          .etype = ELECTRIC },
+        { .name = "El, uteluft-vattenvärmepump",
+          .factor = 2.00,
+          .etype = ELECTRIC },
+        { .name = "El, markvärmepump (berg, mark, sjö)",
+          .factor = 2.50,
+          .etype = ELECTRIC },
+        { .name = "Biobränslepanna (pellets, ved, flis m.m.)",
+          .factor = 0.75,
+          .etype = BIOBRANSLE },
+        { .name = "Olja",
+          .factor = 0.85,
+          .etype = FOSSIL_OLJA },
+        { .name = "Gaspanna",
+          .factor = 0.90,
+          .etype = FOSSIL_GAS }
 };
 const double TvvMult[HOUSE_TYPE_COUNT] = {
-	[SMALL] = 20,
-	[MULTI] = 25,
-	[LOCAL] = 2,
+        [SMALL] = 20,
+        [MULTI] = 25,
+        [LOCAL] = 2,
 };
-
-//returns the calculated tvv value for the sellected building type
-D Tvv(House H){
-	R  TvvMult[H.type]*H.Atemp/H.tvvSrc.factor;
-}
 
 
 
@@ -90,20 +112,26 @@ typedef struct {
 //=House======================
 //============================
 typedef struct {
-	HouseType      type;
-	I              Atemp;      // Heated area in m²
-	Energy         E;          // Energy uses
-	const entryD *L;         // entryD pointer
-	D              flow;       // Instantaneous airflow (q) [l/s·m²]
-	D              qavg;       // Average airflow (q_medel) [l/s·m²]
+        HouseType      type;
+        I              Atemp;      // Heated area in m²
+        Energy         E;          // Energy uses
+        const Location *L;       // location pointer
+        D              flow;       // Instantaneous airflow (q) [l/s·m²]
+        D              qavg;       // Average airflow (q_medel) [l/s·m²]
+
+        TvvEntry     tvvSrc;
 
         I              foot2;      // Footnote-2 flag
         I              foot3;      // Footnote-3 flag
         I              foot4;      // Footnote-4 flag
         I              foot5;      // Footnote-5 flag
-	EntryD 	   tvvSrc;
 
 } House;
+
+//returns the calculated tvv value for the selected building type
+D Tvv(House H) {
+        R TvvMult[H.type] * H.Atemp / H.tvvSrc.factor;
+}
 
 //============================
 //=Limits Struct==============
@@ -168,7 +196,7 @@ D el5(D F_geo, D flow, I atemp, I Foot5) {
 //============================
 //=Function Prototypes========
 //============================
-House     newHouse(HouseType type, I atemp, const entryD *L);
+House     newHouse(HouseType type, I atemp, const Location *L, const TvvEntry *tvvSrc);
 I         EPpet(const House *h);
 LimitVals limit(const House *h);
 void      printHouse(const House *h);
@@ -177,20 +205,22 @@ void      printHouse(const House *h);
 //=Constructor================
 //============================
 
-House newHouse(HouseType type, I atemp, const entryD *L, const EntryD *tvvSrc) {
+House newHouse(HouseType type, I atemp, const Location *L, const TvvEntry *tvvSrc) {
 	House h;
 	h.type   = type;
 	h.Atemp  = atemp;
 	memset(&h.E, 0, sizeof(Energy));
 	h.L      = L;
-        h.flow   = 0.0;
-        h.qavg   = 0.0;
-        h.foot2  = 0;
+
+	h.flow   = 0.0;
+	h.qavg   = 0.0;
+	h.foot4  = 0;  h.foot2  = 0;
         h.foot3  = 0;
-        h.foot4  = 0;
-        h.foot5  = 0;
+	h.foot5  = 0;
         h.tvvSrc = *tvvSrc;
-	R h;
+        h.E.watr[tvvSrc->etype] = Tvv(h);
+        R h;
+
 }
 
 //============================
