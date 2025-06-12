@@ -13,6 +13,11 @@ typedef struct {
         D    factor;
 } EntryD;
 
+typedef struct {
+        char name[256];
+        D    F_geo;
+} Location;
+
 typedef enum {
 	SMALL,
 	MULTI,
@@ -54,7 +59,7 @@ typedef struct {
 } TvvEntry;
 
 
-static const entryD locations[] = {
+static const Location locations[] = {
 	{ "Åland",   1.1 },
 	{ "none", 1.0 },
 };
@@ -85,15 +90,10 @@ static const TvvEntry tvvFactors[] = {
           .etype = FOSSIL_GAS }
 };
 const double TvvMult[HOUSE_TYPE_COUNT] = {
-	[SMALL] = 20,
-	[MULTI] = 25,
-	[LOCAL] = 2,
+        [SMALL] = 20,
+        [MULTI] = 25,
+        [LOCAL] = 2,
 };
-
-//returns the calculated tvv value for the sellected building type
-D Tvv(House H){
-	R  TvvMult[H.type]*H.Atemp/H.tvvSrc.factor;
-}
 
 
 
@@ -112,18 +112,23 @@ typedef struct {
 //=House======================
 //============================
 typedef struct {
-	HouseType      type;
-	I              Atemp;      // Heated area in m²
-	Energy         E;          // Energy uses
-	const entryD *L;         // entryD pointer
-	D              flow;       // Instantaneous airflow (q) [l/s·m²]
-	D              qavg;       // Average airflow (q_medel) [l/s·m²]
+        HouseType      type;
+        I              Atemp;      // Heated area in m²
+        Energy         E;          // Energy uses
+        const Location *L;       // location pointer
+        D              flow;       // Instantaneous airflow (q) [l/s·m²]
+        D              qavg;       // Average airflow (q_medel) [l/s·m²]
 
 	I              foot4;      // Footnote-4 flag
 	I              foot5;      // Footnote-5 flag
-	TvvEntry     tvvSrc;
+        TvvEntry     tvvSrc;
 
 } House;
+
+//returns the calculated tvv value for the selected building type
+D Tvv(House H) {
+        R TvvMult[H.type] * H.Atemp / H.tvvSrc.factor;
+}
 
 //============================
 //=Limits Struct==============
@@ -188,7 +193,7 @@ D el5(D F_geo, D flow, I atemp, I Foot5) {
 //============================
 //=Function Prototypes========
 //============================
-House     newHouse(HouseType type, I atemp, const entryD *L, const TvvEntry *tvvSrc);
+House     newHouse(HouseType type, I atemp, const Location *L, const TvvEntry *tvvSrc);
 I         EPpet(const House *h);
 LimitVals limit(const House *h);
 void      printHouse(const House *h);
@@ -197,7 +202,7 @@ void      printHouse(const House *h);
 //=Constructor================
 //============================
 
-House newHouse(HouseType type, I atemp, const entryD *L, const TvvEntry *tvvSrc) {
+House newHouse(HouseType type, I atemp, const Location *L, const TvvEntry *tvvSrc) {
 	House h;
 	h.type   = type;
 	h.Atemp  = atemp;
