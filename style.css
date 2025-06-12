@@ -17,12 +17,14 @@ body {
 
 /* Language selector at top right */
 #langSelector {
+
   text-align: right;
   margin-bottom: 0.5rem;
 }
 .lang-button {
   background: none;
   border: none;
+
   font-size: 1.5rem;
   cursor: pointer;
   margin-left: 0.25rem;
@@ -275,6 +277,7 @@ button,
 .lang-button {
   background: ButtonFace;
   color: ButtonText;
+
   border: 1px solid ButtonText;
   forced-color-adjust: none;
 }

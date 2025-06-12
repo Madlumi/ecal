@@ -1,0 +1,558 @@
+Landskapsregeringen har beslutat om allmänna råd till bestämmelserna i landskapsförordning 
+(2025:11) om fastställande av byggnadens energianvändning vid normalt brukande och ett normalår. De 
+allmänna råden innehåller generella rekommendationer om tillämpningen av föreskrifterna i denna författning 
+och anger hur någon lämpligen kan eller bör handla för att uppfylla föreskrifterna. De allmänna råden kan även 
+innehålla vissa förklarande eller redaktionella upplysningar. De allmänna råden föregås av texten Allmänt råd
+i kursiv stil och är tryckta med mindre och indragen text.
+ De allmänna råden är beslutade på enskild föredragning den 18 februari 2025 (ärendenummer ÅLR 
+2025/1211).
+4
+Landskapsförordning (2025:11) om fastställande av byggnadens energianvändning vid normalt 
+brukande och ett normalår
+Med stöd av 4 § landskapslag (2014:31) om energideklaration för byggnader och 65 § plan- och bygglag 
+(2008:102) för landskapet Åland föreskrivs:
+1 kap.
+Inledning
+1 §
+Allmänt
+Denna förordning innehåller bestämmelser om fastställande av byggnadens energianvändning knutet till 
+normalt brukande och för ett normalår, dels vid beräkning, dels utifrån uppmätt energianvändning. 
+Bestämmelserna ska tillämpas vid verifiering av byggnadens primärenergital enligt avsnitt 9:25 i bilagan till 
+landskapsförordning (2015:5) om Ålands byggbestämmelsesamling, och vid fastställande av en byggnads 
+energiprestanda och energiklass enligt landskapslag (2014:31) om energideklaration för byggnader och 
+landskapsförordning om (2025:10) energideklaration för byggnader.
+Termer som inte särskilt förklaras i denna förordning har den betydelse som anges i landskapslagen om 
+energideklaration för byggnader eller i landskapsförordningen om Ålands byggbestämmelsesamling.
+2 §
+Definitioner
+I denna förordning avses med:
+Dynamisk energiberäkning: Beräkning av byggnadens energianvändning med korta beräkningssteg, 
+typiskt en timme, som tar hänsyn till värme som lagras i och avges från byggnadens massa.
+Internlast: Värme som genereras inom byggnaden från andra värmekällor än tekniska system avsedda för 
+uppvärmning. Exempel på detta är värme från personer och från användning av hushållsenergi och 
+verksamhetsenergi.
+Lokal: Kontor, byggnader för parti- och detaljhandel, restaurang, lager, undervisningslokaler, 
+laboratorium, idrottsanläggningar, vårdlokaler samt andra lokalbyggnader.
+Normalisering: Korrigering av uppmätt energi vid fastställande av byggnadens energianvändning knuten 
+till normalt brukande och för ett normalår.
+Normalt brukande: Användning av en byggnad som avspeglar antingen ett standardiserat brukande eller 
+för lokaler den verksamhet som byggnaden är avsedd för.
+2 kap.
+Fastställande av byggnadens energianvändning genom beräkning
+3 §
+Allmänt
+En beräkning ska genomföras så att byggnadens energianvändning kan fastställas. Indata i 
+energiberäkningen ska överensstämma med byggnadens och installationernas egenskaper i den färdiga 
+byggnaden, och åtminstone beakta de faktorer som anges i 4–5 §§ och brukarindata i 6–7 §§.
+Byggnadens energianvändning vid normalt brukande och ett normalår ska fastställas uppdelat på de 
+energibärare som försörjer byggnaden.
+5
+Allmänt råd
+Vid beräkning av byggnadens energianvändning för verifiering av byggnadens primärenergital enligt Ålands 
+byggbestämmelsesamling – föreskrifter och allmänna råd (ÅBBS) bör lämpliga säkerhetsmarginaler tillämpas så att kravet 
+uppfylls även vid uppmätt och normaliserad energianvändning. 
+Exempel på energibärare är el, fjärrvärme, fjärrkyla, biobränsle, olja och gas.
+För småhus och flerbostadshus får byggnadens energianvändning fastställas genom energiberäkning med 
+beräkningssteg på högst en månad. För lokaler ska byggnadens energianvändning fastställas genom dynamisk 
+energiberäkning med beräkningssteg på högst en timme.
+Allmänt råd 
+SFS-EN ISO 13790:2008 beskriver olika beräkningsmetoder. 
+När ett dynamiskt energiberäkningsverktyg används bör dess lämplighet påvisas. Dynamiska energiberäkningsverktyg kan 
+valideras enligt till exempel SFS-EN ISO 52017-1:2017 eller SFS-EN ISO 52016-1:2017. 
+För lokaler bör indata i energiberäkningen delas upp i olika tidsscheman om byggnaden har intermittent verksamhet.
+Om utrymmen i byggnaden har olika inomhusklimat kan byggnaden behöva delas in i zoner vid 
+energiberäkningen för att korrekt avspegla uppmätt energi i den färdigställda byggnaden. En indelning i zoner 
+kan till exempel grunda sig på att utrymmen har olika innetemperaturer, betjänas av olika system för värme, 
+komfortkyla eller luftbehandling, eller uppvisar skillnader i internlaster.
+4 §
+Byggnadens och installationernas egenskaper
+Vid beräkning av byggnadens energianvändning ska byggnadens utformning, placering och orientering 
+beaktas, inklusive utomhusklimat och passiv solinstrålning. Data för utomhusklimatet ska vara representativt 
+för ett normalår för Åland.
+Vid beräkning av byggnadens energianvändning ska åtminstone följande termiska egenskaper hos 
+byggnaden beaktas
+- värmegenomgångskoefficient (U-värde) för tak, väggar, golv, fönster och ytterdörrar,
+- köldbryggor, och
+- klimatskärmens luftläckage.
+Allmänt råd 
+Om byggnadens värmekapacitet bedöms ha en inverkan av betydelse för byggnadens energianvändning bör även denna faktor 
+beaktas i energiberäkningen. 
+5 §
+Beaktande av tekniska byggnadssystem vid beräkning av energianvändning
+Vid beräkning av byggnadens energianvändning ska åtminstone följande tekniska byggnadssystem 
+beaktas, inklusive faktiska driftförhållanden och reglerförluster
+- värmeanläggningar och varmvattenförsörjning, inbegripet deras isoleringsegenskaper samt 
+varmvattencirkulation,
+- luftkonditionering,
+- ventilation,
+- fast belysning i allmänna utrymmen och driftsutrymmen, och
+- övrig energianvändning som ingår i byggnadens fastighetsenergi till exempel till värmekablar, pumpar, 
+fläktar, motorer, styr- och övervakningsutrustning och dylikt.
+6
+Byggnadens energianvändning ska reduceras med energi från sol, vind, mark, luft eller vatten som alstras 
+i byggnaden eller på dess tomt och som används till byggnadens uppvärmning, komfortkyla, tappvarmvatten 
+och byggnadens fastighetsenergi.
+Allmänt råd
+För energi till tappvarmvatten används ett standardiserat värde i energiberäkningen enligt 6 och 7 §§. Det standardiserade 
+värdet får reduceras med energi från sol, vind, mark, luft eller vatten som alstras i byggnaden eller på dess tomt i den omfattning 
+energin tillgodogörs för produktion av tappvarmvatten i byggnaden. Det standardiserade värdet får dock inte reduceras om sådan 
+energi redan beaktas i årsverkningsgraden för produktion av tappvarmvatten. Exempel på ett sådant fall är vid användning av 
+värmepump då energi från mark, luft eller vatten beaktas i årsverkningsgraden.
+6 §
+Brukarindata - bostäder
+Vid beräkning av byggnadens energianvändning ska brukarindata som anges i tabell 6:1 för småhus och 
+tabell 6:2 för flerbostadshus användas.
+Tabell 6:1 Brukarindata för nya småhus
+Parameter Delparameter Delparameter Värden
+Innetemperatur Uppvärmningssäsong (°C) Utrymmen för bostadsändamål 21
+Luftflöden Behovsstyrda flöden 
+(min/dygn)
+Forcering i kök ¹ 30
+Solavskärmning Beteendestyrd avskärmning 
+(avskärmningsfaktor)
+Till exempel markiser, persienner och 
+gardiner
+0,71
+Tappvarmvatten Energi (kWh/m² Atemp år) 20/ηtvv ²
+Hushållsenergi Energi (kWh/m² Atemp år) 30
+Internlast (%) Möjlig att tillgodogöras under 
+uppvärmningssäsongen
+70
+Personvärme Antal personer Enligt tabell 6:3
+Tid (h/d/v) ³ 14/7/52
+Effektavgivning (W/person) 80
+1. Beaktas enbart vid avluftsflöden.
+2. ηtvv är årsverkningsgraden hos värmekällan för produktion av tappvarmvatten.
+3. Timme per dygn/dygn per vecka/veckor per år.
+Tabell 6:2 Brukarindata för nya flerbostadshus
+Parameter Delparameter Delparameter Värden
+Innetemperatur Uppvärmningssäsong (°C) Utrymmen för bostadsändamål 21
+Utrymmen för bostadsändamål i 
+äldreboenden
+22
+Luftflöden Behovsstyrda flöden (min/dygn) Forcering i kök ¹ 30
+Solavskärmning Beteendestyrd avskärmning 
+(avskärmningsfaktor)
+Till exempel markiser, persienner och 
+gardiner
+0,71
+Tappvarmvatten Energi (kWh/m² Atemp år) 25/ηtvv ²
+Hushållsenergi Energi (kWh/m² Atemp år) Möjlig att tillgodogöras under 
+uppvärmningssäsongen
+70
+Internlast (%)
+Personvärme Antal personer Enligt tabell 6:3
+Tid (h/d/v) ³ 14/7/52
+Effektavgivning (W/person) 80
+1. Beaktas enbart vid avluftsflöden.
+7
+2. ηtvv är årsverkningsgraden hos värmekällan för produktion av tappvarmvatten.
+3. Timme per dygn/dygn per vecka/veckor per år.
+Tabell 6:3 Värden för beräkning av antal personer i bostäder
+Antal rum och kök 1 a) 2 3 4 5+
+Antal personer 1,42 1,63 2,18 2,79 3,51
+a) Inklusive 1 rum och kokvrå
+Energi för tappvarmvatten enligt tabell 6:1 och tabell 6:2 får korrigeras för installationsteknisk lösning 
+som kan påvisas medföra en besparing av energi till tappvarmvatten.
+Allmänt råd
+Ökad energianvändning på grund av vädring bör beaktas i energiberäkningen. Ett påslag på 4 kWh/m2 Atemp år bör 
+användas om inte ett annat värde kan motiveras. Vid ett energipåslag behöver årsverkningsgraden hos värmekällan beaktas. 
+Exempel på installationsteknisk lösning som kan påvisas medföra en besparing av energi till tappvarmvatten är
+värmeväxlare för spillvatten eller energieffektiva tvättställs-, köks- och duschblandare. Om värdet för energi till 
+tappvarmvatten enligt tabell 6:1 och tabell 6:2 korrigeras på grund av energieffektiva sanitetsarmaturer bör korrigeringen 
+maximalt uppgå till 10 procent, om inte en större besparing kan påvisas. Om uppgifter om faktisk energianvändning saknas vid 
+upprättandet av en energideklaration kan brukarindata i tabell 6:1 för småhus och tabell 6:2 för flerbostadshus användas vid 
+energiberäkningen.
+7 §
+Brukarindata - lokaler
+Vid beräkning av byggnadens energianvändning för lokaler ska brukarindata väljas utifrån den 
+verksamhet som är avsedd att bedrivas i lokalen. Energi till tappvarmvatten exklusive förluster för 
+varmvattencirkulation ska dock antas till 2 kWh/m² Atemp och år för samtliga lokalkategorier.
+Allmänt råd 
+När det inte går att få fram uppgifter om brukarindata för avsedd verksamhet till exempel vid upprättandet av en 
+energideklaration får standardiserade värden användas. Exempel på brukarindata som kan användas för kontorslokaler anges i 
+tabell 7:1 och för undervisningslokaler i tabell 7:2–7:4. 
+Ökad energianvändning på grund av vädring bör beaktas i energiberäkningen. Ett påslag på 4 kWh/m2 Atemp år bör 
+användas om inte ett annat värde kan motiveras. Vid ett energipåslag behöver årsverkningsgraden hos värmekällan beaktas.
+Tabell 7:1 Brukarindata för kontorslokaler
+Parameter Delparameter Delparameter Värden
+Innetemperatur Lägsta lufttemperatur (°C) 21
+23
+Solavskärmning Beteendestyrd avskärmning (avskärmningsfaktor) 0,71
+Tappvarmvatten Energi (kWh/m² Atemp år) 2/ηtvv 1
+Verksamhetsenergi Energi (kWh/m² Atemp år) Årsschablon 50
+Internlast (%) Möjlig att tillgodogöras 100
+Personvärme Persontäthet (m2
+Atemp/person) 20
+Tid (h/d/v) 2 9/5/47
+Effektavgivning (W/person) 108
+1. ηtvv är årsverkningsgraden hos värmekällan för produktion av tappvarmvatten
+2. Timme per dygn/dygn per vecka/veckor per år
+Tabell 7:2 Brukarindata för daghem och förskolor
+8
+Parameter Delparameter Kök Avdelningar och övrigt 1) Övriga utr., 
+teknikrum, förråd 
+m.m.
+Innetemperatur Lägsta lufttemperatur (°C) 22 22 18
+Högsta lufttemperatur (°C)
+Solavskärmning Beteendestyrd avskärmning 
+(avskärmningsfaktor)
+0,65 0,65 0,65
+Tappvarmvatten Energi (kWh/m² Atemp år) 2/ηtvv 2 2/ηtvv 2 2/ηtvv 2
+Verksamhetsenergi Årsschablon 
+(kWh/m² Atemp år)
+24 14 0
+Belysning (W/m2
+Atemp) 5,0 4,0 0
+Tid (h/d/v) 3 10/5/47 10/5/47
+Utrustning (W/m2
+Atemp) 5,0 2,0 0
+Tid (h/d/v) 3 10/5/47 10/5/47 10/5/47
+Personvärme Persontäthet 
+(m2
+Atemp/person)
+15 15 0
+Tid (h/d/v) 3 6/5/47 6/5/47 0
+Effektavgivning (W/person) 80 70
+1. Kategorin ”avdelningar och övrigt” inkluderar alla utrymmen som hör till daghemmet/förskolan förutom köksutrymmen samt 
+teknikrum, förråd etc., där personer normalt inte vistas.
+2. ηtvv är årsverkningsgraden hos värmekällan för produktion av tappvarmvatten.
+3. Timme per dygn/dygn per vecka/veckor per år.
+Tabell 76:36 Brukarindata för grund- och gymnasieskolor
+Parameter Delparameter Kök och 
+matsal
+Idrott, dusch
+m.m.
+Klassrum, 
+grupprum 
+m.m. 1)
+Övriga utr., 
+teknikrum, 
+förråd m.m.
+Innetemperatur Lägsta lufttemperatur (°C) 22 22 22 18
+Högsta lufttemperatur (°C)
+Solavskärmning Beteendestyrd avskärmning 
+(avskärmningsfaktor)
+0,65 0,65 0,65 0,65
+Tappvarmvatten Energi (kWh/m² Atemp år) 2/ηtvv 2 2/ηtvv 2 2/ηtvv 2 2/ηtvv 2
+Verksamhetsenergi Årsschablon (kWh/m² Atemp år) 22 22 22 0
+Belysning (W/m2
+Atemp) 5,0 5,0 5,0 0
+Tid (h/d/v) 3 10/5/44 10/5/44 10/5/44
+Utrustning (W/m2
+Atemp) 5,0 5,0 5,0 0
+Tid (h/d/v) 3 10/5/44 10/5/44 10/5/44
+Personvärme Persontäthet (m2
+Atemp/person) 15 15 15 0
+Tid (h/d/v) 3 6/5/44 6/5/44 6/5/44
+Effektavgivning (W/person) 80 80 80
+1. Kategorin ”klassrum, grupprum m.m.” är tänkt att inkludera samtliga ytor i utrymmen som inte hamnar i de övriga kategorierna.
+2. ηtvv är årsverkningsgraden hos värmekällan för produktion av tappvarmvatten.
+3. Timme per dygn/dygn per vecka/veckor per år.
+Tabell 76:47 Brukarindata för högskolor och universitet
+Parameter Delparameter Undervisning och 
+tillhörande 
+utrymmen 1)
+Kontor och 
+dylikt
+Övriga utr., 
+teknikrum, 
+förråd m.m.
+Innetemperatur, 
+inom/utanför drifttid
+Lägsta lufttemperatur (°C) 22/20 21/20 18
+Högsta lufttemperatur (°C) 24 24
+Solavskärmning Beteendestyrd avskärmning 
+(avskärmningsfaktor)
+0,65 0,65 0,65
+Tappvarmvatten Energi (kWh/m² Atemp år) 2/ηtvv 2 2/ηtvv 2 2/ηtvv 2
+Verksamhetsenergi Årsschablon (kWh/m² Atemp år) 47 50 0
+9
+Belysning (W/m2
+Atemp) 15,0 11,4 0
+Tid (h/d/v) 3 9/5/52 9/5/52
+Utrustning (W/m2
+Atemp) 5,0 10 0
+Tid (h/d/v) 3 9/5/52 9/5/52
+Personvärme Persontäthet (m2 Atemp/person) 15 20 0
+Tid (h/d/v) 3 9/5/52 9/5/52
+Effektavgivning (W/person) 108 108
+1. Kategorin ”undervisning och tillhörande utrymmen” utgör här de utrymmen som inte klassas som kontor eller teknik, förråd etc.
+2. ηtvv är årsverkningsgraden hos värmekällan för produktion av tappvarmvatten.
+3. Timme per dygn/dygn per vecka/veckor per år.
+3 kap.
+Fastställande av byggnadens energianvändning genom mätning och normalisering
+8 §
+Allmänt
+Fastställande av byggnadens energianvändning genom mätning och normalisering ska göras på grundval 
+av uppmätt energi. Den uppmätta energin ska normaliseras antingen stegvis enligt 10–13 §§ för bostäder, enligt 
+14–17 §§ för lokaler, eller genom dynamisk energiberäkning enligt 18 §. För byggnader som innehåller både 
+bostäder och lokaler ska normalisering genomföras med hänsyn taget till respektive byggnadskategori. 
+Byggnadens energianvändning vid normalt brukande och ett normalår ska fastställas uppdelat på de 
+energibärare som försörjer byggnaden. 
+Allmänt råd 
+De uppgifter som finns tillgängliga om uppmätt energi kan skilja sig åt beroende på om byggnadens energianvändning ska 
+fastställas vid uppförande av ny byggnad eller för annan byggnad. Vid uppförande av ny byggnad bör energianvändningen för 
+uppvärmning, komfortkyla, tappvarmvatten och byggnadens fastighetsenergi ha mätts separat åtminstone för flerbostadshus och 
+lokaler. Vid uppförande av nya flerbostadshus och lokaler bör därför uppmätta värden inte behöva bearbetas före normalisering. 
+I avsnitt 9:7 Ålands byggbestämmelsesamling – föreskrifter och allmänna råd (ÅBBS), anges de krav som ställs på mätsystem 
+vid uppförande av ny byggnad. 
+Vid fastställande av byggnadens energianvändning för andra byggnader kan uppmätt energi behöva bearbetas före 
+normaliseringen om energianvändningen för uppvärmning, komfortkyla, tappvarmvatten och byggnadens fastighetsenergi inte 
+har mätts separat. I dessa fall får energin för dessa användningsområden bestämmas på grundval av de mätuppgifter som finns 
+tillgängliga. 
+Exempel på energibärare är el, fjärrvärme, fjärrkyla, biobränsle, olja och gas.
+10
+9 §
+Före normalisering och mätningens omfattning
+Före normalisering ska hänsyn tas till mätningens omfattning i byggnaden. Om energi till uppvärmning, 
+komfortkyla, tappvarmvatten och byggnadens fastighetsenergi inte har mätts separat ska den uppmätta energin 
+fördelas i den utsträckning som behövs för att genomföra normaliseringen. Om uppmätt energi utgår från en 
+gemensam mätpunkt för flera byggnader ska energianvändningen fördelas på de ingående byggnaderna genom 
+en bedömning av respektive byggnads energianvändning.
+Om mätvärdena innehåller energianvändning för apparater och installationer som inte ingår i byggnadens 
+energianvändning ska denna energi tas bort före normalisering. Om mätvärdena inte innehåller 
+energianvändning för apparater och installationer som ingår i byggnadens energianvändning ska denna energi 
+läggas till före normalisering.
+Allmänt råd 
+Vid hantering av mätvärden bör hänsyn tas till särskilda händelser som har påverkat byggnadens energianvändning på ett 
+icke försumbart sätt under mätperioden. Exempel på sådan händelse är ombyggnad, tillfälligt ändrad verksamhet, eller värmeoch ventilationssystem som har varit ur drift under del av året. I dessa fall bör den levererade energin till byggnaden korrigeras 
+för att avspegla den årliga energianvändningen under normala förhållanden. För energislag som inte erhålls direkt i kWh, till
+exempel olja och biobränsle, kan uppmätta volymer av bränslet omräknas till kWh med hjälp av bränsletypernas effektiva 
+värmevärde.
+Normalisering av energianvändningen i bostadsbyggnader
+10 §
+Normalisering av energi till tappvarmvatten – bostadsbyggnader
+Levererad energi till tappvarmvatten exklusive förluster för varmvattencirkulation ska ersättas med värde 
+bestämt enligt tabell 10:1.
+Tabell 10:1 Normaliserat värde för energi till tappvarmvatten i bostäder där ηtvv är 
+årsverkningsgraden hos värmekällan för produktion av tappvarmvatten
+Småhus (kWh/år) Flerbostadshus (kWh/år)
+20 ×
+𝐴𝑡𝑒𝑚𝑝
+𝜂𝑡𝑣𝑣
+25 ×
+𝐴𝑡𝑒𝑚𝑝
+𝜂𝑡𝑣𝑣
+Det normaliserade värdet enligt tabell 10:1 får reduceras med energi från sol, vind, mark, luft eller vatten 
+som alstras i byggnaden eller på dess tomt i den omfattning energin tillgodogörs för produktion av 
+tappvarmvatten i byggnaden. Det normaliserade värdet får inte reduceras om sådan energi redan beaktas i 
+årsverkningsgraden för produktion av tappvarmvatten.
+Det normaliserade värdet får även korrigeras för annan installationsteknisk lösning som kan påvisas 
+medföra en besparing av energi till tappvarmvatten.
+Allmänt råd 
+Om det inte går att få fram uppgifter om årsverkningsgraden kan värden enligt tabell 3:2 användas vid fastställande av 
+normaliserat värde för energi till tappvarmvatten.
+Tabell 10:2 Vägledande årsverkningsgrad för produktion av tappvarmvatten uppdelat på olika värmekällor
+Värmekälla Årsverkningsgrad, ηtvv
+Fjärrvärme 1,0
+El, direktverkande och elpanna 1,0
+El, frånluftsvärmepump 1,7
+11
+El, uteluft-vattenvärmepump 2,0
+El, markvärmepump (berg, mark, sjö) 2,5
+Biobränslepanna (pellets, ved, flis m.m.) 0,75
+Olja 0,85
+Gaspanna 0,9
+Om energi till tappvarmvatten inte har mätts separat behöver denna energianvändning bestämmas före normalisering. Om 
+energi till tappvarmvatten som inkluderar förluster för varmvattencirkulation är känd kan levererad energi till tappvarmvatten 
+beräknas enligt
+Etvv, lev = 0,75 x Etvv + vvc
+där
+Etvv, lev: Levererad energi till tappvarmvatten under året (kWh/år). 
+Etvv + vvc: Uppmätt energi till tappvarmvatten och förluster för varmvattencirkulation (kWh/år). 
+Förlusterna för varmvattencirkulation inkluderas i byggnadens energianvändning för uppvärmning. 
+Om energi till tappvarmvatten och förluster för varmvattencirkulation är okänd men tappvarmvattenvolymen är känd, kan 
+levererad energi till tappvarmvatten beräknas enligt,
+𝐸𝑡𝑣𝑣 ,𝑙𝑒𝑣 =
+𝑉𝑡𝑣𝑣 × 55
+η𝑡𝑣𝑣
+där 
+Etvv,lev: Levererad energi till tappvarmvatten under året (kWh/år).
+Vtvv: Uppmätt tappvarmvattenvolym (m3
+/år).
+ηtvv: Årsverkningsgrad för beredning av tappvarmvatten.
+Om energi till tappvarmvatten och förluster för varmvattencirkulation är okänd och om tappvarmvattenvolymen är okänd 
+men kallvattenvolymen är känd kan levererad energi till tappvarmvatten beräknas enligt
+𝐸𝑡𝑣𝑣 ,𝑙𝑒𝑣 =
+0,35 × 𝑉𝑘𝑣 × 55
+η𝑡𝑣𝑣
+där
+Etvv, lev: Levererad energi till tappvarmvatten under året (kWh/år). 
+Vkv: Uppmätt kallvattenvolym (m3
+/år). 
+ηtvv: Årsverkningsgrad för beredning av tappvarmvatten.
+Exempel på fall då det normaliserade värdet inte får reduceras är vid användning av värmepump då energi från mark, luft 
+eller vatten redan beaktas i årsverkningsgraden för produktion av tappvarmvatten. 
+Exempel på installationsteknisk lösning som kan påvisas medföra en besparing av energi till tappvarmvatten är värmeväxlare 
+för spillvatten eller energieffektiva tvättställs-, köks- och duschblandare. Om det normaliserade värdet enligt tabell 3:1 korrigeras
+på grund av energieffektiva sanitetsarmaturer bör korrigeringen maximalt uppgå till 10 procent, om inte en större besparing kan 
+påvisas.
+11 §
+Normalisering av energianvändningen på grund av avvikelser i innetemperatur – bostadsbyggnader
+Normal innetemperatur i utrymmen för bostadsändamål ska antas enligt tabell 11:1.
+Tabell 11:1 Normal innetemperatur i utrymmen för bostadsändamål i småhus och flerbostadshus
+Småhus (°C) Flerbostadshus (°C) (äldreboende/övriga)
+21 22/21
+Om den genomsnittliga lufttemperaturen under uppvärmningssäsongen avvikit från normal 
+innetemperatur med mer än en grad, och avvikelsen inte beror på installationstekniska brister, ska energi för 
+uppvärmning korrigeras med 5 procent per grad för den area som har haft en avvikande lufttemperatur. 
+Vid verifiering av byggnadens primärenergital enligt avsnitt 9 i bilagan till landskapsförordning om 
+Ålands byggbestämmelsesamling, ska normalisering på grund av avvikelser i innetemperatur baseras på 
+mätning av genomsnittlig lufttemperatur under uppvärmningssäsongen.
+12
+Allmänt råd 
+Installationstekniska brister som kan innebära att den avsedda innetemperaturen inte hålls kan till exempel vara bristande 
+injustering av värmesystem. 
+Vid upprättande av energideklaration i enlighet med landskapslag (2014:31) om energideklaration för byggnader och 
+landskapsförordning om (2025:10) energideklaration för byggnader, bör normalisering på grund av avvikelser i innetemperatur 
+baseras på mätning av lufttemperatur.
+12 §
+Normalisering av energianvändningen på grund av avvikelser i internlaster - bostadsbyggnader
+Energi för uppvärmning och komfortkyla får korrigeras för internlaster som har avvikit från det normala 
+och som har gett upphov till en icke försumbar påverkan på levererad energi till byggnaden.
+Allmänt råd 
+En icke försumbar påverkan innebär att byggnadens energianvändning för uppvärmning och komfortkyla har påverkats mer 
+än 3 kWh/ m2 och år. 
+Andelen av hushållsenergin som kommer byggnaden tillgodo som värme under uppvärmningssäsongen kan antas till 70 
+procent. 
+Normal användning av hushållsenergi är 30 kWh/ m2 Atemp år och kan användas som grund för normalisering av 
+uppvärmningsenergi vid avvikande användning av hushållsenergi enligt
+𝐸𝑘𝑜𝑟𝑟 =
+𝐸ℎ.𝑎𝑣𝑣 × 𝐼ℎ × 𝐴𝑡𝑒𝑚𝑝
+η𝑢𝑝𝑝𝑣
+×
+𝑡𝑢𝑝𝑝𝑣
+8760
+där
+Ekorr: Korrigering av energi till uppvärmning (kWh/år). 
+Eh,avv: Positiv eller negativ skillnad mellan uppmätt värde och normal användning av hushållsenergi (kWh/m2
+år).
+Ih: Andel av hushållsenergin som kommer byggnaden tillgodo som värme.
+tuppv: Uppvärmningssäsongens längd (h). 
+ηuppv: Årsverkningsgrad hos värmekällan för uppvärmning.
+13 §
+Normalårskorrigering - bostadsbyggnader
+Energi för byggnadens klimatberoende energianvändning knuten till normalt brukande ska 
+normalårskorrigeras.
+Allmänt råd 
+Energi för uppvärmning kan normalårskorrigeras med Svenska Meteorologiska och Hydrologiska Institutets (SMHI) 
+Energiindex eller med Finlands meteorologiska instituts (FMI) normalårskorrigerade graddagstal. 
+Vid upprättande av energideklaration i enlighet med landskapslag (2014:31) om energideklaration för byggnader och 
+landskapsförordning om (2025:10) energideklaration för byggnader, sker normalårskorrigering enligt SMHI:s Energiindex för 
+basstation Norrtälje i det elektroniska formuläret som tillhandahålls av landskapsregeringen.
+För definition av normalårskorrigering se avsnitt 9:12 i bilagan till landskapsförordning om Ålands 
+byggbestämmelsesamling.
+Normalisering av energianvändningen i lokalbyggnader
+14 §
+Normalisering av energi till tappvarmvatten – lokalbyggnader
+Levererad energi till tappvarmvatten exklusive förluster för varmvattencirkulation ska ersättas med 
+normaliserat värde enligt
+2 × 𝐴𝑡𝑒𝑚𝑝
+𝜂𝑡𝑣𝑣
+där
+13
+ηtvv: är årsverkningsgraden hos värmekällan för produktion av tappvarmvatten.
+Det normaliserade värdet för energi till tappvarmvatten får reduceras med energi från sol, vind, mark, luft 
+eller vatten som alstras i byggnaden eller på dess tomt i den omfattning energin tillgodogörs för produktion av 
+tappvarmvatten i byggnaden. Det normaliserade värdet får inte reduceras om sådan energi redan beaktas i 
+årsverkningsgraden för produktion av tappvarmvatten.
+Det normaliserade värdet får även korrigeras för annan installationsteknisk lösning som kan påvisas 
+medföra en besparing av energi till tappvarmvatten.
+Allmänt råd 
+Om det inte går att få fram uppgifter om årsverkningsgraden kan värden enligt tabell 3:4 användas vid fastställande av 
+normaliserat värde för energi till tappvarmvatten.
+Tabell 14:1 Vägledande årsverkningsgrad för produktion av tappvarmvatten uppdelat på olika värmekällor.
+Värmekälla Årsverkningsgrad, ηtvv
+Fjärrvärme 1,0
+El, direktverkande och elpanna 1,0
+El, frånluftsvärmepump 1,7
+El, uteluft-vattenvärmepump 2,0
+El, markvärmepump (berg, mark, sjö) 2,5
+Biobränslepanna (pellets, ved, flis m.m.) 0,75
+Olja 0,85
+Gaspanna 0,9
+Om energi till tappvarmvatten inte har mätts separat behöver denna energianvändning bestämmas före normalisering. Om 
+energi till tappvarmvatten som inkluderar förluster för varmvattencirkulation är känd och om förlusterna beräknas så att energi 
+till tappvarmvatten kan fastställas, bör förlusterna för varmvattencirkulation inkluderas i byggnadens energianvändning för 
+uppvärmning. Om energi till tappvarmvatten och förluster för varmvattencirkulation är okänd men tappvarmvattenvolymen är 
+känd, kan levererad energi till tappvarmvatten beräknas enligt
+𝐸𝑡𝑣𝑣 ,𝑙𝑒𝑣 =
+𝑉𝑡𝑣𝑣 × 55
+η𝑡𝑣𝑣
+där
+Etvv, lev: Levererad energi till tappvarmvatten under året (kWh/år). 
+Vtvv: Uppmätt tappvarmvattenvattenvolym (m3
+/år). 
+ηtvv: Årsverkningsgrad för beredning av tappvarmvatten.
+Om tappvarmvattenvolymen är okänd kan denna bedömas utifrån kallvattenvolym och andel tappvarmvatten för den aktuella 
+verksamhetstypen. 
+Exempel på fall då det normaliserade värdet inte får reduceras är vid användning av värmepump då energi från mark, luft 
+eller vatten redan beaktas i årsverkningsgraden för produktion av tappvarmvatten. 
+Exempel på installationsteknisk lösning som kan påvisas medföra en besparing av energi till tappvarmvatten är värmeväxlare 
+för spillvatten eller energieffektiva tvättställs-, köks- och duschblandare. Om det normaliserade värdet för energi till 
+tappvarmvatten korrigeras på grund av energieffektiva sanitetsarmaturer bör korrigeringen maximalt uppgå till 10 procent, om 
+inte en större besparing kan påvisas.
+15 §
+Normalisering av energianvändningen på grund av avvikelser i innetemperatur - lokalbyggnader
+Om den genomsnittliga lufttemperaturen under uppvärmningssäsongen avviker från avsedd 
+innetemperatur med mer än en grad, och avvikelsen inte beror på installationstekniska brister, får energi för 
+uppvärmning korrigeras med 5 procent per grad för den area som har haft en avvikande lufttemperatur.
+14
+Vid verifiering av byggnadens primärenergital enligt avsnitt 9 i bilagan till landskapsförordning om 
+Ålands byggbestämmelsesamling, ska normalisering på grund av avvikelser i innetemperatur baseras på 
+mätning av genomsnittlig lufttemperatur under uppvärmningssäsongen.
+Allmänt råd 
+Avsedd innetemperatur kan vara den innetemperatur lokalbyggnaden är projekterad för att hålla. Avsedd innetemperatur kan 
+även bedömas utifrån normal innetemperatur för den verksamhetstyp som bedrivs i lokalbyggnaden. 
+Installationstekniska brister som kan innebära att den avsedda innetemperaturen inte hålls kan till exempel vara bristande 
+injustering av värmesystem. 
+Vid upprättande av energideklaration i enlighet med landskapslag (2014:31) om energideklaration för byggnader och 
+landskapsförordning om (2025:10) energideklaration för byggnader, bör normalisering på grund av avvikelser i innetemperatur 
+baseras på mätning av lufttemperatur.
+16 §
+Normalisering av energianvändningen på grund av avvikelser i internlaster - lokalbyggnader
+Energi för uppvärmning och komfortkyla får korrigeras för internlaster som avvikit från det normala för 
+den avsedda verksamheten, och som har gett upphov till en icke försumbar påverkan på levererad energi till 
+byggnaden. 
+Allmänt råd 
+Vad som är normalt för den avsedda verksamheten kan bedömas med utgångspunkt i projekterad verksamhet eller i den 
+verksamhetstyp som bedrivs i lokalbyggnaden. De faktiska internlaster som ligger till grund för normaliseringen bör kunna 
+verifieras. 
+En icke försumbar påverkan bör innebära att energi för uppvärmning och komfortkyla har påverkats mer än 3 kWh/ m2 och 
+år.
+17 §
+Normalårskorrigering - lokalbyggnader
+Energi för byggnadens klimatberoende energianvändning knuten till normalt brukande ska 
+normalårskorrigeras.
+Allmänt råd 
+Energi för uppvärmning kan normalårskorrigeras med SMHI:s Energiindex eller med FMI:s normalårskorrigerade 
+graddagstal. 
+Vid upprättande av energideklaration i enlighet med landskapslag (2014:31) om energideklaration för byggnader och 
+landskapsförordning om (2025:10) energideklaration för byggnader, sker normalårskorrigering enligt SMHI:s Energiindex för 
+basstation Norrtälje i det elektroniska formuläret som tillhandahålls av Ålands landskapsregering.
+För definition av normalårskorrigering se avsnitt 9:12 i bilagan till landskapsförordning om Ålands 
+byggbestämmelsesamling.
+18 §
+Normalisering av energianvändning i bostads- och lokalbyggnader genom dynamisk energiberäkning
+Vid normalisering genom dynamisk energiberäkning ska uppmätt energi till byggnaden korrigeras 
+utifrån förhållandet mellan byggnadens beräknade energianvändning vid normalt brukande och för ett 
+normalår, och byggnadens beräknade energianvändning vid faktiskt brukande och utomhusklimat under 
+mätåret. Korrigering av uppmätt energi ska åtminstone ske för energi till tappvarmvatten och på grund av 
+avvikelser i innetemperatur och internlaster.
+Energiberäkningen för normalt brukande av byggnaden och för ett normalår ska ske på samma sätt som 
+energiberäkningen vid faktiskt brukande och utomhusklimat under mätåret. Indata för byggnadsrelaterade 
+15
+parametrar ska avse den färdiga byggnaden och hållas oförändrade i de dynamiska energiberäkningar som 
+ligger till grund för normaliseringen.
+Normalisering genom dynamisk energiberäkning får enbart ske om faktiskt brukande av byggnaden kan 
+verifieras.
+Allmänt råd 
+Metoden innebär att två olika energiberäkningar genomförs för byggnaden. Dels en energiberäkning baserat på normala 
+förhållanden, dels en baserat på faktiska förhållanden. Skillnaden i resultat ger information om hur brukandet och 
+utomhusklimatet under mätåret har påverkat uppmätt energianvändning. Förhållandet mellan energiberäkningarna kan 
+uttryckas i procent och användas för att korrigera den uppmätta energin till vad den skulle bli vid ett normalt brukande och ett 
+normalår. Korrigeringen bör genomföras uppdelat i energi till uppvärmning, tappvarmvatten, komfortkyla respektive 
+byggnadens fastighetsenergi.
+Verifiering av faktiskt brukande av byggnaden under ett år kan ske genom mätning av brukarrelaterade parametrar i 
+byggnaden och genom undersökningar bland brukarna.

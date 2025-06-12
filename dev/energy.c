@@ -47,9 +47,27 @@ typedef struct {
     D    F_geo;
 } Location;
 
+typedef struct {
+    char name[256];
+    D    factor;
+} EntryD;
+
+//todo convert to EntryD
 static const Location locations[] = {
-    { "default", 1.0 },
-    { "Åland",   1.1 }
+    { "Åland",   1.1 },
+    { "none", 1.0 },
+};
+
+//format
+static const TvvFactors EntryD[] = {
+    Fjärrvärme 1,0
+    El, direktverkande och elpanna 1,0
+    El, frånluftsvärmepump 1,7
+    El, uteluft-vattenvärmepump 2,0
+    El, markvärmepump (berg, mark, sjö) 2,5
+    Biobränslepanna (pellets, ved, flis m.m.) 0,75
+    Olja 0,85
+    Gaspanna 0,9
 };
 
 //============================
@@ -66,6 +84,18 @@ const char *HouseType_name[HOUSE_TYPE_COUNT] = {
     [SMALL] = "SMALL",
     [MULTI] = "MULTI",
     [LOCAL] = "LOCAL"
+};
+
+static const Location locations[] = {
+    { "Åland",   1.1 },
+    { "none", 1.0 },
+};
+
+
+const double TvvMult[HOUSE_TYPE_COUNT] = {
+    [SMALL] = 20
+    [MULTI] = 25
+    [LOCAL] = 2
 };
 
 //============================
