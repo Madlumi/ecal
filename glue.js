@@ -7,6 +7,7 @@ const geo      = document.getElementById("geography");
 const type     = document.getElementById("housetype");
 const at       = document.getElementById("atemp");
 const fl       = document.getElementById("flow");
+const tvvSel   = document.getElementById("tvvType");
 const f2       = document.getElementById("foot2");
 const f3       = document.getElementById("foot3");
 const f4       = document.getElementById("foot4");
@@ -52,8 +53,9 @@ function registerListeners(){
 
 
 
-	type.addEventListener("change", updateFootnotes);
-	form.addEventListener("input", calculate);
+        type.addEventListener("change", () => { updateFootnotes(); calculate(); });
+        if (tvvSel) tvvSel.addEventListener("change", calculate);
+        form.addEventListener("input", calculate);
 
 	//clear
 	clear.addEventListener("click", clearUI);
@@ -177,9 +179,15 @@ function applyLanguage() {
 // Populate elements
 // =====================
 function loadGeography() {
-	const sel = document.getElementById("geography");
-	sel.innerHTML = "";
-	locations.forEach(loc => { sel.add(new Option(loc.name, loc.name)); });
+        const sel = document.getElementById("geography");
+        sel.innerHTML = "";
+        locations.forEach(loc => { sel.add(new Option(loc.name, loc.name)); });
+}
+
+function loadTvvDropdown() {
+        if (!tvvSel) return;
+        tvvSel.innerHTML = "";
+        tvvFactors.forEach((f, idx) => { tvvSel.add(new Option(f.name, idx)); });
 }
 
 function loadEnergyTable() {
@@ -198,11 +206,11 @@ function loadEnergyTable() {
 	E_name.forEach(name => hr.insertCell().textContent = name);
 
 	const tbody = table.createTBody();
-	measureKeys.forEach(key => {
-		const labelKey = `energy_row_${key}`;
-		const helpKey  = `${labelKey}_help`;
-		const row      = tbody.insertRow();
-		const cell     = row.insertCell();
+        measureKeys.forEach(key => {
+                const labelKey = `energy_row_${key}`;
+                const helpKey  = `${labelKey}_help`;
+                const row      = tbody.insertRow();
+                const cell     = row.insertCell();
 
 		// Row label
 		cell.textContent = getString(labelKey);
@@ -225,16 +233,17 @@ function loadEnergyTable() {
 			cell.appendChild(icon);
 		}
 
-		//add cells
-		for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
-			const c = row.insertCell();
-			const id = `${key}-${E_name[i].toLowerCase().replace(/\s+/g, "_")}`;
-			const inp = Object.assign( document.createElement("input"), { type: "number", step: "any", id, name: id });
-			if (LOCKED_COMBINATIONS.some(l => l.measureKey === key && l.sourceIndex === i)) { inp.disabled = true; }
-			c.appendChild(inp);
-			measureEls[key].push(inp);
-		}
-	});
+                //add cells
+                const lockRow = (key === "watr");
+                for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
+                        const c = row.insertCell();
+                        const id = `${key}-${E_name[i].toLowerCase().replace(/\s+/g, "_")}`;
+                        const inp = Object.assign( document.createElement("input"), { type: "number", step: "any", id, name: id });
+                        if (lockRow || LOCKED_COMBINATIONS.some(l => l.measureKey === key && l.sourceIndex === i)) { inp.disabled = true; }
+                        c.appendChild(inp);
+                        measureEls[key].push(inp);
+                }
+        });
 
 	// Expose for later use on window if you still need the globals
 	window.heatEls = measureEls.heat;
@@ -267,14 +276,34 @@ function updateFootnotes() {
   }
 }
 
+function updateTvvRow() {
+  if (!window.watrEls || !tvvSel) return;
+  const htNum = HouseType[type.value];
+  const atv   = parseInt(at.value,10) || 0;
+  const idx   = parseInt(tvvSel.value,10) || 0;
+  const entry = tvvFactors[idx] || tvvFactors[0];
+  const val   = atv ? (TvvMult[htNum] * atv / entry.factor) : 0;
+  for (let i=0;i<EType.E_TYPE_COUNT;i++) {
+    const inp = window.watrEls[i];
+    if (!inp) continue;
+    if (i === entry.etype) {
+      inp.value = val ? val.toFixed(1) : "";
+    } else {
+      inp.value = "";
+    }
+  }
+}
+
 
 //Connect to energy.js and display output, and build the perma link
 function calculate() {
-	const locObj = locations.find(l=>l.name===geo.value);
-	const htNum  = HouseType[type.value];
-	const atv    = parseInt(at.value,10)||0;
-	const fv     = parseFloat(fl.value)||0;
-	const h      = new House(htNum, atv, locObj);
+        updateTvvRow();
+        const locObj = locations.find(l=>l.name===geo.value);
+        const htNum  = HouseType[type.value];
+        const atv    = parseInt(at.value,10)||0;
+        const fv     = parseFloat(fl.value)||0;
+        const tvvIdx = parseInt(tvvSel.value,10) || 0;
+        const h      = new House(htNum, atv, locObj, tvvFactors[tvvIdx]);
 	h.flow = fv; h.qavg = fv;
 	h.foot2 = f2.checked; h.foot3 = f3.checked;
 	h.foot4 = f4.checked; h.foot5 = f5.checked;
@@ -344,7 +373,8 @@ function calculate() {
 	const ps = new URLSearchParams();
 	ps.set("geography",geo.value);
 	ps.set("housetype",type.value);
-	ps.set("atemp",atv);
+        ps.set("atemp",atv);
+        ps.set("tvv", tvvIdx);
 	if(!isNaN(fv))ps.set("flow",fv);
 	if(f2.checked)ps.set("foot2","1");
 	if(f3.checked)ps.set("foot3","1");
@@ -369,10 +399,11 @@ function calculate() {
 function prefillFromURL() {
 	const params = new URLSearchParams(window.location.search);
 
-	geo.value = params.get("geography") || "Åland";
-	type.value = params.get("housetype") || "SMALL";
-	at.value = params.get("atemp") || "";
-	fl.value = params.get("flow") || "";
+        geo.value = params.get("geography") || "Åland";
+        type.value = params.get("housetype") || "SMALL";
+        at.value = params.get("atemp") || "";
+        fl.value = params.get("flow") || "";
+        if (tvvSel) tvvSel.value = params.get("tvv") || "0";
 
 	// foot2–foot5 checkboxes: default false if no "1"
 	[f2, f3, f4, f5].forEach((el, idx) => { el.checked = params.get(`foot${idx + 2}`) === "1"; });
@@ -398,14 +429,16 @@ function main(){
 	applyLanguage();
 
     loadGeography();
-	loadEnergyTable();
+        loadEnergyTable();
+        loadTvvDropdown();
 
 	prefillFromURL();
 
-	registerListeners();
+        registerListeners();
 
-	updateFootnotes();
-	calculate();
+        updateFootnotes();
+        updateTvvRow();
+        calculate();
 }
 
 document.addEventListener("DOMContentLoaded", main);
