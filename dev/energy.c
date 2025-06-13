@@ -62,10 +62,10 @@ typedef struct {
         EType etype;
 } TvvEntry;
 
-typedef struct {
+typedef struct UVals {
         D     U_roof;
-	///...
-} Uvals;
+        ///...
+} UVals;
 
 
 static const Location locations[] = {
@@ -127,9 +127,8 @@ typedef struct {
         I              foot4;      // Footnote-4 flag
         I              foot5;      // Footnote-5 flag
 } House;
-typedef struct {
-	const I PersonHeat=80; //watts
-}GouseConsts;
+
+const int PERSON_HEAT = 80; // watts
 
 //returns the calculated tvv value for the selected building type
 D Tvv(House H) {
@@ -277,7 +276,7 @@ LimitVals limit(const House *h) {
 	D      flow  = h->flow;
 	D      qavg  = h->qavg;
 
-        if (atemp <= 0) { R 0; }
+        if (atemp <= 0) { R l; }
 
 	if (h->type == SMALL) {
 		if (atemp > 130) {
