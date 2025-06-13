@@ -165,14 +165,36 @@ function applyLanguage() {
 		}
 	});
 
-	// 4) Attach help popups only for bases that had non‐empty help text
-	helpBases.forEach(base => {
-		setupHelp(
-			`${base}_help_icon`,
-			`${base}_help`,
-			`${base}_help`
-		);
-	});
+        // 4) Ensure each help base has its icon & box, then hook them up
+        helpBases.forEach(base => {
+                const iconId = `${base}_help_icon`;
+                const boxId  = `${base}_help`;
+
+                let icon = document.getElementById(iconId);
+                let box  = document.getElementById(boxId);
+
+                // Insert missing elements after the label container if present,
+                // otherwise after the base element itself
+                const ref = document.getElementById(`lbl_${base}`) ||
+                            document.getElementById(base);
+                if (!ref) return; // nothing to attach to
+
+                if (!icon) {
+                        icon = document.createElement("span");
+                        icon.className = "info-icon";
+                        icon.id = iconId;
+                        ref.parentNode.insertBefore(icon, ref.nextSibling);
+                }
+
+                if (!box) {
+                        box = document.createElement("div");
+                        box.className = "help-box";
+                        box.id = boxId;
+                        icon.parentNode.insertBefore(box, icon.nextSibling);
+                }
+
+                setupHelp(iconId, boxId, `${base}_help`);
+        });
 }
 
 // =====================
