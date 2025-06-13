@@ -15,5 +15,6 @@ dev/energy
 Thumbs.db
 dev/tests
 test_output.txt
+test_js_output.txt
 
 **/Thumbs.db
