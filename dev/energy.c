@@ -257,6 +257,8 @@ LimitVals limit(const House *h) {
 	D      flow  = h->flow;
 	D      qavg  = h->qavg;
 
+        if (Atemp <= 0) { R 0; }
+
 	if (h->type == SMALL) {
 		if (atemp > 130) {
 			l.EP = 90.0;
