@@ -1,5 +1,84 @@
 
 
+Normalisering: Korrigering av uppmätt energi vid fastställande av byggnadens energianvändning knuten till normalt brukande och för ett normalår
+
+
+
+
+Allmänt råd 
+SFS-EN ISO 13790:2008 beskriver olika beräkningsmetoder. 
+När ett dynamiskt energiberäkningsverktyg används bör dess lämplighet påvisas. Dynamiska energiberäkningsverktyg kan valideras enligt till exempel SFS-EN ISO 52017-1:2017 eller SFS-EN ISO 52016-1:2017. 
+För lokaler bör indata i energiberäkningen delas upp i olika tidsscheman om byggnaden har intermittent verksamhet.
+
+
+
+§4
+Vid beräkning av byggnadens energianvändning ska byggnadens utformning, placering och orientering 
+beaktas, inklusive utomhusklimat och passiv solinstrålning. Data för utomhusklimatet ska vara representativt 
+för ett normalår för Åland.
+Vid beräkning av byggnadens energianvändning ska åtminstone följande termiska egenskaper hos byggnaden beaktas
+- värmegenomgångskoefficient (U-värde) för tak, väggar, golv, fönster och ytterdörrar,
+- köldbryggor, och
+- klimatskärmens luftläckage.
+
+§5
+Beaktande av tekniska byggnadssystem vid beräkning av energianvändning
+Vid beräkning av byggnadens energianvändning ska åtminstone följande tekniska byggnadssystem 
+beaktas, inklusive faktiska driftförhållanden och reglerförluster
+- värmeanläggningar och varmvattenförsörjning, inbegripet deras isoleringsegenskaper samt 
+varmvattencirkulation,
+- luftkonditionering,
+- ventilation,
+- fast belysning i allmänna utrymmen och driftsutrymmen, och
+- övrig energianvändning som ingår i byggnadens fastighetsenergi till exempel till värmekablar, pumpar, 
+fläktar, motorer, styr- och övervakningsutrustning och dylikt.
+6
+Byggnadens energianvändning ska reduceras med energi från sol, vind, mark, luft eller vatten som alstras 
+i byggnaden eller på dess tomt och som används till byggnadens uppvärmning, komfortkyla, tappvarmvatten 
+och byggnadens fastighetsenergi.
+Allmänt råd
+För energi till tappvarmvatten används ett standardiserat värde i energiberäkningen enligt 6 och 7 §§. Det standardiserade 
+värdet får reduceras med energi från sol, vind, mark, luft eller vatten som alstras i byggnaden eller på dess tomt i den omfattning 
+energin tillgodogörs för produktion av tappvarmvatten i byggnaden. Det standardiserade värdet får dock inte reduceras om sådan 
+energi redan beaktas i årsverkningsgraden för produktion av tappvarmvatten. Exempel på ett sådant fall är vid användning av 
+värmepump då energi från mark, luft eller vatten beaktas i årsverkningsgraden.
+
+§6
+
+Vid beräkning av byggnadens energianvändning ska brukarindata som anges i tabell 6:1 för småhus och 
+tabell 6:2 för flerbostadshus användas.
+table6:1
+table6:2
+table6:3
+
+
+Energi för tappvarmvatten enligt tabell 6:1 och tabell 6:2 får korrigeras för installationsteknisk lösning 
+som kan påvisas medföra en besparing av energi till tappvarmvatten.
+Allmänt råd
+Ökad energianvändning på grund av vädring bör beaktas i energiberäkningen. Ett påslag på 4 kWh/m2 Atemp år bör 
+användas om inte ett annat värde kan motiveras. Vid ett energipåslag behöver årsverkningsgraden hos värmekällan beaktas. 
+Exempel på installationsteknisk lösning som kan påvisas medföra en besparing av energi till tappvarmvatten är
+värmeväxlare för spillvatten eller energieffektiva tvättställs-, köks- och duschblandare. Om värdet för energi till 
+tappvarmvatten enligt tabell 6:1 och tabell 6:2 korrigeras på grund av energieffektiva sanitetsarmaturer bör korrigeringen 
+maximalt uppgå till 10 procent, om inte en större besparing kan påvisas. Om uppgifter om faktisk energianvändning saknas vid 
+upprättandet av en energideklaration kan brukarindata i tabell 6:1 för småhus och tabell 6:2 för flerbostadshus användas vid 
+energiberäkningen.
+
+
+§7
+Vid beräkning av byggnadens energianvändning för lokaler ska brukarindata väljas utifrån den 
+verksamhet som är avsedd att bedrivas i lokalen. Energi till tappvarmvatten exklusive förluster för 
+varmvattencirkulation ska dock antas till 2 kWh/m² Atemp och år för samtliga lokalkategorier.
+Allmänt råd 
+När det inte går att få fram uppgifter om brukarindata för avsedd verksamhet till exempel vid upprättandet av en 
+energideklaration får standardiserade värden användas. Exempel på brukarindata som kan användas för kontorslokaler anges i 
+tabell 7:1 och för undervisningslokaler i tabell 7:2–7:4. 
+Ökad energianvändning på grund av vädring bör beaktas i energiberäkningen. Ett påslag på 4 kWh/m2 Atemp år bör 
+användas om inte ett annat värde kan motiveras. Vid ett energipåslag behöver årsverkningsgraden hos värmekällan beaktas.
+
+
+---
+
    varje verksamhet upptar. Om mer än hälften av byggnadens area utgörs av lokaler med tillverkning, kan byggnaden komma att omfattas av undantaget för industrianläggningar och verkstäder. Om mer än hälften av byggnadens area är kontor eller lager eller liknande, där ingen tillverkning sker, omfattas byggnaden Ie av undantaget
    ...
 
