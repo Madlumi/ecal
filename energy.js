@@ -336,3 +336,28 @@ function printHouse(house) {
 
   printHouse(h);*/
 })();
+
+// Export for Node.js testing
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    EType,
+    E_wght,
+    E_name,
+    Location,
+    locations,
+    HouseType,
+    HouseType_name,
+    Energy,
+    House,
+    LimitVals,
+    elBase,
+    el1,
+    ep2,
+    el3,
+    ep4,
+    el5,
+    EPpet,
+    limit,
+    printHouse
+  };
+}
