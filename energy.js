@@ -35,6 +35,36 @@ const E_name = [
 ];
 
 //============================
+//=Tappvarmvatten=============
+//============================
+class TvvEntry {
+  constructor(name, factor, etype) {
+    this.name = name;
+    this.factor = factor;
+    this.etype = etype;
+  }
+}
+
+const tvvFactors = [
+  new TvvEntry("Fjärrvärme", 1.00, EType.FJARRVARME),
+  new TvvEntry("El, direktverkande och elpanna", 1.00, EType.ELECTRIC),
+  new TvvEntry("El, frånluftsvärmepump", 1.70, EType.ELECTRIC),
+  new TvvEntry("El, uteluft-vattenvärmepump", 2.00, EType.ELECTRIC),
+  new TvvEntry("El, markvärmepump (berg, mark, sjö)", 2.50, EType.ELECTRIC),
+  new TvvEntry("Biobränslepanna (pellets, ved, flis m.m.)", 0.75, EType.BIOBRANSLE),
+  new TvvEntry("Olja", 0.85, EType.FOSSIL_OLJA),
+  new TvvEntry("Gaspanna", 0.90, EType.FOSSIL_GAS)
+];
+
+const TvvMult = [
+  /* SMALL */ 20,
+  /* MULTI */ 25,
+  /* LOCAL */ 2
+];
+
+const PERSON_HEAT = 80; // watts
+
+//============================
 //=Location===================
 //============================
 class Location {
@@ -74,6 +104,9 @@ class Energy {
     this.cool = Array(EType.E_TYPE_COUNT).fill(0);
     this.watr = Array(EType.E_TYPE_COUNT).fill(0);
     this.fast = Array(EType.E_TYPE_COUNT).fill(0);
+    this.heat_ren = Array(EType.E_TYPE_COUNT).fill(0);
+    this.cool_ren = Array(EType.E_TYPE_COUNT).fill(0);
+    this.watr_ren = Array(EType.E_TYPE_COUNT).fill(0);
   }
 }
 
@@ -81,7 +114,7 @@ class Energy {
 //=House======================
 //============================
 class House {
-  constructor(type, Atemp, location) {
+  constructor(type, Atemp, location, tvvSrc = tvvFactors[0]) {
     this.type   = type;      // HouseType
     this.Atemp  = Atemp;     // Heated area in m²
     this.E      = new Energy(); // Energy uses
@@ -96,6 +129,10 @@ class House {
     this.foot3  = false;     // Footnote‐3 flag (LOCAL)
     this.foot4  = false;     // Footnote‐4 flag (MULTI)
     this.foot5  = false;     // Footnote‐5 flag (MULTI)
+    this.tvvSrc = tvvSrc;    // source of hot water
+
+    // standardised tappvarmvatten energy use
+    this.E.watr[tvvSrc.etype] = Tvv(this);
   }
 }
 
@@ -163,6 +200,10 @@ function el5(F_geo, flow, atemp, Foot5) {
   return (0.022 + 0.02 * (F_geo - 1.0)) * (flow - 0.35) * atemp;
 }
 
+function Tvv(house) {
+  return TvvMult[house.type] * house.Atemp / house.tvvSrc.factor;
+}
+
 //============================
 //=EPpet Calculation===========
 //============================
@@ -172,9 +213,9 @@ function EPpet(house) {
   const Atemp = house.Atemp;
 
   for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
-    const heat = house.E.heat[i];
-    const cool = house.E.cool[i];
-    const watr = house.E.watr[i];
+    const heat = house.E.heat[i] - house.E.heat_ren[i];
+    const cool = house.E.cool[i] - house.E.cool_ren[i];
+    const watr = house.E.watr[i] - house.E.watr_ren[i];
     const fast = house.E.fast[i];
     total += ((heat / F_geo) + cool + watr + fast) * (E_wght[i] / Atemp);
   }
