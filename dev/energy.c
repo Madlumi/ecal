@@ -64,30 +64,14 @@ static const Location locations[] = {
 	{ "none", 1.0 },
 };
 static const TvvEntry tvvFactors[] = {
-        { .name = "Fjärrvärme",
-          .factor = 1.00,
-          .etype = FJARRVARME },
-        { .name = "El, direktverkande och elpanna",
-          .factor = 1.00,
-          .etype = ELECTRIC },
-        { .name = "El, frånluftsvärmepump",
-          .factor = 1.70,
-          .etype = ELECTRIC },
-        { .name = "El, uteluft-vattenvärmepump",
-          .factor = 2.00,
-          .etype = ELECTRIC },
-        { .name = "El, markvärmepump (berg, mark, sjö)",
-          .factor = 2.50,
-          .etype = ELECTRIC },
-        { .name = "Biobränslepanna (pellets, ved, flis m.m.)",
-          .factor = 0.75,
-          .etype = BIOBRANSLE },
-        { .name = "Olja",
-          .factor = 0.85,
-          .etype = FOSSIL_OLJA },
-        { .name = "Gaspanna",
-          .factor = 0.90,
-          .etype = FOSSIL_GAS }
+        { .name = "Fjärrvärme", .factor = 1.00, .etype = FJARRVARME },
+        { .name = "El, direktverkande och elpanna", .factor = 1.00, .etype = ELECTRIC },
+        { .name = "El, frånluftsvärmepump", .factor = 1.70, .etype = ELECTRIC },
+        { .name = "El, uteluft-vattenvärmepump", .factor = 2.00, .etype = ELECTRIC },
+        { .name = "El, markvärmepump (berg, mark, sjö)", .factor = 2.50, .etype = ELECTRIC },
+        { .name = "Biobränslepanna (pellets, ved, flis m.m.)", .factor = 0.75, .etype = BIOBRANSLE },
+        { .name = "Olja", .factor = 0.85, .etype = FOSSIL_OLJA },
+        { .name = "Gaspanna", .factor = 0.90, .etype = FOSSIL_GAS }
 };
 const double TvvMult[HOUSE_TYPE_COUNT] = {
         [SMALL] = 20,
