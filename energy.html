@@ -24,87 +24,69 @@
 			<div id="disclaimer" class="disclaimer-box"></div>
 
 			<form id="houseForm">
-				<label for="geography" id="lbl_geography">
-					<span id="geography_label"></span>
-					<span class="info-icon" id="geography_help_icon"></span>
-				</label>
-				<select id="geography" name="geography"></select>
-				<div id="geography_help" class="help-box"></div>
-				<br />
+                                <label for="geography" id="lbl_geography">
+                                        <span id="geography_label"></span>
+                                </label>
+                                <select id="geography" name="geography"></select>
+                                <br />
 
-				<label for="housetype" id="lbl_housetype">
-					<span id="housetype_label"></span>
-					<span class="info-icon" id="housetype_help_icon"></span>
-				</label>
-				<select id="housetype" name="housetype">
+                                <label for="housetype" id="lbl_housetype">
+                                        <span id="housetype_label"></span>
+                                </label>
+                                <select id="housetype" name="housetype">
 					<option value="SMALL" id="option_housetype_SMALL">småhus</option>
 					<option value="MULTI" id="option_housetype_MULTI">flerbostadshus</option>
 					<option value="LOCAL" id="option_housetype_LOCAL">lokal</option>
 				</select>
-				<div id="housetype_help" class="help-box"></div>
-				<br />
+                                <br />
 
 				<!-- Box only shown in certain cases -->
 				<div id="footnoteBox" style="display: none; border: 1px solid #aaa; padding: 0.5rem; margin-top: 0.5rem; background: #f9f9f9;">
 					<p id="footnotes_heading" class="footnotes-heading"></p>
 
-					<label id="lbl_foot2" style="display: none;">
-						<input type="checkbox" id="foot2" name="foot2">
-						<span id="foot2_label"></span>
-						<span class="info-icon" id="foot2_help_icon"></span>
-					</label>
-					<div id="foot2_help" class="help-box"></div>
+                                        <label id="lbl_foot2" style="display: none;">
+                                                <input type="checkbox" id="foot2" name="foot2">
+                                                <span id="foot2_label"></span>
+                                        </label>
 
-					<label id="lbl_foot3" style="display: none;">
-						<input type="checkbox" id="foot3" name="foot3">
-						<span id="foot3_label"></span>
-						<span class="info-icon" id="foot3_help_icon"></span>
-					</label>
-					<div id="foot3_help" class="help-box"></div>
+                                        <label id="lbl_foot3" style="display: none;">
+                                                <input type="checkbox" id="foot3" name="foot3">
+                                                <span id="foot3_label"></span>
+                                        </label>
 
-					<label id="lbl_foot4" style="display: none;">
-						<input type="checkbox" id="foot4" name="foot4">
-						<span id="foot4_label"></span>
-						<span class="info-icon" id="foot4_help_icon"></span>
-					</label>
-					<div id="foot4_help" class="help-box"></div>
+                                        <label id="lbl_foot4" style="display: none;">
+                                                <input type="checkbox" id="foot4" name="foot4">
+                                                <span id="foot4_label"></span>
+                                        </label>
 
-					<label id="lbl_foot5" style="display: none;">
-						<input type="checkbox" id="foot5" name="foot5">
-						<span id="foot5_label"></span>
-						<span class="info-icon" id="foot5_help_icon"></span>
-					</label>
-					<div id="foot5_help" class="help-box"></div>
+                                        <label id="lbl_foot5" style="display: none;">
+                                                <input type="checkbox" id="foot5" name="foot5">
+                                                <span id="foot5_label"></span>
+                                        </label>
 
 
 
 
-					<div id="flowContainer" style="display:none; margin-top:0.5rem;">
-						<label id="lbl_flow">
-							<span id="flow_label"></span>
-							<span class="info-icon" id="flow_help_icon"></span>
-						</label>
-						<input type="number" id="flow" name="flow" step="0.01">
-						<div id="flow_help" class="help-box"></div>
-					</div>
+                                        <div id="flowContainer" style="display:none; margin-top:0.5rem;">
+                                                <label id="lbl_flow">
+                                                        <span id="flow_label"></span>
+                                                </label>
+                                                <input type="number" id="flow" name="flow" step="0.01">
+                                        </div>
 
 				</div>
 				<br />
 
 				<!--  -->
-				<label for="atemp" id="lbl_atemp">
-					<span id="atemp_label"></span>
-					<span class="info-icon" id="atemp_help_icon"></span>
-				</label>
+                                <label for="atemp" id="lbl_atemp">
+                                        <span id="atemp_label"></span>
+                                </label>
                                 <input type="number" id="atemp" name="atemp" min="0">
-                                <div id="atemp_help" class="help-box"></div>
 
                                 <label for="tvvType" id="lbl_tvvType">
                                         <span id="tvvType_label"></span>
-                                        <span class="info-icon" id="tvvType_help_icon"></span>
                                 </label>
                                 <select id="tvvType" name="tvvType"></select>
-                                <div id="tvvType_help" class="help-box"></div>
                                 <br /><br />
 
                                 <label id="energy_table_label"></label><br />
@@ -123,13 +105,10 @@
 				</br>
 
 
-				<label for="permalink" id="lbl_permalink">
-					<span id="permalink_label"></span>
-
-					<span class="info-icon" id="permalink_help_icon"></span>
-					<div id="permalink_help" class="help-box"></div>
-				</label>
-				<textarea id="permalink" rows="3" readonly></textarea>
+                                <label for="permalink" id="lbl_permalink">
+                                        <span id="permalink_label"></span>
+                                </label>
+                                <textarea id="permalink" rows="3" readonly></textarea>
                                 <button id="copy_button" class="copy-btn" type="button" style="display: block; margin: 0.5rem auto;" > </button>
 
 
@@ -139,10 +118,8 @@
 
 			</form>
 
-			<div id="results">
-				<h2 id="ep_label" style="display:inline;"></h2>
-				<span class="info-icon" id="ep_help_icon"></span>
-				<div id="ep_help" class="help-box"></div>
+                        <div id="results">
+                                <h2 id="ep_label" style="display:inline;"></h2>
 
                                 <h3 id="upper_limits_heading" ></h3>
 				<p id="upperLimitLabel" style="margin-top: 1rem; font-weight: bold;"></p>
