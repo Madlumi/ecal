@@ -86,10 +86,13 @@ const double TvvMult[HOUSE_TYPE_COUNT] = {
 //=Energy Use=================
 //============================
 typedef struct {
-	D heat[E_TYPE_COUNT];
-	D cool[E_TYPE_COUNT];
-	D watr[E_TYPE_COUNT];
-	D fast[E_TYPE_COUNT];
+        D heat[E_TYPE_COUNT];
+        D cool[E_TYPE_COUNT];
+        D watr[E_TYPE_COUNT];
+        D fast[E_TYPE_COUNT];
+        D heat_ren[E_TYPE_COUNT];
+        D cool_ren[E_TYPE_COUNT];
+        D watr_ren[E_TYPE_COUNT];
 } Energy;
 
 //============================
@@ -235,15 +238,15 @@ I EPpet(const House *h) {
 	D F_geo = h->L->F_geo;
 	I  Atemp = h->Atemp;
 
-	for (I i = 0; i < E_TYPE_COUNT; i++) {
-		total += (
-				(h->E.heat[i] / F_geo
-				 + h->E.cool[i]
-				 + h->E.watr[i]
-				 + h->E.fast[i])
-				* (E_types[i].factor / Atemp)
-			 );
-	}
+        for (I i = 0; i < E_TYPE_COUNT; i++) {
+                total += (
+                                ((h->E.heat[i] - h->E.heat_ren[i]) / F_geo
+                                 + (h->E.cool[i] - h->E.cool_ren[i])
+                                 + (h->E.watr[i] - h->E.watr_ren[i])
+                                 + h->E.fast[i])
+                                * (E_types[i].factor / Atemp)
+                         );
+        }
 	R (I)total;
 }
 
