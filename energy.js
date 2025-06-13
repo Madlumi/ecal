@@ -140,14 +140,13 @@ function el3(F_geo, flow, atemp) {
 }
 
 function ep4(F_geo, flow, qavg, atemp, Foot4) {
-  qavg = flow; // treat instantaneous as average here
   // ... i flerbostadshus där Atemp är 50 m² eller större
   if (atemp < 50) { return 0; }
   // q_medel är uteluftsflödet i temperaturreglerade utrymmen överstiger 0,35 l/s·m²
   if (qavg <= 0.35) { return 0; }
   // Tillägget kan enbart användas på grund av krav på ventilation i särskilda utrymmen som badrum, toalett och kök
   if (!Foot4) { return 0; }
-  // får högst tillgodoräknas upp till 0,6 l/s·m²
+  // q_medel får högst tillgodoräknas upp till 0,6 l/s·m²
   if (qavg > 0.6) { qavg = 0.6; }
   return 40 * (qavg - 0.35);
 }

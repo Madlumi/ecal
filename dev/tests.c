@@ -60,6 +60,7 @@ I THelpers() {
     if(!DEQ(ep2(0.5),6.0,0.01)){PF("ep2 FAIL\n");F++;}
     if(!DEQ(el3(1.1,0.4,100),0.12,0.01)){PF("el3 FAIL\n");F++;}
     if(!DEQ(ep4(1.1,0.5,0.4,100,1),2.0,0.01)){PF("ep4 FAIL\n");F++;}
+    if(!DEQ(ep4(1.1,0.8,0.7,100,1),10.0,0.01)){PF("ep4 cap FAIL\n");F++;}
     if(!DEQ(el5(1.1,0.5,100,1),0.36,0.01)){PF("el5 FAIL\n");F++;}
     R F;
 }
