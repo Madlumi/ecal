@@ -24,6 +24,10 @@ typedef enum {
 	LOCAL,
 	HOUSE_TYPE_COUNT
 } HouseType;
+typedef enum {
+	SMALL_, MULTI_, MULTI_OLD, LOCAL_OFFICE, LOCAL_PRESCOOL, LOCAL_SCHOOL, LOCAL_UNI,
+	HOUSE__SUB_TYPE_COUNT
+} HouseSubType;
 const char *HouseType_name[HOUSE_TYPE_COUNT] = {
 	[SMALL] = "SMALL",
 	[MULTI] = "MULTI",
@@ -57,6 +61,11 @@ typedef struct {
         D     factor;
         EType etype;
 } TvvEntry;
+
+typedef struct {
+        D     U_roof;
+	///...
+} Uvals;
 
 
 static const Location locations[] = {
@@ -105,15 +114,22 @@ typedef struct {
         const Location *L;       // location pointer
         D              flow;       // Instantaneous airflow (q) [l/s·m²]
         D              qavg;       // Average airflow (q_medel) [l/s·m²]
+        TvvEntry     tvvSrc;	//source of hot water
+	I 		Rooms;	//rooms+kitchens
 
-        TvvEntry     tvvSrc;
+	D 		HouseHoldEnergy; //stubb
 
+
+	UVals uval;		//list of uvalues
+	I* 		energyusage; //pointer to function?
         I              foot2;      // Footnote-2 flag
         I              foot3;      // Footnote-3 flag
         I              foot4;      // Footnote-4 flag
         I              foot5;      // Footnote-5 flag
-
 } House;
+typedef struct {
+	const I PersonHeat=80; //watts
+}GouseConsts;
 
 //returns the calculated tvv value for the selected building type
 D Tvv(House H) {
@@ -184,6 +200,7 @@ D el5(D F_geo, D flow, I atemp, I Foot5) {
 //=Function Prototypes========
 //============================
 House     newHouse(HouseType type, I atemp, const Location *L, const TvvEntry *tvvSrc);
+I         EnergyUsage(const House *h);
 I         EPpet(const House *h);
 LimitVals limit(const House *h);
 void      printHouse(const House *h);
@@ -260,7 +277,7 @@ LimitVals limit(const House *h) {
 	D      flow  = h->flow;
 	D      qavg  = h->qavg;
 
-        if (Atemp <= 0) { R 0; }
+        if (atemp <= 0) { R 0; }
 
 	if (h->type == SMALL) {
 		if (atemp > 130) {
