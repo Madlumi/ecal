@@ -215,11 +215,16 @@ House newHouse(HouseType type, I atemp, const Location *L, const TvvEntry *tvvSr
 	memset(&h.E, 0, sizeof(Energy));
 	h.L      = L;
 
-	h.flow   = 0.0;
-	h.qavg   = 0.0;
-	h.foot4  = 0;  h.foot2  = 0;
+        h.flow   = 0.0;
+        h.qavg   = 0.0;
+        h.Rooms  = 0;
+        h.HouseHoldEnergy = 0.0;
+        memset(&h.uval, 0, sizeof(UVals));
+        h.energyusage = NULL;
+
+        h.foot4  = 0;  h.foot2  = 0;
         h.foot3  = 0;
-	h.foot5  = 0;
+        h.foot5  = 0;
         h.tvvSrc = *tvvSrc;
         h.E.watr[tvvSrc->etype] = Tvv(h);
         R h;
@@ -335,9 +340,12 @@ LimitVals limit(const House *h) {
 //=Print House Data===========
 //============================
 void printHouse(const House *h) {
-	printf("House type: %s\n", HouseType_name[h->type]);
-	printf("Atemp: %d m²\n", h->Atemp);
-	printf("location: %s (F_geo = %.2f)\n", h->L->name, h->L->F_geo);
+        printf("House type: %s\n", HouseType_name[h->type]);
+        printf("Atemp: %d m²\n", h->Atemp);
+        printf("location: %s (F_geo = %.2f)\n", h->L->name, h->L->F_geo);
+        printf("Rooms: %d\n", h->Rooms);
+        printf("Household energy: %.1f\n", h->HouseHoldEnergy);
+        printf("U_roof: %.2f\n", h->uval.U_roof);
         printf("Flow (q): %.2f   qavg (q_medel): %.2f\n", h->flow, h->qavg);
         printf("Foot2: %s   Foot3: %s   Foot4: %s   Foot5: %s\n",
                         h->foot2 ? "Yes" : "No",
