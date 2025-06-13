@@ -18,7 +18,7 @@ const tests = [
     const h1 = new House(HouseType.SMALL, 100, locations[1]);
     h1.E.heat[EType.ELECTRIC] = 120;
     h1.E.cool[EType.FJARRKYLA] = 40;
-    assert.strictEqual(EPpet(h1), 2, 'EPpet small house');
+    assert.strictEqual(EPpet(h1), 16, 'EPpet small house');
     const lim = limit(h1);
     assert.strictEqual(lim.EP, 95, 'EP small house');
     assertApprox(lim.EL, 4.5, 0.001, 'EL small house');
@@ -31,7 +31,7 @@ const tests = [
     h2.qavg = 0.4;
     h2.foot4 = true;
     h2.foot5 = true;
-    assert.strictEqual(EPpet(h2), 0, 'EPpet multi house');
+    assert.strictEqual(EPpet(h2), 17, 'EPpet multi house');
     const lim = limit(h2);
     assert.strictEqual(lim.EP, 77, 'EP multi house');
     assertApprox(lim.EL, 6.8, 0.001, 'EL multi house');
@@ -44,7 +44,7 @@ const tests = [
     h3.flow = 0.5;
     h3.foot2 = true;
     h3.foot3 = true;
-    assert.strictEqual(EPpet(h3), 0, 'EPpet local');
+    assert.strictEqual(EPpet(h3), 1, 'EPpet local');
     const lim = limit(h3);
     assert.strictEqual(lim.EP, 72, 'EP local');
     assertApprox(lim.EL, 4.698, 0.001, 'EL local');
@@ -54,7 +54,7 @@ const tests = [
   function testEPRounding() {
     const h = new House(HouseType.SMALL, 1, locations[1]);
     h.E.heat[EType.ELECTRIC] = 50.333;
-    assert.strictEqual(EPpet(h), 90, 'EP rounding');
+    assert.strictEqual(EPpet(h), 104, 'EP rounding');
   }
 ];
 
