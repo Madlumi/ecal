@@ -42,7 +42,9 @@ I TNewHouse() {
     House h = newHouse(SMALL, 100, &locations[0], &tvvFactors[1]);
     if (h.E.heat[ELECTRIC] == 0.0 && h.E.cool[ELECTRIC] == 0.0 &&
         h.E.watr[ELECTRIC] == 2000.0 && h.foot2 == 0 && h.foot3 == 0 &&
-        h.foot4 == 0 && h.foot5 == 0) {
+        h.foot4 == 0 && h.foot5 == 0 && h.Rooms == 0 &&
+        DEQ(h.HouseHoldEnergy, 0.0, 0.0001) &&
+        DEQ(h.uval.U_roof, 0.0, 0.0001) && h.energyusage == NULL) {
         PF("newHouse PASS\n");
     } else {
         PF("newHouse FAIL\n");

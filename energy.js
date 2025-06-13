@@ -88,6 +88,10 @@ class House {
     this.L      = location;  // Location object
     this.flow   = 0.0;       // Instantaneous airflow (q) [l/s·m²]
     this.qavg   = 0.0;       // Average airflow (q_medel) [l/s·m²]
+    this.Rooms  = 0;         // rooms+kitchens
+    this.HouseHoldEnergy = 0.0; // placeholder for household energy
+    this.uval   = { U_roof: 0.0 }; // list of u-values
+    this.energyusage = null; // pointer/function for usage data
     this.foot2  = false;     // Footnote‐2 flag (LOCAL)
     this.foot3  = false;     // Footnote‐3 flag (LOCAL)
     this.foot4  = false;     // Footnote‐4 flag (MULTI)
@@ -252,6 +256,9 @@ function printHouse(house) {
   console.log(`House type: ${HouseType_name[house.type]}`);
   console.log(`Atemp: ${house.Atemp} m²`);
   console.log(`Location: ${house.L.name} (F_geo = ${house.L.F_geo.toFixed(2)})`);
+  console.log(`Rooms: ${house.Rooms}`);
+  console.log(`Household energy: ${house.HouseHoldEnergy.toFixed(1)}`);
+  console.log(`U_roof: ${house.uval.U_roof.toFixed(2)}`);
   console.log(`Flow (q): ${house.flow.toFixed(2)}   qavg (q_medel): ${house.qavg.toFixed(2)}`);
   console.log(`Foot2: ${house.foot2 ? "Yes" : "No"}   Foot3: ${house.foot3 ? "Yes" : "No"}   Foot4: ${house.foot4 ? "Yes" : "No"}   Foot5: ${house.foot5 ? "Yes" : "No"}`);
   console.log("Energy use:");

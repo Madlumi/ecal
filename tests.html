@@ -59,6 +59,13 @@
     }
 
     const tests = [
+      function testNewHouse() {
+        const h = new House(HouseType.SMALL, 100, locations[1]);
+        assertEqual(h.Rooms, 0, 'Rooms default');
+        assertEqual(h.HouseHoldEnergy, 0, 'HouseHoldEnergy default');
+        assertEqual(h.uval.U_roof, 0, 'uval default');
+        assertEqual(h.energyusage, null, 'energyusage default');
+      },
       function testSmallHouse() {
         const h1 = new House(HouseType.SMALL, 100, locations[1]);
         h1.E.heat[EType.ELECTRIC] = 120;
