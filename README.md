@@ -49,6 +49,8 @@ For any key `x`, a “?” help icon will be shown **if and only if** all of the
 ## Development and Testing
 
 Run the automated tests by opening `tests.html` in a browser.
+Run the C tests with `./run_tests.sh` and check `test_output.txt` for results.
+
 
 ---
 ## File Structure
