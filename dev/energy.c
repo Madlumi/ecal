@@ -178,8 +178,8 @@ D ep4(D F_geo, D flow, D qavg, I atemp, I Foot4) {
 	if (qavg <= 0.35) { R 0; }
 	// Tillägget kan enbart användas på grund av krav på ventilation i särskilda utrymmen som badrum, toalett och kök
 	if (!Foot4) { R 0; }
-	// får högst tillgodoräknas upp till 0,6 l/s·m²
-	if (flow > 0.6) { flow = 0.6; }
+        // q_medel får högst tillgodoräknas upp till 0,6 l/s·m²
+        if (qavg > 0.6) { qavg = 0.6; }
 	R 40 * (qavg - 0.35);
 }
 
