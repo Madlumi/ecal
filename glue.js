@@ -21,6 +21,7 @@ const foot3Lbl    = document.getElementById("lbl_foot3");
 const foot4Lbl    = document.getElementById("lbl_foot4");
 const foot5Lbl    = document.getElementById("lbl_foot5");
 const heatEls  = window.heatEls, coolEls  = window.coolEls, watrEls  = window.watrEls, fastEls  = window.fastEls;
+const heatRenEls = window.heatRenEls, coolRenEls = window.coolRenEls, watrRenEls = window.watrRenEls;
 const outEP    = document.getElementById("ep_label"), limitsT  = document.getElementById("limitsTable");
 const table = document.getElementById("energyTable");
 
@@ -245,6 +246,62 @@ function loadEnergyTable() {
 	// hide the row‐help box initially
 	document.getElementById("energyRowHelpBox").style.display = "none";
 }
+
+function loadRenewablesTable() {
+        const table = document.getElementById("renewablesTable");
+        table.innerHTML = "";
+
+        const measureKeys = ["heat_ren","cool_ren","watr_ren"];
+        const measureEls  = {};
+        measureKeys.forEach(k => measureEls[k] = []);
+
+        const thead = table.createTHead();
+        const hr    = thead.insertRow();
+        hr.insertCell().textContent = "";
+        E_name.forEach(name => hr.insertCell().textContent = name);
+
+        const tbody = table.createTBody();
+        measureKeys.forEach(key => {
+                const base = key.replace('_ren','');
+                const labelKey = `renewables_row_${base}`;
+                const helpKey  = `${labelKey}_help`;
+                const row      = tbody.insertRow();
+                const cell     = row.insertCell();
+
+                cell.textContent = getString(labelKey);
+
+                const helpText = getString(helpKey).trim();
+                if (helpText) {
+                        const icon = document.createElement("span");
+                        icon.className   = "info-icon";
+                        icon.textContent = getString("info_icon");
+                        icon.onclick = () => {
+                                const box = document.getElementById("renewablesRowHelpBox");
+                                if (box.innerHTML === helpText && box.style.display === "block") {
+                                        box.style.display = "none";
+                                } else {
+                                        box.innerHTML     = helpText;
+                                        box.style.display = "block";
+                                }
+                        };
+                        cell.appendChild(icon);
+                }
+
+                for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
+                        const c = row.insertCell();
+                        const id = `${key}-${E_name[i].toLowerCase().replace(/\s+/g, "_")}`;
+                        const inp = Object.assign(document.createElement("input"), { type: "number", step: "any", id, name: id });
+                        c.appendChild(inp);
+                        measureEls[key].push(inp);
+                }
+        });
+
+        window.heatRenEls = measureEls.heat_ren;
+        window.coolRenEls = measureEls.cool_ren;
+        window.watrRenEls = measureEls.watr_ren;
+
+        document.getElementById("renewablesRowHelpBox").style.display = "none";
+}
 //expandable footnote additon box
 
 function updateFootnotes() {
@@ -281,12 +338,15 @@ function calculate() {
 
 
 
-	for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
-		h.E.heat[i] = parseFloat( window.heatEls[i]?.value ) || 0;
-		h.E.cool[i] = parseFloat( window.coolEls[i]?.value ) || 0;
-		h.E.watr[i] = parseFloat( window.watrEls[i]?.value ) || 0;
-		h.E.fast[i] = parseFloat( window.fastEls[i]?.value ) || 0;
-	}
+        for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
+                h.E.heat[i] = parseFloat( window.heatEls[i]?.value ) || 0;
+                h.E.cool[i] = parseFloat( window.coolEls[i]?.value ) || 0;
+                h.E.watr[i] = parseFloat( window.watrEls[i]?.value ) || 0;
+                h.E.fast[i] = parseFloat( window.fastEls[i]?.value ) || 0;
+                h.E.heat_ren[i] = parseFloat( window.heatRenEls?.[i]?.value ) || 0;
+                h.E.cool_ren[i] = parseFloat( window.coolRenEls?.[i]?.value ) || 0;
+                h.E.watr_ren[i] = parseFloat( window.watrRenEls?.[i]?.value ) || 0;
+        }
 
 	const epv = EPpet(h) | 0;
 	const lim = limit(h);
@@ -350,12 +410,15 @@ function calculate() {
 	if(f3.checked)ps.set("foot3","1");
 	if(f4.checked)ps.set("foot4","1");
 	if(f5.checked)ps.set("foot5","1");
-	for (let i=0;i<EType.E_TYPE_COUNT;i++){
-		if(h.E.heat[i])ps.set(`heat${i}`, h.E.heat[i]);
-		if(h.E.cool[i])ps.set(`cool${i}`, h.E.cool[i]);
-		if(h.E.watr[i])ps.set(`watr${i}`, h.E.watr[i]);
-		if(h.E.fast[i])ps.set(`fast${i}`, h.E.fast[i]);
-	}
+        for (let i=0;i<EType.E_TYPE_COUNT;i++){
+                if(h.E.heat[i])ps.set(`heat${i}`, h.E.heat[i]);
+                if(h.E.cool[i])ps.set(`cool${i}`, h.E.cool[i]);
+                if(h.E.watr[i])ps.set(`watr${i}`, h.E.watr[i]);
+                if(h.E.fast[i])ps.set(`fast${i}`, h.E.fast[i]);
+                if(h.E.heat_ren[i])ps.set(`heat_ren${i}`, h.E.heat_ren[i]);
+                if(h.E.cool_ren[i])ps.set(`cool_ren${i}`, h.E.cool_ren[i]);
+                if(h.E.watr_ren[i])ps.set(`watr_ren${i}`, h.E.watr_ren[i]);
+        }
 	document.getElementById("permalink").value = window.location.pathname + "?" + ps;
 	return epv;
 }
@@ -378,17 +441,28 @@ function prefillFromURL() {
 	[f2, f3, f4, f5].forEach((el, idx) => { el.checked = params.get(`foot${idx + 2}`) === "1"; });
 
 	// energy inputs: heat0, heat1, … cool0, … etc.
-	["heat","cool","watr","fast"].forEach(key => {
-		for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
-			const paramName = `${key}${i}`;
-			const val = params.get(paramName);
-			// build the same id you used in getEnergyTable()
-			const id = `${key}-${E_name[i].toLowerCase().replace(/\s+/g,"_")}`;
-			const inp = document.getElementById(id);
-			if (!inp) continue;
-			inp.value = val !== null ? val : "";
-		}
-	});
+        ["heat","cool","watr","fast"].forEach(key => {
+                for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
+                        const paramName = `${key}${i}`;
+                        const val = params.get(paramName);
+                        // build the same id you used in getEnergyTable()
+                        const id = `${key}-${E_name[i].toLowerCase().replace(/\s+/g,"_")}`;
+                        const inp = document.getElementById(id);
+                        if (!inp) continue;
+                        inp.value = val !== null ? val : "";
+                }
+        });
+
+        ["heat_ren","cool_ren","watr_ren"].forEach(key => {
+                for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
+                        const paramName = `${key}${i}`;
+                        const val = params.get(paramName);
+                        const id = `${key}-${E_name[i].toLowerCase().replace(/\s+/g,"_")}`;
+                        const inp = document.getElementById(id);
+                        if (!inp) continue;
+                        inp.value = val !== null ? val : "";
+                }
+        });
 }
 
 
@@ -398,9 +472,10 @@ function main(){
 	applyLanguage();
 
     loadGeography();
-	loadEnergyTable();
+        loadEnergyTable();
+        loadRenewablesTable();
 
-	prefillFromURL();
+        prefillFromURL();
 
 	registerListeners();
 

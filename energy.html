@@ -100,18 +100,22 @@
 				<div id="atemp_help" class="help-box"></div>
 				<br /><br />
 
-				<label id="energy_table_label"></label><br />
+                                <label id="energy_table_label"></label><br />
 
-				<!-- Lock improbable combos -->
-				<script>
-					const LOCKED_COMBINATIONS = [
-						{ measureKey: "heat", sourceIndex: EType.FJARRKYLA },
-						{ measureKey: "cool", sourceIndex: EType.FJARRVARME }
-					];
-				</script>
-				<!--(table built in code)-->
-				<table id="energyTable"></table>
-				<div id="energyRowHelpBox" class="help-box"></div>
+                                <!-- Lock improbable combos -->
+                                <script>
+                                        const LOCKED_COMBINATIONS = [
+                                                { measureKey: "heat", sourceIndex: EType.FJARRKYLA },
+                                                { measureKey: "cool", sourceIndex: EType.FJARRVARME }
+                                        ];
+                                </script>
+                                <!--(table built in code)-->
+                                <table id="energyTable"></table>
+                                <div id="energyRowHelpBox" class="help-box"></div>
+
+                                <label id="renewables_table_label" style="margin-top:1rem;"></label><br />
+                                <table id="renewablesTable"></table>
+                                <div id="renewablesRowHelpBox" class="help-box"></div>
 
 				</br>
 

@@ -253,11 +253,36 @@ const STRINGS = {
 		en: "",
 		fi: ""
 	},
-	energy_row_fast_help: {
-		sv: "Fastighetsenergi, kWh/år. Den del av byggnadens energianvändning som är relaterad till byggnadens behov där den energikrävande apparaten finns inom under eller anbringad på utsidan av byggnaden. I fastighetsenergin ingår fast belysning i allmänna utrymmen och driftsutrymmen. Dessutom ingår energi som används i värmekablar, pumpar, fläktar, motorer, styr‐ och övervakningsutrustning och dylikt. Även externt lokalt placerad apparat som försörjer byggnaden, exempelvis pumpar och fläktar för frikyla, inräknas. Apparater avsedda för annan användning än för byggnaden, exempelvis motor‐ och kupévärmare för fordon, batteriladdare för extern användare, belysning i trädgård och på gångstråk, inräknas inte. Med fastighetsel menas den del av fastighetsenergin som är elbaserad.",
-		en: "Facility energy, kWh/yr. The portion of the building’s energy use related to equipment installed within, under, or attached to the building. Includes fixed lighting in common areas and service spaces, plus energy used by heating cables, pumps, fans, motors, control/monitoring equipment, etc. Also includes externally placed equipment serving the building (e.g. free‐cooling pumps/fans). Excludes equipment intended for non‐building uses (e.g. vehicle block heaters, external battery chargers, garden path lighting). Facility electricity—i.e. that portion of facility energy which is electric—also counts here.",
-		fi: "Kiinteistöenergia, kWh/v. Rakennuksen energiankulutuksen osa, joka liittyy laitteisiin, jotka on asennettu rakennuksen sisälle, alle tai kiinnitetty rakennuksen ulkopuolelle. Sisältää kiinteän valaistuksen yleisissä tiloissa ja huoltotiloissa sekä energian, jota käyttävät lämpökaapelit, pumput, puhaltimet, moottorit, ohjaus‐ ja valvontalaitteet jne. Sisältää myös rakennusta palvelevat ulkoiset laitteet (esim. vapaajäähdytyspumput tai puhaltimet). Ei sisällä laitteita, joiden tarkoitus on muu kuin rakennuksen käyttö (esim. ajoneuvojen lohkolämmittimet, ulkoiset lataajat, puistovalaistus). Kiinteistösähkö eli se osa kiinteistöenergiasta, joka on sähköä, lasketaan mukaan."
-	},
+        energy_row_fast_help: {
+                sv: "Fastighetsenergi, kWh/år. Den del av byggnadens energianvändning som är relaterad till byggnadens behov där den energikrävande apparaten finns inom under eller anbringad på utsidan av byggnaden. I fastighetsenergin ingår fast belysning i allmänna utrymmen och driftsutrymmen. Dessutom ingår energi som används i värmekablar, pumpar, fläktar, motorer, styr‐ och övervakningsutrustning och dylikt. Även externt lokalt placerad apparat som försörjer byggnaden, exempelvis pumpar och fläktar för frikyla, inräknas. Apparater avsedda för annan användning än för byggnaden, exempelvis motor‐ och kupévärmare för fordon, batteriladdare för extern användare, belysning i trädgård och på gångstråk, inräknas inte. Med fastighetsel menas den del av fastighetsenergin som är elbaserad.",
+                en: "Facility energy, kWh/yr. The portion of the building’s energy use related to equipment installed within, under, or attached to the building. Includes fixed lighting in common areas and service spaces, plus energy used by heating cables, pumps, fans, motors, control/monitoring equipment, etc. Also includes externally placed equipment serving the building (e.g. free‐cooling pumps/fans). Excludes equipment intended for non‐building uses (e.g. vehicle block heaters, external battery chargers, garden path lighting). Facility electricity—i.e. that portion of facility energy which is electric—also counts here.",
+                fi: "Kiinteistöenergia, kWh/v. Rakennuksen energiankulutuksen osa, joka liittyy laitteisiin, jotka on asennettu rakennuksen sisälle, alle tai kiinnitetty rakennuksen ulkopuolelle. Sisältää kiinteän valaistuksen yleisissä tiloissa ja huoltotiloissa sekä energian, jota käyttävät lämpökaapelit, pumput, puhaltimet, moottorit, ohjaus‐ ja valvontalaitteet jne. Sisältää myös rakennusta palvelevat ulkoiset laitteet (esim. vapaajäähdytyspumput tai puhaltimet). Ei sisällä laitteita, joiden tarkoitus on muu kuin rakennuksen käyttö (esim. ajoneuvojen lohkolämmittimet, ulkoiset lataajat, puistovalaistus). Kiinteistösähkö eli se osa kiinteistöenergiasta, joka on sähköä, lasketaan mukaan."
+        },
+
+        renewables_table_label: {
+                sv: "Förnybar energi (kW/år):",
+                en: "Renewable energy:",
+                fi: "Uusiutuva energia:"
+        },
+        renewables_row_heat: {
+                sv: "Värme",
+                en: "Heat",
+                fi: "Lämpö"
+        },
+        renewables_row_cool: {
+                sv: "Kylning",
+                en: "Cooling",
+                fi: "Jäähdytys"
+        },
+        renewables_row_watr: {
+                sv: "Vatten",
+                en: "Water",
+                fi: "Vesi"
+        },
+        renewables_row_heat_help: { sv:"", en:"", fi:"" },
+        renewables_row_cool_help: { sv:"", en:"", fi:"" },
+        renewables_row_watr_help: { sv:"", en:"", fi:"" },
+
 
 	// “?” icon character
 	info_icon: {
