@@ -84,6 +84,12 @@
                                                 <span id="atemp_label"></span>
                                         </label>
                                         <input type="number" id="atemp" name="atemp" min="0">
+
+                                        <br />
+                                        <label for="rooms" id="lbl_rooms">
+                                                <span id="rooms_label"></span>
+                                        </label>
+                                        <input type="number" id="rooms" name="rooms" min="0" step="1">
                                 </details>
 
                                 <details class="input-section" open>
@@ -95,24 +101,6 @@
                                         <select id="tvvType" name="tvvType"></select>
                                 </details>
 
-                                <details class="input-section" open>
-                                        <summary id="section_energy_heading"></summary>
-
-                                        <label id="energy_table_label"></label><br />
-
-                                        <!-- Lock improbable combos -->
-                                        <script>
-                                                const LOCKED_COMBINATIONS = [
-                                                        { measureKey: "heat", sourceIndex: EType.FJARRKYLA },
-                                                        { measureKey: "cool", sourceIndex: EType.FJARRVARME }
-                                                ];
-                                        </script>
-                                        <!--(table built in code)-->
-                                        <table id="energyTable"></table>
-                                        <div id="energyRowHelpBox" class="help-box"></div>
-                                        <div id="calc_help" class="help-box"></div>
-
-                                </details>
 
 <details class="input-section" open>
     <summary id="section_energyinput_heading"></summary>
@@ -133,6 +121,25 @@
     <input type="number" id="dedTimeDays" value="7" step="any" style="width:4rem;"> d/v
     <input type="number" id="dedTimeWeeks" value="52" step="any" style="width:4rem;"> v/år
 </details>
+
+                                <details class="input-section" open>
+                                        <summary id="section_energy_heading"></summary>
+
+                                        <label id="energy_table_label"></label><br />
+
+                                        <!-- Lock improbable combos -->
+                                        <script>
+                                                const LOCKED_COMBINATIONS = [
+                                                        { measureKey: "heat", sourceIndex: EType.FJARRKYLA },
+                                                        { measureKey: "cool", sourceIndex: EType.FJARRVARME }
+                                                ];
+                                        </script>
+                                        <!--(table built in code)-->
+                                        <table id="energyTable"></table>
+                                        <div id="energyRowHelpBox" class="help-box"></div>
+                                        <div id="calc_help" class="help-box"></div>
+
+                                </details>
                                 </br>
 
 

@@ -93,8 +93,8 @@ form#houseForm table td {
 
 form#houseForm table th:last-child,
 form#houseForm table td:last-child {
-  width: 3ch;
-  max-width: 3ch;
+  width: 4ch;
+  max-width: 4ch;
 }
 
 form#houseForm th {
@@ -305,7 +305,7 @@ th, td {
 
 #energyTable th:last-child,
 #energyTable td:last-child {
-  width: 3rem;
+  width: 3.5rem;
 }
 
 th {
