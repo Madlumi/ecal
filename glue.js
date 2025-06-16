@@ -41,7 +41,14 @@ class ValueBox {
     this.updateVisual();
   }
   updateVisual() {
-    if (this.allowToggle) this.box.readOnly = this.locked;
+    if (this.allowToggle) {
+      this.box.disabled = this.locked;
+    }
+    if (this.locked) {
+      this.box.classList.add("locked");
+    } else {
+      this.box.classList.remove("locked");
+    }
     this.but.textContent = this.locked ? "🔒" : "🔓";
   }
   setCalc(v) {
