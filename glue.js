@@ -642,8 +642,10 @@ function calculate() {
 		if(h.E.watr[i])ps.set(`watr${i}`, h.E.watr[i]);
 		if(h.E.fast[i])ps.set(`fast${i}`, h.E.fast[i]);
 	}
-	$("permalink").value = window.location.pathname + "?" + ps;
-	return epv;
+        const newUrl = window.location.pathname + "?" + ps.toString();
+        $("permalink").value = newUrl;
+        history.replaceState(null, "", newUrl);
+        return epv;
 }
 
 
