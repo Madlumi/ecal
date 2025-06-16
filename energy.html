@@ -94,28 +94,50 @@
 
 <details class="input-section" open>
     <summary id="section_energyinput_heading"></summary>
-    <label id="lbl_heatEnergy">
-        <span id="heatEnergy_label"></span>
-        <input type="number" id="heatEnergy" name="heatEnergy" step="any">
-        <select id="heatEnergyType" name="heatEnergyType"></select>
-    </label>
-    <br />
-    <label id="lbl_coolEnergy">
-        <span id="coolEnergy_label"></span>
-        <input type="number" id="coolEnergy" name="coolEnergy" step="any">
-        <select id="coolEnergyType" name="coolEnergyType"></select>
-    </label>
-    <br />
-    <label id="lbl_tvvType">
-        <span id="tvvType_label"></span>
-        <select id="tvvType" name="tvvType"></select>
-    </label>
-    <br />
-    <label id="lbl_fastEnergy">
-        <span id="fastEnergy_label"></span>
-        <input type="number" id="fastEnergy" name="fastEnergy" step="any">
-        <select id="fastEnergyType" name="fastEnergyType"></select>
-    </label>
+    <table id="energyInputTable">
+        <tr>
+            <td>
+                <label for="heatEnergy" id="lbl_heatEnergy"><span id="heatEnergy_label"></span></label>
+            </td>
+            <td>
+                <input type="number" id="heatEnergy" name="heatEnergy" step="any">
+            </td>
+            <td>
+                <select id="heatEnergyType" name="heatEnergyType"></select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="coolEnergy" id="lbl_coolEnergy"><span id="coolEnergy_label"></span></label>
+            </td>
+            <td>
+                <input type="number" id="coolEnergy" name="coolEnergy" step="any">
+            </td>
+            <td>
+                <select id="coolEnergyType" name="coolEnergyType"></select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="tvvType" id="lbl_tvvType"><span id="tvvType_label"></span></label>
+            </td>
+            <td></td>
+            <td>
+                <select id="tvvType" name="tvvType"></select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="fastEnergy" id="lbl_fastEnergy"><span id="fastEnergy_label"></span></label>
+            </td>
+            <td>
+                <input type="number" id="fastEnergy" name="fastEnergy" step="any">
+            </td>
+            <td>
+                <select id="fastEnergyType" name="fastEnergyType"></select>
+            </td>
+        </tr>
+    </table>
 </details>
 <details class="input-section" open>
     <summary id="section_deductions_heading"></summary>
