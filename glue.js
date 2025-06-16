@@ -219,6 +219,7 @@ function applyLanguage() {
                         icon = document.createElement("span");
                         icon.className = "info-icon";
                         icon.id = iconId;
+                        icon.setAttribute("aria-label", "Show help");
                         ref.parentNode.insertBefore(icon, ref.nextSibling);
                 }
 
@@ -351,10 +352,11 @@ function loadEnergyTable() {
 		// Generate help
 		const helpText = getString(helpKey).trim();
 		if (helpText) {
-			const icon = document.createElement("span");
-			icon.className   = "info-icon";
-			icon.textContent = getString("info_icon");
-			icon.onclick = () => {
+                        const icon = document.createElement("span");
+                        icon.className   = "info-icon";
+                        icon.textContent = getString("info_icon");
+                        icon.setAttribute("aria-label", "Show help");
+                        icon.onclick = () => {
 				const box = $("energyRowHelpBox");
 				if (box.innerHTML === helpText && box.style.display === "block") {
 					box.style.display = "none";
@@ -556,10 +558,10 @@ function calculate() {
 	// LL: dash + toggle if -1, else the number
 	let llCellHtml;
 	if (lim.LL === -1) {
-		llCellHtml = `– <span class="info-icon" id="llIcon">${getString("info_icon")}</span>`;
-	} else {
-		llCellHtml = lim.LL.toFixed(2);
-	}
+                llCellHtml = `– <span class="info-icon" id="llIcon" aria-label="Show help">${getString("info_icon")}</span>`;
+        } else {
+                llCellHtml = lim.LL.toFixed(2);
+        }
 
 	limitsTable.innerHTML = `
   <tr><th>${getString("limit_ep")}</th><td>${epLimitDisp}</td></tr>
