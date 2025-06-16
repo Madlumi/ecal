@@ -92,28 +92,36 @@
                                         <input type="number" id="rooms" name="rooms" min="0" step="1">
                                 </details>
 
-                                <details class="input-section" open>
-                                        <summary id="section_tvv_heading"></summary>
-
-                                        <label for="tvvType" id="lbl_tvvType">
-                                                <span id="tvvType_label"></span>
-                                        </label>
-                                        <select id="tvvType" name="tvvType"></select>
-                                </details>
-
-
 <details class="input-section" open>
     <summary id="section_energyinput_heading"></summary>
-    <label for="heatEnergy" id="lbl_heatEnergy"><span id="heatEnergy_label"></span></label>
-    <input type="number" id="heatEnergy" name="heatEnergy" step="any">
-    <select id="heatEnergyType" name="heatEnergyType"></select>
+    <label id="lbl_heatEnergy">
+        <span id="heatEnergy_label"></span>
+        <input type="number" id="heatEnergy" name="heatEnergy" step="any">
+        <select id="heatEnergyType" name="heatEnergyType"></select>
+    </label>
+    <br />
+    <label id="lbl_coolEnergy">
+        <span id="coolEnergy_label"></span>
+        <input type="number" id="coolEnergy" name="coolEnergy" step="any">
+        <select id="coolEnergyType" name="coolEnergyType"></select>
+    </label>
+    <br />
+    <label id="lbl_tvvType">
+        <span id="tvvType_label"></span>
+        <select id="tvvType" name="tvvType"></select>
+    </label>
+    <br />
+    <label id="lbl_fastEnergy">
+        <span id="fastEnergy_label"></span>
+        <input type="number" id="fastEnergy" name="fastEnergy" step="any">
+        <select id="fastEnergyType" name="fastEnergyType"></select>
+    </label>
 </details>
 <details class="input-section" open>
     <summary id="section_deductions_heading"></summary>
     <label for="dedPersons" id="lbl_dedPersons"><span id="dedPersons_label"></span></label>
     <input type="number" id="dedPersons" name="dedPersons" min="0">
-    <br />
-    <label for="dedPersonHeat" id="lbl_dedPersonHeat"><span id="dedPersonHeat_label"></span></label>
+    <label for="dedPersonHeat" id="lbl_dedPersonHeat" style="margin-left:0.5rem;"><span id="dedPersonHeat_label"></span></label>
     <input type="number" id="dedPersonHeat" name="dedPersonHeat" value="80" step="any">
     <br />
     <label for="dedTimeHours" id="lbl_dedTime"><span id="dedTime_label"></span></label>
