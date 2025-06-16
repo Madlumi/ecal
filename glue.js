@@ -529,8 +529,6 @@ function prefillFromURL() {
         });
 }
 
-
-
 function main(){
 	detectLang()
 	applyLanguage();

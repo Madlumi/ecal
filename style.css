@@ -297,6 +297,17 @@ th, td {
   padding: 0.3rem;
 }
 
+/* Ensure label and calc columns have room for icons */
+#energyTable th:first-child,
+#energyTable td:first-child {
+  min-width: 6rem;
+}
+
+#energyTable th:last-child,
+#energyTable td:last-child {
+  width: 3rem;
+}
+
 th {
   background: var(--table-header-bg);
 }
