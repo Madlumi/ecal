@@ -290,6 +290,13 @@ button:hover {
   padding: 0.4rem;
 }
 
+/* Tables inside help text should size to content */
+.help-box table {
+  width: auto;
+  table-layout: auto;
+  margin-top: 0.25rem;
+}
+
 table {
   background: var(--table-bg);
   border-collapse: collapse;
