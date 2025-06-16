@@ -149,9 +149,10 @@
     </span>
     <br />
     <label for="dedTimeHours" id="lbl_dedTime"><span id="dedTime_label"></span></label>
-    <span class="value-box"><input type="number" id="dedTimeHours" value="14" step="any" style="width:4rem;"><button id="dedTimeLock" type="button" class="lock-icon" aria-label="Toggle lock"></button></span> <span class="time-unit">h/d</span>
-    <span class="value-box"><input type="number" id="dedTimeDays" value="7" step="any" style="width:4rem;"></span> <span class="time-unit">d/v</span>
-    <span class="value-box"><input type="number" id="dedTimeWeeks" value="52" step="any" style="width:4rem;"></span> <span class="time-unit">v/år</span>
+    <span class="value-box"><input type="number" id="dedTimeHours" value="14" step="any" style="width:4rem;"></span> <span class="time-unit" id="dedTime_hours_unit"></span>
+    <span class="value-box"><input type="number" id="dedTimeDays" value="7" step="any" style="width:4rem;"></span> <span class="time-unit" id="dedTime_days_unit"></span>
+    <span class="value-box"><input type="number" id="dedTimeWeeks" value="52" step="any" style="width:4rem;"></span> <span class="time-unit" id="dedTime_weeks_unit"></span>
+    <button id="dedTimeLock" type="button" class="lock-icon" aria-label="Toggle lock"></button>
 </details>
 
                                 <details class="input-section" open>
