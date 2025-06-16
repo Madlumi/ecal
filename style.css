@@ -172,6 +172,17 @@ textarea#permalink {
   cursor: default;
 }
 
+
+.lock-icon {
+  margin-left: 0.25rem;
+  cursor: pointer;
+}
+
+.value-box {
+  display: inline-flex;
+  align-items: center;
+}
+
 button.clear-btn,
 button.copy-btn {
   margin-top: 0.5rem;

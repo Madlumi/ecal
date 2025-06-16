@@ -22,9 +22,48 @@ const foot2Lbl    = $("lbl_foot2");
 const foot3Lbl    = $("lbl_foot3");
 const foot4Lbl    = $("lbl_foot4");
 const foot5Lbl    = $("lbl_foot5");
-const heatEls  = window.heatEls, coolEls  = window.coolEls, watrEls  = window.watrEls, fastEls  = window.fastEls;
 const outEP    = $("ep_label"), limitsT  = $("limitsTable");
 const table = $("energyTable");
+class ValueBox {
+  constructor(box, but, locked = true, allowToggle = true) {
+    this.box = box;
+    this.but = but;
+    this.locked = locked;
+    this.allowToggle = allowToggle;
+    this.valueCalc = "";
+    this.valueInp = "";
+    if (this.allowToggle) {
+      this.but.addEventListener("click", () => this.toggleLock());
+    } else {
+      this.but.style.display = "none";
+      this.box.disabled = true;
+    }
+    this.updateVisual();
+  }
+  updateVisual() {
+    if (this.allowToggle) this.box.readOnly = this.locked;
+    this.but.textContent = this.locked ? "🔒" : "🔓";
+  }
+  setCalc(v) {
+    this.valueCalc = v;
+    if (this.locked) this.box.value = v;
+  }
+  toggleLock() {
+    if (!this.allowToggle) return;
+    if (this.locked) {
+      this.valueCalc = this.box.value;
+    } else {
+      this.valueInp = this.box.value;
+      this.box.value = this.valueCalc;
+    }
+    this.locked = !this.locked;
+    this.updateVisual();
+  }
+  getValue() {
+    return this.locked ? this.valueCalc : this.box.value;
+  }
+}
+
 
 
 
@@ -218,13 +257,13 @@ function loadTvvDropdown() {
 }
 
 function loadEnergyTable() {
-	const table = $("energyTable");
-	table.innerHTML = "";
+        const table = $("energyTable");
+        table.innerHTML = "";
 
-	// Prepare your per‐key element‐arrays dynamically
-	const measureKeys = ["heat","cool","watr","fast"];
-	const measureEls  = {};
-	measureKeys.forEach(k => measureEls[k] = []);
+        // Prepare per-key arrays of ValueBox objects
+        const measureKeys = ["heat","cool","watr","fast"];
+        const measureBoxes  = {};
+        measureKeys.forEach(k => measureBoxes[k] = []);
 
 	// Header
 	const thead = table.createTHead();
@@ -260,23 +299,39 @@ function loadEnergyTable() {
 			cell.appendChild(icon);
 		}
 
-                //add cells
+                // add cells
                 const lockRow = (key === "watr");
                 for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
                         const c = row.insertCell();
                         const id = `${key}-${E_name[i].toLowerCase().replace(/\s+/g, "_")}`;
-                        const inp = Object.assign( document.createElement("input"), { type: "number", step: "any", id, name: id });
-                        if (lockRow || LOCKED_COMBINATIONS.some(l => l.measureKey === key && l.sourceIndex === i)) { inp.disabled = true; }
-                        c.appendChild(inp);
-                        measureEls[key].push(inp);
+
+                        const inp = Object.assign(document.createElement("input"), {
+                                type: "number",
+                                step: "any",
+                                id,
+                                name: id
+                        });
+                        const but = Object.assign(document.createElement("button"), {
+                                type: "button",
+                                className: "lock-icon",
+                                title: "Unlock/lock"
+                        });
+                        const span = document.createElement("span");
+                        span.className = "value-box";
+                        span.appendChild(inp);
+                        span.appendChild(but);
+                        const noToggle = LOCKED_COMBINATIONS.some(l => l.measureKey === key && l.sourceIndex === i);
+                        const vb = new ValueBox(inp, but, lockRow || noToggle, !noToggle);
+                        c.appendChild(span);
+                        measureBoxes[key].push(vb);
                 }
         });
 
-	// Expose for later use on window if you still need the globals
-	window.heatEls = measureEls.heat;
-	window.coolEls = measureEls.cool;
-	window.watrEls = measureEls.watr;
-	window.fastEls = measureEls.fast;
+        // Expose arrays on window
+        window.heatEls = measureBoxes.heat;
+        window.coolEls = measureBoxes.cool;
+        window.watrEls = measureBoxes.watr;
+        window.fastEls = measureBoxes.fast;
 
 	// hide the row‐help box initially
 	$("energyRowHelpBox").style.display = "none";
@@ -311,12 +366,12 @@ function updateTvvRow() {
   const entry = tvvFactors[idx] || tvvFactors[0];
   const val   = atv ? (TvvMult[htNum] * atv / entry.factor) : 0;
   for (let i=0;i<EType.E_TYPE_COUNT;i++) {
-    const inp = window.watrEls[i];
-    if (!inp) continue;
+    const vb = window.watrEls[i];
+    if (!vb) continue;
     if (i === entry.etype) {
-      inp.value = val ? val.toFixed(1) : "";
+      vb.setCalc(val ? val.toFixed(1) : "");
     } else {
-      inp.value = "";
+      vb.setCalc("");
     }
   }
 }
@@ -337,12 +392,12 @@ function calculate() {
 
 
 
-	for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
-		h.E.heat[i] = parseFloat( window.heatEls[i]?.value ) || 0;
-		h.E.cool[i] = parseFloat( window.coolEls[i]?.value ) || 0;
-		h.E.watr[i] = parseFloat( window.watrEls[i]?.value ) || 0;
-		h.E.fast[i] = parseFloat( window.fastEls[i]?.value ) || 0;
-	}
+        for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
+                h.E.heat[i] = parseFloat( window.heatEls[i]?.getValue() ) || 0;
+                h.E.cool[i] = parseFloat( window.coolEls[i]?.getValue() ) || 0;
+                h.E.watr[i] = parseFloat( window.watrEls[i]?.getValue() ) || 0;
+                h.E.fast[i] = parseFloat( window.fastEls[i]?.getValue() ) || 0;
+        }
 
 	const epv = EPpet(h) | 0;
 	const lim = limit(h);
@@ -436,17 +491,15 @@ function prefillFromURL() {
 	[f2, f3, f4, f5].forEach((el, idx) => { el.checked = params.get(`foot${idx + 2}`) === "1"; });
 
 	// energy inputs: heat0, heat1, … cool0, … etc.
-	["heat","cool","watr","fast"].forEach(key => {
-		for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
-			const paramName = `${key}${i}`;
-			const val = params.get(paramName);
-			// build the same id you used in getEnergyTable()
-			const id = `${key}-${E_name[i].toLowerCase().replace(/\s+/g,"_")}`;
-			const inp = $(id);
-			if (!inp) continue;
-			inp.value = val !== null ? val : "";
-		}
-	});
+        ["heat","cool","watr","fast"].forEach(key => {
+                for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
+                        const paramName = `${key}${i}`;
+                        const val = params.get(paramName);
+                        const vb = window[`${key}Els`]?.[i];
+                        if (!vb) continue;
+                        vb.box.value = val !== null ? val : "";
+                }
+        });
 }
 
 
