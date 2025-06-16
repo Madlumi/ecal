@@ -97,9 +97,9 @@ const STRINGS = {
                 fi: "Henkilöt:"
         },
         dedPersons_help: {
-                sv: "Tabell 6:3 – Värden för beräkning av antal personer i bostäder<br><table><tr><th>Antal rum och kök</th><th>Antal personer</th></tr><tr><td>1<sup>1</sup></td><td>1,42</td></tr><tr><td>2</td><td>1,63</td></tr><tr><td>3</td><td>2,18</td></tr><tr><td>4</td><td>2,79</td></tr><tr><td>5+</td><td>3,51</td></tr></table><p><sup>1</sup> Inklusive 1 rum och kokvrå</p>",
-                en: "Table 6:3 – Values for calculating number of persons in dwellings<br><table><tr><th>Rooms + kitchen</th><th>People</th></tr><tr><td>1<sup>1</sup></td><td>1.42</td></tr><tr><td>2</td><td>1.63</td></tr><tr><td>3</td><td>2.18</td></tr><tr><td>4</td><td>2.79</td></tr><tr><td>5+</td><td>3.51</td></tr></table><p><sup>1</sup> Includes 1 room with kitchenette</p>",
-                fi: "Taulukko 6:3 – Arvot henkilömäärän laskentaan asunnoissa<br><table><tr><th>Huoneet ja keittiö</th><th>Henkilöt</th></tr><tr><td>1<sup>1</sup></td><td>1,42</td></tr><tr><td>2</td><td>1,63</td></tr><tr><td>3</td><td>2,18</td></tr><tr><td>4</td><td>2,79</td></tr><tr><td>5+</td><td>3,51</td></tr></table><p><sup>1</sup> Sisältää 1 huoneen ja keittokomeron</p>"
+                sv: "Tabell 6:3 – Värden för beräkning av antal personer i bostäder<br><table><tr><th>Antal rum och kök</th><td>1<sup>1</sup></td><td>2</td><td>3</td><td>4</td><td>5+</td></tr><tr><th>Antal personer</th><td>1,42</td><td>1,63</td><td>2,18</td><td>2,79</td><td>3,51</td></tr></table><p><sup>1</sup> Inklusive 1 rum och kokvrå</p>",
+                en: "Table 6:3 – Values for calculating number of persons in dwellings<br><table><tr><th>Rooms + kitchen</th><td>1<sup>1</sup></td><td>2</td><td>3</td><td>4</td><td>5+</td></tr><tr><th>People</th><td>1.42</td><td>1.63</td><td>2.18</td><td>2.79</td><td>3.51</td></tr></table><p><sup>1</sup> Includes 1 room with kitchenette</p>",
+                fi: "Taulukko 6:3 – Arvot henkilömäärän laskentaan asunnoissa<br><table><tr><th>Huoneet ja keittiö</th><td>1<sup>1</sup></td><td>2</td><td>3</td><td>4</td><td>5+</td></tr><tr><th>Henkilöt</th><td>1,42</td><td>1,63</td><td>2,18</td><td>2,79</td><td>3,51</td></tr></table><p><sup>1</sup> Sisältää 1 huoneen ja keittokomeron</p>"
         },
         dedPersonHeat_label: {
                 sv: "Personvärme (W):",
