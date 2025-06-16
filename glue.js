@@ -594,7 +594,7 @@ function calculate() {
 // URL PREFILL
 //========================
 function prefillFromURL() {
-	const params = new URLSearchParams(window.location.search);
+        const params = new URLSearchParams(window.location.search);
 
         geo.value = params.get("geography") || "Åland";
         type.value = params.get("housetype") || "SMALL";
@@ -606,6 +606,9 @@ function prefillFromURL() {
         }
         fl.value = params.get("flow") || "";
         if (tvvSel) tvvSel.value = params.get("tvv") || "0";
+
+        // deduction defaults
+        dedPersonHeat.value = params.get("perheat") || (typeof PERSON_HEAT !== 'undefined' ? PERSON_HEAT : "");
 
 	// foot2–foot5 checkboxes: default false if no "1"
 	[f2, f3, f4, f5].forEach((el, idx) => { el.checked = params.get(`foot${idx + 2}`) === "1"; });
