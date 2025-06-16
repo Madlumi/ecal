@@ -91,11 +91,14 @@ form#houseForm table td {
   max-width: 4rem;
 }
 
+/* Let tables within the form use natural width for their last column
+   unless specifically overridden */
 form#houseForm table th:last-child,
 form#houseForm table td:last-child {
-  width: 4ch;
-  max-width: 4ch;
+  width: auto;
+  max-width: none;
 }
+
 
 form#houseForm th {
   background: #f0f0f0;
@@ -327,6 +330,14 @@ th, td {
 #energyInputTable td {
   border: none;
   padding: 0.25rem 0.5rem 0.25rem 0;
+}
+
+/* The input table shouldn't inherit the narrow last column used by
+   #energyTable, so reset the width limitations */
+#energyInputTable th:last-child,
+#energyInputTable td:last-child {
+  width: auto;
+  max-width: none;
 }
 
 th {
