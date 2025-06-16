@@ -8,6 +8,10 @@ const at       = $("atemp");
 const rooms    = $("rooms");
 const fl       = $("flow");
 const tvvSel   = $("tvvType");
+const coolEnergyInput = $("coolEnergy");
+const coolEnergyType  = $("coolEnergyType");
+const fastEnergyInput = $("fastEnergy");
+const fastEnergyType  = $("fastEnergyType");
 const f2       = $("foot2");
 const f3       = $("foot3");
 const f4       = $("foot4");
@@ -32,11 +36,8 @@ const outEP    = $("ep_label"), limitsT  = $("limitsTable");
 const table = $("energyTable");
 const ROOMS_TO_PERSONS = [1.42, 1.63, 2.18, 2.79, 3.51];
 
-// Lock improbable energy source combinations
-const LOCKED_COMBINATIONS = [
-  { measureKey: "heat", sourceIndex: EType.FJARRKYLA },
-  { measureKey: "cool", sourceIndex: EType.FJARRVARME }
-];
+// Lock improbable energy source combinations (none currently)
+const LOCKED_COMBINATIONS = [];
 window.LOCKED_COMBINATIONS = LOCKED_COMBINATIONS;
 
 function personsFromRooms(n) {
@@ -92,6 +93,7 @@ class ValueBox {
     }
     this.locked = !this.locked;
     this.updateVisual();
+    calculate();
   }
   getValue() {
     return this.locked ? this.valueCalc : this.box.value;
@@ -255,6 +257,10 @@ function registerListeners(){
         form.addEventListener("input", calculate);
     if (heatEnergyInput) heatEnergyInput.addEventListener("input", updateDeductions);
     if (heatEnergyType) heatEnergyType.addEventListener("change", updateDeductions);
+    if (coolEnergyInput) coolEnergyInput.addEventListener("input", updateDeductions);
+    if (coolEnergyType) coolEnergyType.addEventListener("change", updateDeductions);
+    if (fastEnergyInput) fastEnergyInput.addEventListener("input", updateDeductions);
+    if (fastEnergyType) fastEnergyType.addEventListener("change", updateDeductions);
     [dedPersons,dedPersonHeat,dedTimeHours,dedTimeDays,dedTimeWeeks].forEach(el=>{ if(el) el.addEventListener("input", updateDeductions);});
     if (rooms) rooms.addEventListener("input", () => {
         const r = parseInt(rooms.value, 10);
@@ -303,10 +309,10 @@ function loadTvvDropdown() {
         tvvSel.innerHTML = "";
         tvvFactors.forEach((f, idx) => { tvvSel.add(new Option(f.name, idx)); });
 }
-function loadHeatEnergyDropdown() {
-    if (!heatEnergyType) return;
-    heatEnergyType.innerHTML = "";
-    E_name.forEach((n, i) => { heatEnergyType.add(new Option(n, i)); });
+function loadEnergyTypeDropdown(sel) {
+    if (!sel) return;
+    sel.innerHTML = "";
+    E_name.forEach((n, i) => { sel.add(new Option(n, i)); });
 }
 
 
@@ -397,6 +403,7 @@ function loadEnergyTable() {
                                 vb.locked = chk.checked;
                                 vb.updateVisual();
                         });
+                        calculate();
                 });
                 lockCell.appendChild(chk);
                 measureBoxes[key] = rowBoxes;
@@ -468,6 +475,20 @@ function updateDeductions() {
     const res = energy - ded;
     const vb = window.heatEls[idx];
     if (vb) vb.setCalc(res ? res.toFixed(1) : "");
+
+    if (coolEnergyInput && coolEnergyType && window.coolEls) {
+        const ce = parseFloat(coolEnergyInput.value) || 0;
+        const ci = parseInt(coolEnergyType.value, 10) || 0;
+        const cvb = window.coolEls[ci];
+        if (cvb) cvb.setCalc(ce ? ce.toFixed(1) : "");
+    }
+
+    if (fastEnergyInput && fastEnergyType && window.fastEls) {
+        const fe = parseFloat(fastEnergyInput.value) || 0;
+        const fi = parseInt(fastEnergyType.value, 10) || 0;
+        const fvb = window.fastEls[fi];
+        if (fvb) fvb.setCalc(fe ? fe.toFixed(1) : "");
+    }
 }
 
 
@@ -613,7 +634,9 @@ function main(){
         applyLanguage(); // add help icons for dynamically created elements
         loadTvvDropdown();
 
-    loadHeatEnergyDropdown();
+    loadEnergyTypeDropdown(heatEnergyType);
+    loadEnergyTypeDropdown(coolEnergyType);
+    loadEnergyTypeDropdown(fastEnergyType);
 	prefillFromURL();
 
         registerListeners();

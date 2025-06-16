@@ -86,6 +86,16 @@ const STRINGS = {
                 en: "Type:",
                 fi: "Tyyppi:"
         },
+        coolEnergy_label: {
+                sv: "Kylenergi (kWh):",
+                en: "Cooling energy:",
+                fi: "Jäähdytysenergia:"
+        },
+        fastEnergy_label: {
+                sv: "Fastighetsenergi (kWh):",
+                en: "Facility energy:",
+                fi: "Kiinteistöenergia:"
+        },
         section_deductions_heading: {
                 sv: "Avdrag",
                 en: "Deductions",
