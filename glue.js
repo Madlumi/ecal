@@ -473,21 +473,44 @@ function updateDeductions() {
     const weeks = parseFloat(dedTimeWeeks.value) || 0;
     const ded = persons * perHeat * hours * days * weeks / 1000;
     const res = energy - ded;
-    const vb = window.heatEls[idx];
-    if (vb) vb.setCalc(res ? res.toFixed(1) : "");
+
+    for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
+        const vb = window.heatEls[i];
+        if (!vb) continue;
+        if (i === idx) {
+            vb.setCalc(res ? res.toFixed(1) : "");
+        } else if (window.rowLocks?.heat?.checked) {
+            // clear previous source when row is locked
+            vb.setCalc("");
+        }
+    }
 
     if (coolEnergyInput && coolEnergyType && window.coolEls) {
         const ce = parseFloat(coolEnergyInput.value) || 0;
         const ci = parseInt(coolEnergyType.value, 10) || 0;
-        const cvb = window.coolEls[ci];
-        if (cvb) cvb.setCalc(ce ? ce.toFixed(1) : "");
+        for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
+            const cvb = window.coolEls[i];
+            if (!cvb) continue;
+            if (i === ci) {
+                cvb.setCalc(ce ? ce.toFixed(1) : "");
+            } else if (window.rowLocks?.cool?.checked) {
+                cvb.setCalc("");
+            }
+        }
     }
 
     if (fastEnergyInput && fastEnergyType && window.fastEls) {
         const fe = parseFloat(fastEnergyInput.value) || 0;
         const fi = parseInt(fastEnergyType.value, 10) || 0;
-        const fvb = window.fastEls[fi];
-        if (fvb) fvb.setCalc(fe ? fe.toFixed(1) : "");
+        for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
+            const fvb = window.fastEls[i];
+            if (!fvb) continue;
+            if (i === fi) {
+                fvb.setCalc(fe ? fe.toFixed(1) : "");
+            } else if (window.rowLocks?.fast?.checked) {
+                fvb.setCalc("");
+            }
+        }
     }
 }
 
