@@ -97,7 +97,7 @@ form#houseForm th {
 
 form#houseForm input[type="number"],
 form#houseForm select {
-  width: calc(100% - 0.25rem);
+  width: 100%;
   padding: 0.15rem;
   font-size: 0.9rem;
   box-sizing: border-box;
@@ -173,9 +173,15 @@ textarea#permalink {
 }
 
 
+
 .lock-icon {
-  margin-left: 0.25rem;
+  margin-left: 0;
   cursor: pointer;
+}
+
+.value-box input.locked {
+  background: #eee;
+  color: #666;
 }
 
 .value-box {
