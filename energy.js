@@ -316,27 +316,6 @@ function printHouse(house) {
   console.log(`Limits → EP: ${lim.EP.toFixed(1)}, EL: ${lim.EL.toFixed(1)}, UM: ${lim.UM.toFixed(2)}, LL: ${lim.LL.toFixed(2)}`);
 }
 
-//============================
-//=Main (example)=============
-//============================
-(function main() {
-  // Create a House (Åland, SMALL, Atemp = 100)
-
-	/*
-  // Example inputs:
-  const h = new House(HouseType.SMALL, 100, locations[1]);
-  h.E.heat[EType.ELECTRIC]   = 120.0;
-  h.E.cool[EType.FJARRKYLA]  = 40.0;
-  h.flow     = 0.5;    // example instantaneous airflow (q)
-  h.qavg     = 0.4;    // example average airflow (q_medel)
-  h.foot2    = true;   // footnote‐2 applies (LOCAL)
-  h.foot3    = true;   // footnote‐3 applies (LOCAL)
-  h.foot4    = true;   // footnote‐4 applies (MULTI)
-  h.foot5    = true;   // footnote‐5 applies (MULTI)
-
-  printHouse(h);*/
-})();
-
 // Export for Node.js testing
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
