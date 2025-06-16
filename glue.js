@@ -1,8 +1,6 @@
-// =====================
-// 
-// Manage the dom
-// 
-// =====================
+//========================
+// DOM ELEMENT REFERENCES
+//========================
 const $ = id => document.getElementById(id);
 const geo      = $("geography");
 const type     = $("housetype");
@@ -39,6 +37,10 @@ function personsFromRooms(n) {
     if (n >= 5) return ROOMS_TO_PERSONS[4];
     return ROOMS_TO_PERSONS[n - 1];
 }
+
+//========================
+// CLASS: ValueBox
+//========================
 class ValueBox {
   constructor(box, but, locked = true, allowToggle = true) {
     this.box = box;
@@ -94,67 +96,15 @@ class ValueBox {
 
 const flowContainer = $("flowContainer");
 
+//========================
+// LOCALIZATION
+//========================
 function detectLang() {
 	const urlParams = new URLSearchParams(window.location.search);
 	let lang = urlParams.get("lang") || "sv";
 	if (!["sv","en","fi"].includes(lang)) lang = "sv";
 	window.SELECTED_LANG = lang;
 }
-
-
-function registerListeners(){
-	//language select
-
-	document.querySelectorAll(".lang-button").forEach(btn => {
-		btn.addEventListener("click", () => {
-			// grab either the full permalink's query or the current page's
-			const src = $("permalink").value.split("?")[1] || location.search.slice(1);
-			const q   = new URLSearchParams(src);
-			q.set("lang", btn.dataset.lang);
-			location.search = q;  // reloads preserving all other params + new lang
-		});
-	});
-
-
-
-
-        type.addEventListener("change", () => { updateFootnotes(); calculate(); });
-        if (tvvSel) tvvSel.addEventListener("change", calculate);
-        form.addEventListener("input", calculate);
-    if (heatEnergyInput) heatEnergyInput.addEventListener("input", updateDeductions);
-    if (heatEnergyType) heatEnergyType.addEventListener("change", updateDeductions);
-    [dedPersons,dedPersonHeat,dedTimeHours,dedTimeDays,dedTimeWeeks].forEach(el=>{ if(el) el.addEventListener("input", updateDeductions);});
-    if (rooms) rooms.addEventListener("input", () => {
-        const r = parseInt(rooms.value, 10);
-        dedPersons.value = personsFromRooms(r).toFixed(2);
-        updateDeductions();
-    });
-
-	//clear
-	clear.addEventListener("click", clearUI);
-	//print
-	print.addEventListener("click",()=>{ window.location.href = `energyprint.html?ep=${calculate()}&housetype=${type.value}`; });
-	//copy
-	copy.addEventListener("click",()=>{
-		const ta=$("permalink");
-		ta.select(); ta.setSelectionRange(0,99999);
-		document.execCommand("copy");
-		copy.textContent=getString("copy_button")+" ✔";
-		setTimeout(()=>copy.textContent=getString("copy_button"),1500);
-	});
-}
-
-
-
-function clearUI() {
-	history.replaceState(null, "", location.pathname);
-	prefillFromURL();
-	updateFootnotes();
-	calculate();
-}
-
-
-
 
 function getString(key) {
 	if (typeof STRINGS === "undefined" || !STRINGS.hasOwnProperty(key)) { return "[no string found]"; }
@@ -274,9 +224,67 @@ function applyLanguage() {
         });
 }
 
-// =====================
-// Populate elements
-// =====================
+//========================
+// INIT FUNCTIONS
+//========================
+function registerListeners(){
+	//language select
+
+	document.querySelectorAll(".lang-button").forEach(btn => {
+		btn.addEventListener("click", () => {
+			// grab either the full permalink's query or the current page's
+			const src = $("permalink").value.split("?")[1] || location.search.slice(1);
+			const q   = new URLSearchParams(src);
+			q.set("lang", btn.dataset.lang);
+			location.search = q;  // reloads preserving all other params + new lang
+		});
+	});
+
+
+
+
+        type.addEventListener("change", () => { updateFootnotes(); calculate(); });
+        if (tvvSel) tvvSel.addEventListener("change", calculate);
+        form.addEventListener("input", calculate);
+    if (heatEnergyInput) heatEnergyInput.addEventListener("input", updateDeductions);
+    if (heatEnergyType) heatEnergyType.addEventListener("change", updateDeductions);
+    [dedPersons,dedPersonHeat,dedTimeHours,dedTimeDays,dedTimeWeeks].forEach(el=>{ if(el) el.addEventListener("input", updateDeductions);});
+    if (rooms) rooms.addEventListener("input", () => {
+        const r = parseInt(rooms.value, 10);
+        dedPersons.value = personsFromRooms(r).toFixed(2);
+        updateDeductions();
+    });
+
+	//clear
+	clear.addEventListener("click", clearUI);
+	//print
+	print.addEventListener("click",()=>{ window.location.href = `energyprint.html?ep=${calculate()}&housetype=${type.value}`; });
+	//copy
+	copy.addEventListener("click",()=>{
+		const ta=$("permalink");
+		ta.select(); ta.setSelectionRange(0,99999);
+		document.execCommand("copy");
+		copy.textContent=getString("copy_button")+" ✔";
+		setTimeout(()=>copy.textContent=getString("copy_button"),1500);
+	});
+}
+
+
+
+function clearUI() {
+	history.replaceState(null, "", location.pathname);
+	prefillFromURL();
+	updateFootnotes();
+	calculate();
+}
+
+
+
+
+
+//========================
+// INIT HELPERS
+//========================
 function loadGeography() {
         const sel = $("geography");
         sel.innerHTML = "";
@@ -398,7 +406,10 @@ function loadEnergyTable() {
 	// hide the row‐help box initially
 	$("energyRowHelpBox").style.display = "none";
 }
-//expandable footnote additon box
+
+//========================
+// UPDATE FUNCTIONS
+//========================
 
 function updateFootnotes() {
   const t = type.value; // SMALL, MULTI or LOCAL
@@ -551,10 +562,9 @@ function calculate() {
 
 
 
-
-
-
-// 
+//========================
+// URL PREFILL
+//========================
 function prefillFromURL() {
 	const params = new URLSearchParams(window.location.search);
 
@@ -584,6 +594,9 @@ function prefillFromURL() {
         });
 }
 
+//========================
+// ENTRY POINT
+//========================
 function main(){
 	detectLang()
 	applyLanguage();
