@@ -41,13 +41,18 @@ class ValueBox {
     this.updateVisual();
   }
   updateVisual() {
-    if (this.allowToggle) this.box.readOnly = this.locked;
+    if (this.allowToggle) {
+      this.box.disabled = this.locked;
+    } else {
+      this.box.disabled = true;
+    }
     if (this.locked) {
       this.box.classList.add("locked");
     } else {
       this.box.classList.remove("locked");
     }
-    this.but.textContent = this.locked ? "🔒" : "🔓";
+    // the button is hidden when using row-wise checkboxes, so no icon needed
+    this.but.textContent = "";
   }
   setCalc(v) {
     this.valueCalc = v;
@@ -275,7 +280,9 @@ function loadEnergyTable() {
 	const hr    = thead.insertRow();
         hr.insertCell().textContent = "";
         E_name.forEach(name => hr.insertCell().textContent = name);
-        hr.insertCell().textContent = "\uD83D\uDD12"; // lock icon header
+        const calcCell = hr.insertCell();
+        calcCell.textContent = getString("calc_icon");
+        calcCell.title = getString("calc_help");
 
 	const tbody = table.createTBody();
         const rowLocks = {};
