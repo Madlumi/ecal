@@ -18,6 +18,13 @@ const copy     	= $("copy_button");
 const print       = $("print_button");    
 const form     	  = $("houseForm");
 const footnoteBox = $("footnoteBox");
+const heatEnergyInput = $("heatEnergy");
+const heatEnergyType = $("heatEnergyType");
+const dedPersons = $("dedPersons");
+const dedPersonHeat = $("dedPersonHeat");
+const dedTimeHours = $("dedTimeHours");
+const dedTimeDays = $("dedTimeDays");
+const dedTimeWeeks = $("dedTimeWeeks");
 const foot2Lbl    = $("lbl_foot2");
 const foot3Lbl    = $("lbl_foot3");
 const foot4Lbl    = $("lbl_foot4");
@@ -106,6 +113,9 @@ function registerListeners(){
         type.addEventListener("change", () => { updateFootnotes(); calculate(); });
         if (tvvSel) tvvSel.addEventListener("change", calculate);
         form.addEventListener("input", calculate);
+    if (heatEnergyInput) heatEnergyInput.addEventListener("input", updateDeductions);
+    if (heatEnergyType) heatEnergyType.addEventListener("change", updateDeductions);
+    [dedPersons,dedPersonHeat,dedTimeHours,dedTimeDays,dedTimeWeeks].forEach(el=>{ if(el) el.addEventListener("input", updateDeductions);});
 
 	//clear
 	clear.addEventListener("click", clearUI);
@@ -265,6 +275,12 @@ function loadTvvDropdown() {
         tvvSel.innerHTML = "";
         tvvFactors.forEach((f, idx) => { tvvSel.add(new Option(f.name, idx)); });
 }
+function loadHeatEnergyDropdown() {
+    if (!heatEnergyType) return;
+    heatEnergyType.innerHTML = "";
+    E_name.forEach((n, i) => { heatEnergyType.add(new Option(n, i)); });
+}
+
 
 function loadEnergyTable() {
         const table = $("energyTable");
@@ -317,7 +333,7 @@ function loadEnergyTable() {
 		}
 
                 // add cells
-                const lockRow = (key === "watr");
+                const lockRow = true;
                 const rowBoxes = [];
                 for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
                         const c = row.insertCell();
@@ -402,6 +418,21 @@ function updateTvvRow() {
     }
   }
 }
+function updateDeductions() {
+    if (!window.heatEls) return;
+    const energy = parseFloat(heatEnergyInput.value) || 0;
+    const idx = parseInt(heatEnergyType.value, 10) || 0;
+    const persons = parseFloat(dedPersons.value) || 0;
+    const perHeat = parseFloat(dedPersonHeat.value) || 0;
+    const hours = parseFloat(dedTimeHours.value) || 0;
+    const days = parseFloat(dedTimeDays.value) || 0;
+    const weeks = parseFloat(dedTimeWeeks.value) || 0;
+    const ded = persons * perHeat * hours * days * weeks / 1000;
+    const res = energy - ded;
+    const vb = window.heatEls[idx];
+    if (vb) vb.setCalc(res ? res.toFixed(1) : "");
+}
+
 
 
 //Connect to energy.js and display output, and build the perma link
@@ -538,11 +569,13 @@ function main(){
         applyLanguage(); // add help icons for dynamically created elements
         loadTvvDropdown();
 
+    loadHeatEnergyDropdown();
 	prefillFromURL();
 
         registerListeners();
 
         updateFootnotes();
+        updateDeductions();
         updateTvvRow();
         calculate();
 }
