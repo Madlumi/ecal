@@ -335,9 +335,9 @@ const STRINGS = {
                 fi: "\uD83E\uDDEE"
         },
         calc_help: {
-                sv: "Avmarkera för att ange värden manuellt",
-                en: "Deselect to enter values manually",
-                fi: "Poista valinta syöttääksesi arvot käsin"
+                sv: "Markerad: använd beräknade eller förinställda värden. Avmarkerad: ange manuellt",
+                en: "Checked: use calculated or preset values. Unchecked: enter values manually",
+                fi: "Valittuna: käytä laskettuja tai esiasetettuja arvoja. Ei valittuna: syötä arvot käsin"
         },
 
 
