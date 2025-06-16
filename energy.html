@@ -23,86 +23,97 @@
 
 			<div id="disclaimer" class="disclaimer-box"></div>
 
-			<form id="houseForm">
-                                <label for="geography" id="lbl_geography">
-                                        <span id="geography_label"></span>
-                                </label>
-                                <select id="geography" name="geography"></select>
-                                <br />
-
-                                <label for="housetype" id="lbl_housetype">
-                                        <span id="housetype_label"></span>
-                                </label>
-                                <select id="housetype" name="housetype">
-					<option value="SMALL" id="option_housetype_SMALL">småhus</option>
-					<option value="MULTI" id="option_housetype_MULTI">flerbostadshus</option>
-					<option value="LOCAL" id="option_housetype_LOCAL">lokal</option>
-				</select>
-                                <br />
-
-				<!-- Box only shown in certain cases -->
-				<div id="footnoteBox" style="display: none; border: 1px solid #aaa; padding: 0.5rem; margin-top: 0.5rem; background: #f9f9f9;">
-					<p id="footnotes_heading" class="footnotes-heading"></p>
-
-                                        <label id="lbl_foot2" style="display: none;">
-                                                <input type="checkbox" id="foot2" name="foot2">
-                                                <span id="foot2_label"></span>
+                        <form id="houseForm">
+                                <details class="input-section" open>
+                                        <summary id="section_basic_heading"></summary>
+                                        <label for="geography" id="lbl_geography">
+                                                <span id="geography_label"></span>
                                         </label>
+                                        <select id="geography" name="geography"></select>
+                                        <br />
 
-                                        <label id="lbl_foot3" style="display: none;">
-                                                <input type="checkbox" id="foot3" name="foot3">
-                                                <span id="foot3_label"></span>
+                                        <label for="housetype" id="lbl_housetype">
+                                                <span id="housetype_label"></span>
                                         </label>
+                                        <select id="housetype" name="housetype">
+                                                <option value="SMALL" id="option_housetype_SMALL">småhus</option>
+                                                <option value="MULTI" id="option_housetype_MULTI">flerbostadshus</option>
+                                                <option value="LOCAL" id="option_housetype_LOCAL">lokal</option>
+                                        </select>
+                                        <br />
 
-                                        <label id="lbl_foot4" style="display: none;">
-                                                <input type="checkbox" id="foot4" name="foot4">
-                                                <span id="foot4_label"></span>
-                                        </label>
+                                        <!-- Box only shown in certain cases -->
+                                        <div id="footnoteBox" style="display: none; border: 1px solid #aaa; padding: 0.5rem; margin-top: 0.5rem; background: #f9f9f9;">
+                                                <p id="footnotes_heading" class="footnotes-heading"></p>
 
-                                        <label id="lbl_foot5" style="display: none;">
-                                                <input type="checkbox" id="foot5" name="foot5">
-                                                <span id="foot5_label"></span>
-                                        </label>
-
-
-
-
-                                        <div id="flowContainer" style="display:none; margin-top:0.5rem;">
-                                                <label id="lbl_flow">
-                                                        <span id="flow_label"></span>
+                                                <label id="lbl_foot2" style="display: none;">
+                                                        <input type="checkbox" id="foot2" name="foot2">
+                                                        <span id="foot2_label"></span>
                                                 </label>
-                                                <input type="number" id="flow" name="flow" step="0.01">
+
+                                                <label id="lbl_foot3" style="display: none;">
+                                                        <input type="checkbox" id="foot3" name="foot3">
+                                                        <span id="foot3_label"></span>
+                                                </label>
+
+                                                <label id="lbl_foot4" style="display: none;">
+                                                        <input type="checkbox" id="foot4" name="foot4">
+                                                        <span id="foot4_label"></span>
+                                                </label>
+
+                                                <label id="lbl_foot5" style="display: none;">
+                                                        <input type="checkbox" id="foot5" name="foot5">
+                                                        <span id="foot5_label"></span>
+                                                </label>
+
+
+
+
+                                                <div id="flowContainer" style="display:none; margin-top:0.5rem;">
+                                                        <label id="lbl_flow">
+                                                                <span id="flow_label"></span>
+                                                        </label>
+                                                        <input type="number" id="flow" name="flow" step="0.01">
+                                                </div>
+
                                         </div>
+                                        <br />
 
-				</div>
-				<br />
+                                        <!--  -->
+                                        <label for="atemp" id="lbl_atemp">
+                                                <span id="atemp_label"></span>
+                                        </label>
+                                        <input type="number" id="atemp" name="atemp" min="0">
+                                </details>
 
-				<!--  -->
-                                <label for="atemp" id="lbl_atemp">
-                                        <span id="atemp_label"></span>
-                                </label>
-                                <input type="number" id="atemp" name="atemp" min="0">
+                                <details class="input-section" open>
+                                        <summary id="section_tvv_heading"></summary>
 
-                                <label for="tvvType" id="lbl_tvvType">
-                                        <span id="tvvType_label"></span>
-                                </label>
-                                <select id="tvvType" name="tvvType"></select>
-                                <br /><br />
+                                        <label for="tvvType" id="lbl_tvvType">
+                                                <span id="tvvType_label"></span>
+                                        </label>
+                                        <select id="tvvType" name="tvvType"></select>
+                                </details>
 
-                                <label id="energy_table_label"></label><br />
+                                <details class="input-section" open>
+                                        <summary id="section_energy_heading"></summary>
 
-				<!-- Lock improbable combos -->
-				<script>
-					const LOCKED_COMBINATIONS = [
-						{ measureKey: "heat", sourceIndex: EType.FJARRKYLA },
-						{ measureKey: "cool", sourceIndex: EType.FJARRVARME }
-					];
-				</script>
-				<!--(table built in code)-->
-				<table id="energyTable"></table>
-				<div id="energyRowHelpBox" class="help-box"></div>
+                                        <label id="energy_table_label"></label><br />
 
-				</br>
+                                        <!-- Lock improbable combos -->
+                                        <script>
+                                                const LOCKED_COMBINATIONS = [
+                                                        { measureKey: "heat", sourceIndex: EType.FJARRKYLA },
+                                                        { measureKey: "cool", sourceIndex: EType.FJARRVARME }
+                                                ];
+                                        </script>
+                                        <!--(table built in code)-->
+                                        <table id="energyTable"></table>
+                                        <div id="energyRowHelpBox" class="help-box"></div>
+
+                                </details>
+
+                                </br>
 
 
                                 <label for="permalink" id="lbl_permalink">

@@ -48,11 +48,28 @@ const STRINGS = {
 		en: "House Type:",
 		fi: "Talotyyppi:"
 	},
-	housetype_help: {
-		sv: "",
-		en: "",
-		fi: ""
-	},
+        housetype_help: {
+                sv: "",
+                en: "",
+                fi: ""
+        },
+
+        // Input section headings
+        section_basic_heading: {
+                sv: "Grunduppgifter",
+                en: "Basic Info",
+                fi: "Perustiedot"
+        },
+        section_tvv_heading: {
+                sv: "Tappvarmvatten",
+                en: "Hot Water",
+                fi: "Lämmin vesi"
+        },
+        section_energy_heading: {
+                sv: "Energifaktorer",
+                en: "Energy Factors",
+                fi: "Energiatekijät"
+        },
 
 	// Footnotes heading + labels
 	footnotes_heading: {
