@@ -73,11 +73,11 @@ Run the C tests with `./run_tests.sh` and check `test_output.txt` for results.
 
 ### Main Interface
 
-![Screenshot of the website](screenshot.png)
+![Screenshot showing the energy calculator's main interface](screenshot.png)
 
 ### Printed Certificate PDF
 
-![Screenshot of the print output](screenshot_output.png)
+![Screenshot showing a generated energy certificate PDF](screenshot_output.png)
 
 ---
 
