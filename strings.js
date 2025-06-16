@@ -185,7 +185,12 @@ const STRINGS = {
                 en: "The area of all floors, attic, and basement for temperature‐controlled spaces intended to be heated above 10 °C, bounded by the interior of the building envelope. Area occupied by interior walls, stair openings, shafts, etc., is included; garage area (inside the building) is not counted.",
                 fi: "Lämpötilasäädeltyjen tilojen pinta‐ala, mukaan lukien kaikki kerrokset, yläkerrat ja kellarit, jotka on tarkoitus lämmittää yli 10 °C, sisäisen rakennuskuoren sisällä. Sisäseinien, portaiden, hormien jne. pinta‐ala sisältyy; autotallin pinta‐alaa ei lasketa."
         },
-
+        rooms_label: {
+                sv: "Rum + kök:",
+                en: "Rooms + kitchen:",
+                fi: "Huoneet + keittiö:"
+        },
+        
         tvvType_label: {
                 sv: "Tappvarmvattenkälla:",
                 en: "Hot water source:",
@@ -335,9 +340,9 @@ const STRINGS = {
                 fi: "\uD83E\uDDEE"
         },
         calc_help: {
-                sv: "Markerad: använd beräknade eller förinställda värden. Avmarkerad: ange manuellt",
-                en: "Checked: use calculated or preset values. Unchecked: enter values manually",
-                fi: "Valittuna: käytä laskettuja tai esiasetettuja arvoja. Ei valittuna: syötä arvot käsin"
+                sv: "Markerad: använd beräknade eller förinställda värden.<br>Avmarkerad: ange manuellt",
+                en: "Checked: use calculated or preset values.<br>Unchecked: enter values manually",
+                fi: "Valittuna: käytä laskettuja tai esiasetettuja arvoja.<br>Ei valittuna: syötä arvot käsin"
         },
 
 

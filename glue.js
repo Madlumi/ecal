@@ -7,6 +7,7 @@ const $ = id => document.getElementById(id);
 const geo      = $("geography");
 const type     = $("housetype");
 const at       = $("atemp");
+const rooms    = $("rooms");
 const fl       = $("flow");
 const tvvSel   = $("tvvType");
 const f2       = $("foot2");
@@ -31,6 +32,13 @@ const foot4Lbl    = $("lbl_foot4");
 const foot5Lbl    = $("lbl_foot5");
 const outEP    = $("ep_label"), limitsT  = $("limitsTable");
 const table = $("energyTable");
+const ROOMS_TO_PERSONS = [1.42, 1.63, 2.18, 2.79, 3.51];
+
+function personsFromRooms(n) {
+    if (!n || n <= 0) return 0;
+    if (n >= 5) return ROOMS_TO_PERSONS[4];
+    return ROOMS_TO_PERSONS[n - 1];
+}
 class ValueBox {
   constructor(box, but, locked = true, allowToggle = true) {
     this.box = box;
@@ -116,6 +124,11 @@ function registerListeners(){
     if (heatEnergyInput) heatEnergyInput.addEventListener("input", updateDeductions);
     if (heatEnergyType) heatEnergyType.addEventListener("change", updateDeductions);
     [dedPersons,dedPersonHeat,dedTimeHours,dedTimeDays,dedTimeWeeks].forEach(el=>{ if(el) el.addEventListener("input", updateDeductions);});
+    if (rooms) rooms.addEventListener("input", () => {
+        const r = parseInt(rooms.value, 10);
+        dedPersons.value = personsFromRooms(r).toFixed(2);
+        updateDeductions();
+    });
 
 	//clear
 	clear.addEventListener("click", clearUI);
@@ -360,6 +373,12 @@ function loadEnergyTable() {
                 chk.addEventListener("change", () => {
                         rowBoxes.forEach(vb => {
                                 if (!vb.allowToggle) return;
+                                if (chk.checked) {
+                                        vb.valueInp = vb.box.value;
+                                        vb.box.value = vb.valueCalc;
+                                } else {
+                                        vb.valueCalc = vb.box.value;
+                                }
                                 vb.locked = chk.checked;
                                 vb.updateVisual();
                         });
@@ -542,6 +561,11 @@ function prefillFromURL() {
         geo.value = params.get("geography") || "Åland";
         type.value = params.get("housetype") || "SMALL";
         at.value = params.get("atemp") || "";
+        rooms.value = params.get("rooms") || "";
+        if (rooms.value) {
+                const r = parseInt(rooms.value, 10);
+                dedPersons.value = personsFromRooms(r).toFixed(2);
+        }
         fl.value = params.get("flow") || "";
         if (tvvSel) tvvSel.value = params.get("tvv") || "0";
 
