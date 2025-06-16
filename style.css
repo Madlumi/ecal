@@ -185,6 +185,10 @@ textarea#permalink {
   margin-right: 0.5rem;
 }
 
+.ded-pair {
+  white-space: nowrap;
+}
+
 
 
 .lock-icon {
