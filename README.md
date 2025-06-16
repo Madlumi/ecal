@@ -34,11 +34,11 @@ css could use some work
 
 ## Help-icon logic
 
-For any key `x`, a “?” help icon will be shown **if and only if** all of the following are true:
-
-1. There is an element in the DOM with `id="x_help_icon"`.  
-2. There is a matching help container with `id="x_help"`.  
-3. `STRINGS` in  `strings.js` has a non blank entry with `x_help`
+For any key `x` where `strings.js` defines a non-empty `x_help` entry, the
+interface will automatically generate a “?” icon and a matching help box. If the
+elements `x_help_icon` or `x_help` do not already exist in the DOM they will be
+created next to the label (or the element itself) and wired to show the help
+text on click.
 
 
 

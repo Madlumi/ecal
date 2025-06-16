@@ -281,7 +281,10 @@ function loadEnergyTable() {
         hr.insertCell().textContent = "";
         E_name.forEach(name => hr.insertCell().textContent = name);
         const calcCell = hr.insertCell();
-        calcCell.textContent = getString("calc_icon");
+        const calcSpan = document.createElement("span");
+        calcSpan.id = "calc";
+        calcSpan.textContent = getString("calc_icon");
+        calcCell.appendChild(calcSpan);
         calcCell.title = getString("calc_help");
 
 	const tbody = table.createTBody();
@@ -534,6 +537,7 @@ function main(){
 
     loadGeography();
         loadEnergyTable();
+        applyLanguage(); // add help icons for dynamically created elements
         loadTvvDropdown();
 
 	prefillFromURL();
