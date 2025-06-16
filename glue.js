@@ -253,20 +253,20 @@ function registerListeners(){
 
 
 
-        type.addEventListener("change", () => { updateFootnotes(); calculate(); });
-        if (tvvSel) tvvSel.addEventListener("change", calculate);
-        form.addEventListener("input", calculate);
-    if (heatEnergyInput) heatEnergyInput.addEventListener("input", updateDeductions);
-    if (heatEnergyType) heatEnergyType.addEventListener("change", updateDeductions);
-    if (coolEnergyInput) coolEnergyInput.addEventListener("input", updateDeductions);
-    if (coolEnergyType) coolEnergyType.addEventListener("change", updateDeductions);
-    if (fastEnergyInput) fastEnergyInput.addEventListener("input", updateDeductions);
-    if (fastEnergyType) fastEnergyType.addEventListener("change", updateDeductions);
-    [dedPersons,dedPersonHeat,dedTimeHours,dedTimeDays,dedTimeWeeks].forEach(el=>{ if(el) el.addEventListener("input", updateDeductions);});
+        type.addEventListener("change", update);
+        if (tvvSel) tvvSel.addEventListener("change", update);
+        form.addEventListener("input", update);
+    if (heatEnergyInput) heatEnergyInput.addEventListener("input", update);
+    if (heatEnergyType) heatEnergyType.addEventListener("change", update);
+    if (coolEnergyInput) coolEnergyInput.addEventListener("input", update);
+    if (coolEnergyType) coolEnergyType.addEventListener("change", update);
+    if (fastEnergyInput) fastEnergyInput.addEventListener("input", update);
+    if (fastEnergyType) fastEnergyType.addEventListener("change", update);
+    [dedPersons,dedPersonHeat,dedTimeHours,dedTimeDays,dedTimeWeeks].forEach(el=>{ if(el) el.addEventListener("input", update);});
     if (rooms) rooms.addEventListener("input", () => {
         const r = parseInt(rooms.value, 10);
         dedPersons.value = personsFromRooms(r).toFixed(2);
-        updateDeductions();
+        update();
     });
 
 	//clear
@@ -286,10 +286,9 @@ function registerListeners(){
 
 
 function clearUI() {
-	history.replaceState(null, "", location.pathname);
-	prefillFromURL();
-	updateFootnotes();
-	calculate();
+        history.replaceState(null, "", location.pathname);
+        prefillFromURL();
+        update();
 }
 
 
@@ -516,6 +515,13 @@ function updateDeductions() {
     }
 }
 
+// Convenience wrapper that refreshes all computed values
+function update() {
+    updateFootnotes();
+    updateDeductions();
+    calculate();
+}
+
 
 
 //Connect to energy.js and display output, and build the perma link
@@ -669,10 +675,7 @@ function main(){
 
         registerListeners();
 
-        updateFootnotes();
-        updateDeductions();
-        updateTvvRow();
-        calculate();
+        update();
 }
 
 document.addEventListener("DOMContentLoaded", main);
