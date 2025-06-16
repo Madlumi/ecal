@@ -91,6 +91,12 @@ form#houseForm table td {
   max-width: 4rem;
 }
 
+form#houseForm table th:last-child,
+form#houseForm table td:last-child {
+  width: 3ch;
+  max-width: 3ch;
+}
+
 form#houseForm th {
   background: #f0f0f0;
 }

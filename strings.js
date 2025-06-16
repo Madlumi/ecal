@@ -288,11 +288,22 @@ const STRINGS = {
 	},
 
 	// “?” icon character
-	info_icon: {
-		sv: "?",
-		en: "?",
-		fi: "?"
-	},
+        info_icon: {
+                sv: "?",
+                en: "?",
+                fi: "?"
+        },
+
+        calc_icon: {
+                sv: "\uD83E\uDDEE", // calculator emoji
+                en: "\uD83E\uDDEE",
+                fi: "\uD83E\uDDEE"
+        },
+        calc_help: {
+                sv: "Avmarkera för att ange värden manuellt",
+                en: "Deselect to enter values manually",
+                fi: "Poista valinta syöttääksesi arvot käsin"
+        },
 
 
 
