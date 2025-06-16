@@ -32,6 +32,13 @@ const outEP    = $("ep_label"), limitsT  = $("limitsTable");
 const table = $("energyTable");
 const ROOMS_TO_PERSONS = [1.42, 1.63, 2.18, 2.79, 3.51];
 
+// Lock improbable energy source combinations
+const LOCKED_COMBINATIONS = [
+  { measureKey: "heat", sourceIndex: EType.FJARRKYLA },
+  { measureKey: "cool", sourceIndex: EType.FJARRVARME }
+];
+window.LOCKED_COMBINATIONS = LOCKED_COMBINATIONS;
+
 function personsFromRooms(n) {
     if (!n || n <= 0) return 0;
     if (n >= 5) return ROOMS_TO_PERSONS[4];
