@@ -103,6 +103,20 @@ form#houseForm select {
   box-sizing: border-box;
 }
 
+/* Collapsible input subsections */
+details.input-section {
+  border: 1px solid var(--border-color);
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  background: var(--form-bg);
+}
+
+details.input-section summary {
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
 /* “Energyfaktorer (kW/år):” label */
 label#energyTableLabel {
   display: block;
