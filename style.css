@@ -178,6 +178,10 @@ textarea#permalink {
   cursor: default;
 }
 
+.time-unit {
+  margin-right: 0.5rem;
+}
+
 
 
 .lock-icon {
