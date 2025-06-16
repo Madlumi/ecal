@@ -3,31 +3,32 @@
 // Manage the dom
 // 
 // =====================
-const geo      = document.getElementById("geography");
-const type     = document.getElementById("housetype");
-const at       = document.getElementById("atemp");
-const fl       = document.getElementById("flow");
-const tvvSel   = document.getElementById("tvvType");
-const f2       = document.getElementById("foot2");
-const f3       = document.getElementById("foot3");
-const f4       = document.getElementById("foot4");
-const f5       = document.getElementById("foot5");
-const clear    	= document.getElementById("clear_button");
-const copy     	= document.getElementById("copy_button");
-const print       = document.getElementById("print_button");    
-const form     	  = document.getElementById("houseForm");
-const footnoteBox = document.getElementById("footnoteBox");
-const foot2Lbl    = document.getElementById("lbl_foot2");
-const foot3Lbl    = document.getElementById("lbl_foot3");
-const foot4Lbl    = document.getElementById("lbl_foot4");
-const foot5Lbl    = document.getElementById("lbl_foot5");
+const $ = id => document.getElementById(id);
+const geo      = $("geography");
+const type     = $("housetype");
+const at       = $("atemp");
+const fl       = $("flow");
+const tvvSel   = $("tvvType");
+const f2       = $("foot2");
+const f3       = $("foot3");
+const f4       = $("foot4");
+const f5       = $("foot5");
+const clear    	= $("clear_button");
+const copy     	= $("copy_button");
+const print       = $("print_button");    
+const form     	  = $("houseForm");
+const footnoteBox = $("footnoteBox");
+const foot2Lbl    = $("lbl_foot2");
+const foot3Lbl    = $("lbl_foot3");
+const foot4Lbl    = $("lbl_foot4");
+const foot5Lbl    = $("lbl_foot5");
 const heatEls  = window.heatEls, coolEls  = window.coolEls, watrEls  = window.watrEls, fastEls  = window.fastEls;
-const outEP    = document.getElementById("ep_label"), limitsT  = document.getElementById("limitsTable");
-const table = document.getElementById("energyTable");
+const outEP    = $("ep_label"), limitsT  = $("limitsTable");
+const table = $("energyTable");
 
 
 
-const flowContainer = document.getElementById("flowContainer");
+const flowContainer = $("flowContainer");
 
 function detectLang() {
 	const urlParams = new URLSearchParams(window.location.search);
@@ -43,7 +44,7 @@ function registerListeners(){
 	document.querySelectorAll(".lang-button").forEach(btn => {
 		btn.addEventListener("click", () => {
 			// grab either the full permalink's query or the current page's
-			const src = document.getElementById("permalink").value.split("?")[1] || location.search.slice(1);
+			const src = $("permalink").value.split("?")[1] || location.search.slice(1);
 			const q   = new URLSearchParams(src);
 			q.set("lang", btn.dataset.lang);
 			location.search = q;  // reloads preserving all other params + new lang
@@ -63,7 +64,7 @@ function registerListeners(){
 	print.addEventListener("click",()=>{ window.location.href = `energyprint.html?ep=${calculate()}&housetype=${type.value}`; });
 	//copy
 	copy.addEventListener("click",()=>{
-		const ta=document.getElementById("permalink");
+		const ta=$("permalink");
 		ta.select(); ta.setSelectionRange(0,99999);
 		document.execCommand("copy");
 		copy.textContent=getString("copy_button")+" ✔";
@@ -95,8 +96,8 @@ function getString(key) {
 
 function setupHelp(iconId, boxId, key) {
 	try {
-		const icon = document.getElementById(iconId);
-		const box  = document.getElementById(boxId);
+		const icon = $(iconId);
+		const box  = $(boxId);
 
 		// Bail out if either element is missing
 		if (!icon || !box) {
@@ -121,7 +122,7 @@ function setupHelp(iconId, boxId, key) {
 	} catch (err) {
 		console.error(`setupHelp(${iconId}, ${boxId}, ${key}) failed:`, err);
 		// don't rethrow—just leave the icon hidden
-		const icon = document.getElementById(iconId);
+		const icon = $(iconId);
 		if (icon) icon.style.display = "none";
 	}
 }
@@ -153,7 +154,7 @@ function applyLanguage() {
 
 	// 3) Apply all non‐help keys
 	keys.forEach(key => {
-		const el = document.getElementById(key);
+		const el = $(key);
 		if (!el) return;
 		const str = getString(key) || "";
 
@@ -170,13 +171,13 @@ function applyLanguage() {
                 const iconId = `${base}_help_icon`;
                 const boxId  = `${base}_help`;
 
-                let icon = document.getElementById(iconId);
-                let box  = document.getElementById(boxId);
+                let icon = $(iconId);
+                let box  = $(boxId);
 
                 // Insert missing elements after the label container if present,
                 // otherwise after the base element itself
-                const ref = document.getElementById(`lbl_${base}`) ||
-                            document.getElementById(base);
+                const ref = $(`lbl_${base}`) ||
+                            $(base);
                 if (!ref) return; // nothing to attach to
 
                 if (!icon) {
@@ -201,7 +202,7 @@ function applyLanguage() {
 // Populate elements
 // =====================
 function loadGeography() {
-        const sel = document.getElementById("geography");
+        const sel = $("geography");
         sel.innerHTML = "";
         locations.forEach(loc => { sel.add(new Option(loc.name, loc.name)); });
 }
@@ -213,7 +214,7 @@ function loadTvvDropdown() {
 }
 
 function loadEnergyTable() {
-	const table = document.getElementById("energyTable");
+	const table = $("energyTable");
 	table.innerHTML = "";
 
 	// Prepare your per‐key element‐arrays dynamically
@@ -244,7 +245,7 @@ function loadEnergyTable() {
 			icon.className   = "info-icon";
 			icon.textContent = getString("info_icon");
 			icon.onclick = () => {
-				const box = document.getElementById("energyRowHelpBox");
+				const box = $("energyRowHelpBox");
 				if (box.innerHTML === helpText && box.style.display === "block") {
 					box.style.display = "none";
 				} else {
@@ -274,7 +275,7 @@ function loadEnergyTable() {
 	window.fastEls = measureEls.fast;
 
 	// hide the row‐help box initially
-	document.getElementById("energyRowHelpBox").style.display = "none";
+	$("energyRowHelpBox").style.display = "none";
 }
 //expandable footnote additon box
 
@@ -372,7 +373,7 @@ function calculate() {
 	// If LL was –1, hook up the help-box toggle
 	if (lim.LL === -1) {
 		// remove old help-box if present
-		const old = document.getElementById("limitLLHelp");
+		const old = $("limitLLHelp");
 		if (old) old.remove();
 
 		// insert new help-box right after the table
@@ -384,8 +385,8 @@ function calculate() {
 		limitsTable.parentNode.insertBefore(helpDiv, limitsTable.nextSibling);
 
 		// toggle visibility when “?” clicked
-		document.getElementById("llIcon").addEventListener("click", () => {
-			const hb = document.getElementById("limitLLHelp");
+		$("llIcon").addEventListener("click", () => {
+			const hb = $("limitLLHelp");
 			hb.style.display = hb.style.display === "block" ? "none" : "block";
 		});
 	}
@@ -408,7 +409,7 @@ function calculate() {
 		if(h.E.watr[i])ps.set(`watr${i}`, h.E.watr[i]);
 		if(h.E.fast[i])ps.set(`fast${i}`, h.E.fast[i]);
 	}
-	document.getElementById("permalink").value = window.location.pathname + "?" + ps;
+	$("permalink").value = window.location.pathname + "?" + ps;
 	return epv;
 }
 
@@ -437,7 +438,7 @@ function prefillFromURL() {
 			const val = params.get(paramName);
 			// build the same id you used in getEnergyTable()
 			const id = `${key}-${E_name[i].toLowerCase().replace(/\s+/g,"_")}`;
-			const inp = document.getElementById(id);
+			const inp = $(id);
 			if (!inp) continue;
 			inp.value = val !== null ? val : "";
 		}
