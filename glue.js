@@ -273,10 +273,12 @@ function loadEnergyTable() {
 	// Header
 	const thead = table.createTHead();
 	const hr    = thead.insertRow();
-	hr.insertCell().textContent = "";
-	E_name.forEach(name => hr.insertCell().textContent = name);
+        hr.insertCell().textContent = "";
+        E_name.forEach(name => hr.insertCell().textContent = name);
+        hr.insertCell().textContent = "\uD83D\uDD12"; // lock icon header
 
 	const tbody = table.createTBody();
+        const rowLocks = {};
         measureKeys.forEach(key => {
                 const labelKey = `energy_row_${key}`;
                 const helpKey  = `${labelKey}_help`;
@@ -306,6 +308,7 @@ function loadEnergyTable() {
 
                 // add cells
                 const lockRow = (key === "watr");
+                const rowBoxes = [];
                 for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
                         const c = row.insertCell();
                         const id = `${key}-${E_name[i].toLowerCase().replace(/\s+/g, "_")}`;
@@ -316,20 +319,28 @@ function loadEnergyTable() {
                                 id,
                                 name: id
                         });
-                        const but = Object.assign(document.createElement("button"), {
-                                type: "button",
-                                className: "lock-icon",
-                                title: "Unlock/lock"
-                        });
+                        const but = document.createElement("button"); // hidden button to satisfy ValueBox
                         const span = document.createElement("span");
                         span.className = "value-box";
                         span.appendChild(inp);
-                        span.appendChild(but);
+                        // button not shown for row-wise lock
                         const noToggle = LOCKED_COMBINATIONS.some(l => l.measureKey === key && l.sourceIndex === i);
                         const vb = new ValueBox(inp, but, lockRow || noToggle, !noToggle);
                         c.appendChild(span);
-                        measureBoxes[key].push(vb);
+                        rowBoxes.push(vb);
                 }
+                const lockCell = row.insertCell();
+                const chk = Object.assign(document.createElement("input"), {type:"checkbox", checked: lockRow});
+                chk.addEventListener("change", () => {
+                        rowBoxes.forEach(vb => {
+                                if (!vb.allowToggle) return;
+                                vb.locked = chk.checked;
+                                vb.updateVisual();
+                        });
+                });
+                lockCell.appendChild(chk);
+                measureBoxes[key] = rowBoxes;
+                rowLocks[key] = chk;
         });
 
         // Expose arrays on window
@@ -337,6 +348,7 @@ function loadEnergyTable() {
         window.coolEls = measureBoxes.cool;
         window.watrEls = measureBoxes.watr;
         window.fastEls = measureBoxes.fast;
+        window.rowLocks = rowLocks;
 
 	// hide the row‐help box initially
 	$("energyRowHelpBox").style.display = "none";
