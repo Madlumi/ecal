@@ -28,6 +28,7 @@ const dedPersonHeat = $("dedPersonHeat");
 const dedTimeHours = $("dedTimeHours");
 const dedTimeDays = $("dedTimeDays");
 const dedTimeWeeks = $("dedTimeWeeks");
+const dedTimeLock = $("dedTimeLock");
 let dedPersonsVB, dedPersonHeatVB, dedTimeHoursVB, dedTimeDaysVB, dedTimeWeeksVB;
 const foot2Lbl    = $("lbl_foot2");
 const foot3Lbl    = $("lbl_foot3");
@@ -77,8 +78,13 @@ class ValueBox {
     } else {
       this.box.classList.remove("locked");
     }
-    // the button is hidden when using row-wise checkboxes, so no icon needed
-    this.but.textContent = "";
+    // show an icon on toggleable buttons
+    if (this.allowToggle) {
+      this.but.textContent = this.locked ? getString("calc_icon") : getString("pen_icon");
+      const tip = this.locked ? getString("calc_tooltip") : getString("pen_tooltip");
+      this.but.title = tip;
+      this.but.setAttribute("aria-label", tip);
+    }
   }
   setCalc(v) {
     this.valueCalc = v;
@@ -432,17 +438,14 @@ function initDeductions() {
         const btn = dedPersonHeat.parentElement.querySelector("button");
         dedPersonHeatVB = new ValueBox(dedPersonHeat, btn, true, true);
     }
-    if (dedTimeHours) {
-        const btn = dedTimeHours.parentElement.querySelector("button");
-        dedTimeHoursVB = new ValueBox(dedTimeHours, btn, true, true);
+    if (dedTimeLock && dedTimeHours) {
+        dedTimeHoursVB = new ValueBox(dedTimeHours, dedTimeLock, true, true);
     }
-    if (dedTimeDays) {
-        const btn = dedTimeDays.parentElement.querySelector("button");
-        dedTimeDaysVB = new ValueBox(dedTimeDays, btn, true, true);
+    if (dedTimeLock && dedTimeDays) {
+        dedTimeDaysVB = new ValueBox(dedTimeDays, dedTimeLock, true, true);
     }
-    if (dedTimeWeeks) {
-        const btn = dedTimeWeeks.parentElement.querySelector("button");
-        dedTimeWeeksVB = new ValueBox(dedTimeWeeks, btn, true, true);
+    if (dedTimeLock && dedTimeWeeks) {
+        dedTimeWeeksVB = new ValueBox(dedTimeWeeks, dedTimeLock, true, true);
     }
 }
 
