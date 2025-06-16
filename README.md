@@ -78,3 +78,9 @@ Run the C tests with `./run_tests.sh` and check `test_output.txt` for results.
 ### Printed Certificate PDF
 
 ![Screenshot of the print output](screenshot_output.png)
+
+---
+
+## License
+
+This project is licensed under the [GNU General Public License v3.0](LICENCE.txt).
