@@ -319,6 +319,16 @@ th, td {
   width: 3.5rem;
 }
 
+/* Energy input table without borders */
+#energyInputTable {
+  border-collapse: collapse;
+  width: auto;
+}
+#energyInputTable td {
+  border: none;
+  padding: 0.25rem 0.5rem 0.25rem 0;
+}
+
 th {
   background: var(--table-header-bg);
 }
