@@ -153,18 +153,22 @@ function applyLanguage() {
 	});
 
 	// 3) Apply all non‐help keys
-	keys.forEach(key => {
-		const el = $(key);
-		if (!el) return;
-		const str = getString(key) || "";
+        keys.forEach(key => {
+                const el = $(key);
+                if (!el) return;
+                const str = getString(key) || "";
 
-		if (key === "disclaimer") {
-			el.innerHTML = str;
-			el.style.display = str ? "block" : "none";
-		} else {
-			el.innerHTML = str;
-		}
-	});
+                // Some strings (for example EP\u2004labels) contain markup like
+                // <sub>. We use innerHTML so those elements render correctly.
+                // Be cautious about inserting untrusted text here as it would be
+                // interpreted as HTML and could open an XSS vector.
+                if (key === "disclaimer") {
+                        el.innerHTML = str;
+                        el.style.display = str ? "block" : "none";
+                } else {
+                        el.innerHTML = str;
+                }
+        });
 
         // 4) Ensure each help base has its icon & box, then hook them up
         helpBases.forEach(base => {
