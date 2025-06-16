@@ -28,6 +28,7 @@ const dedPersonHeat = $("dedPersonHeat");
 const dedTimeHours = $("dedTimeHours");
 const dedTimeDays = $("dedTimeDays");
 const dedTimeWeeks = $("dedTimeWeeks");
+let dedPersonsVB, dedPersonHeatVB, dedTimeHoursVB, dedTimeDaysVB, dedTimeWeeksVB;
 const foot2Lbl    = $("lbl_foot2");
 const foot3Lbl    = $("lbl_foot3");
 const foot4Lbl    = $("lbl_foot4");
@@ -265,7 +266,7 @@ function registerListeners(){
     [dedPersons,dedPersonHeat,dedTimeHours,dedTimeDays,dedTimeWeeks].forEach(el=>{ if(el) el.addEventListener("input", update);});
     if (rooms) rooms.addEventListener("input", () => {
         const r = parseInt(rooms.value, 10);
-        dedPersons.value = personsFromRooms(r).toFixed(2);
+        if (dedPersonsVB) dedPersonsVB.setCalc(personsFromRooms(r).toFixed(2));
         update();
     });
 
@@ -419,7 +420,30 @@ function loadEnergyTable() {
         window.rowLocks = rowLocks;
 
 	// hide the row‐help box initially
-	$("energyRowHelpBox").style.display = "none";
+        $("energyRowHelpBox").style.display = "none";
+}
+
+function initDeductions() {
+    if (dedPersons) {
+        const btn = dedPersons.parentElement.querySelector("button");
+        dedPersonsVB = new ValueBox(dedPersons, btn, true, true);
+    }
+    if (dedPersonHeat) {
+        const btn = dedPersonHeat.parentElement.querySelector("button");
+        dedPersonHeatVB = new ValueBox(dedPersonHeat, btn, true, true);
+    }
+    if (dedTimeHours) {
+        const btn = dedTimeHours.parentElement.querySelector("button");
+        dedTimeHoursVB = new ValueBox(dedTimeHours, btn, true, true);
+    }
+    if (dedTimeDays) {
+        const btn = dedTimeDays.parentElement.querySelector("button");
+        dedTimeDaysVB = new ValueBox(dedTimeDays, btn, true, true);
+    }
+    if (dedTimeWeeks) {
+        const btn = dedTimeWeeks.parentElement.querySelector("button");
+        dedTimeWeeksVB = new ValueBox(dedTimeWeeks, btn, true, true);
+    }
 }
 
 //========================
@@ -467,11 +491,11 @@ function updateDeductions() {
     if (!window.heatEls) return;
     const energy = parseFloat(heatEnergyInput.value) || 0;
     const idx = parseInt(heatEnergyType.value, 10) || 0;
-    const persons = parseFloat(dedPersons.value) || 0;
-    const perHeat = parseFloat(dedPersonHeat.value) || 0;
-    const hours = parseFloat(dedTimeHours.value) || 0;
-    const days = parseFloat(dedTimeDays.value) || 0;
-    const weeks = parseFloat(dedTimeWeeks.value) || 0;
+    const persons = parseFloat(dedPersonsVB?.getValue()) || 0;
+    const perHeat = parseFloat(dedPersonHeatVB?.getValue()) || 0;
+    const hours = parseFloat(dedTimeHoursVB?.getValue()) || 0;
+    const days = parseFloat(dedTimeDaysVB?.getValue()) || 0;
+    const weeks = parseFloat(dedTimeWeeksVB?.getValue()) || 0;
     const ded = persons * perHeat * hours * days * weeks / 1000;
     const res = energy - ded;
 
@@ -630,16 +654,18 @@ function prefillFromURL() {
         geo.value = params.get("geography") || "Åland";
         type.value = params.get("housetype") || "SMALL";
         at.value = params.get("atemp") || "";
-        rooms.value = params.get("rooms") || "";
-        if (rooms.value) {
-                const r = parseInt(rooms.value, 10);
-                dedPersons.value = personsFromRooms(r).toFixed(2);
-        }
+        rooms.value = params.get("rooms") || "0";
+        const r = parseInt(rooms.value, 10) || 0;
+        if (dedPersonsVB) dedPersonsVB.setCalc(personsFromRooms(r).toFixed(2));
         fl.value = params.get("flow") || "";
         if (tvvSel) tvvSel.value = params.get("tvv") || "0";
 
         // deduction defaults
-        dedPersonHeat.value = params.get("perheat") || (typeof PERSON_HEAT !== 'undefined' ? PERSON_HEAT : "");
+        const perHeatDef = params.get("perheat") || (typeof PERSON_HEAT !== 'undefined' ? PERSON_HEAT : "");
+        if (dedPersonHeatVB) dedPersonHeatVB.setCalc(perHeatDef);
+        if (dedTimeHoursVB) dedTimeHoursVB.setCalc(dedTimeHours.value);
+        if (dedTimeDaysVB) dedTimeDaysVB.setCalc(dedTimeDays.value);
+        if (dedTimeWeeksVB) dedTimeWeeksVB.setCalc(dedTimeWeeks.value);
 
 	// foot2–foot5 checkboxes: default false if no "1"
 	[f2, f3, f4, f5].forEach((el, idx) => { el.checked = params.get(`foot${idx + 2}`) === "1"; });
@@ -665,6 +691,7 @@ function main(){
 
     loadGeography();
         loadEnergyTable();
+    initDeductions();
         applyLanguage(); // add help icons for dynamically created elements
         loadTvvDropdown();
 
