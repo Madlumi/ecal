@@ -121,7 +121,22 @@ const STRINGS = {
                 en: "Time (h/d/w):",
                 fi: "Aika (h/p/v):"
         },
-	// Footnotes heading + labels
+        dedTime_hours_unit: {
+                sv: "h/d",
+                en: "h/d",
+                fi: "h/p"
+        },
+        dedTime_days_unit: {
+                sv: "d/v",
+                en: "d/w",
+                fi: "p/v"
+        },
+        dedTime_weeks_unit: {
+                sv: "v/år",
+                en: "w/yr",
+                fi: "v/v"
+        },
+        // Footnotes heading + labels
 	footnotes_heading: {
 		sv: "Extra ventilationsfotnoter (endast flerbostadshus):",
 		en: "Extra ventilation footnotes (only multi‐family):",
