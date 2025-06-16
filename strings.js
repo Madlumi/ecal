@@ -71,6 +71,41 @@ const STRINGS = {
                 fi: "Energiatekijät"
         },
 
+        section_energyinput_heading: {
+                sv: "Energiinmatning",
+                en: "Energy Input",
+                fi: "Energian syöttö"
+        },
+        heatEnergy_label: {
+                sv: "Värmeenergi (kWh):",
+                en: "Heating energy:",
+                fi: "Lämmitysenergia:"
+        },
+        heatEnergyType_label: {
+                sv: "Typ:",
+                en: "Type:",
+                fi: "Tyyppi:"
+        },
+        section_deductions_heading: {
+                sv: "Avdrag",
+                en: "Deductions",
+                fi: "Vähennykset"
+        },
+        dedPersons_label: {
+                sv: "Personer:",
+                en: "People:",
+                fi: "Henkilöt:"
+        },
+        dedPersonHeat_label: {
+                sv: "Personvärme (W):",
+                en: "Person heat (W):",
+                fi: "Henkilölämpö (W):"
+        },
+        dedTime_label: {
+                sv: "Tid (h/d/v):",
+                en: "Time (h/d/w):",
+                fi: "Aika (h/p/v):"
+        },
 	// Footnotes heading + labels
 	footnotes_heading: {
 		sv: "Extra ventilationsfotnoter (endast flerbostadshus):",
