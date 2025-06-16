@@ -354,6 +354,21 @@ const STRINGS = {
                 en: "\uD83E\uDDEE",
                 fi: "\uD83E\uDDEE"
         },
+        pen_icon: {
+                sv: "\u270E", // pencil
+                en: "\u270E",
+                fi: "\u270E"
+        },
+        calc_tooltip: {
+                sv: "Använd beräknat värde",
+                en: "Use calculated value",
+                fi: "Käytä laskettua arvoa"
+        },
+        pen_tooltip: {
+                sv: "Skriv in manuellt",
+                en: "Enter manually",
+                fi: "Syötä käsin"
+        },
         calc_help: {
                 sv: "Markerad: använd beräknade eller förinställda värden.<br>Avmarkerad: ange manuellt",
                 en: "Checked: use calculated or preset values.<br>Unchecked: enter values manually",
