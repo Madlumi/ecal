@@ -279,7 +279,11 @@ function registerListeners(){
 	//clear
 	clear.addEventListener("click", clearUI);
 	//print
-	print.addEventListener("click",()=>{ window.location.href = `energyprint.html?ep=${calculate()}&housetype=${type.value}`; });
+        print.addEventListener("click",()=>{
+            const epv = calculate();
+            const eplim = window.last_eplim || 0;
+            window.location.href = `energyprint.html?ep=${epv}&housetype=${type.value}&eplim=${eplim}`;
+        });
 	//copy
 	copy.addEventListener("click",()=>{
 		const ta=$("permalink");
@@ -573,8 +577,9 @@ function calculate() {
                 h.E.fast[i] = parseFloat( window.fastEls[i]?.getValue() ) || 0;
         }
 
-	const epv = EPpet(h) | 0;
-	const lim = limit(h);
+        const epv = EPpet(h) | 0;
+        const lim = limit(h);
+        window.last_eplim = lim.EP;
 
 	if (epv > lim.EP) {
 		outEP.innerHTML = `${getString("ep_label")} ${epv} <span class="warning-icon" title="${getString("warning_tooltip")}">⚠</span>`;
