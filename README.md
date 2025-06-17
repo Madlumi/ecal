@@ -24,12 +24,15 @@ just serve the files in your preferred way, all the logic happens client side
 ---
 
 
-## issues
+## TODO
 
 Flerbostadshus, lokal, fotnoter bör dubbelkollas.
-ep limit för class A-G bör dubbelkollas
+ep limit för class A-G bör dubbelkollas(found the source 2014:31) 
 
+should make pdf output mimic official doc
 css could use some work
+
+
 
 
 ## Help-icon logic
