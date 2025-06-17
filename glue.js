@@ -35,6 +35,7 @@ const foot3Lbl    = $("lbl_foot3");
 const foot4Lbl    = $("lbl_foot4");
 const foot5Lbl    = $("lbl_foot5");
 const outEP    = $("ep_label"), limitsT  = $("limitsTable");
+const epArrow  = $("ep_arrow");
 const table = $("energyTable");
 const ROOMS_TO_PERSONS = [1.42, 1.63, 2.18, 2.79, 3.51];
 
@@ -47,6 +48,7 @@ function personsFromRooms(n) {
     if (n >= 5) return ROOMS_TO_PERSONS[4];
     return ROOMS_TO_PERSONS[n - 1];
 }
+
 
 //========================
 // CLASS: ValueBox
@@ -581,11 +583,26 @@ function calculate() {
         const lim = limit(h);
         window.last_eplim = lim.EP;
 
-	if (epv > lim.EP) {
-		outEP.innerHTML = `${getString("ep_label")} ${epv} <span class="warning-icon" title="${getString("warning_tooltip")}">⚠</span>`;
-	} else {
-		outEP.innerHTML = `${getString("ep_label")} ${epv}`;
-	}
+        if (epv > lim.EP) {
+                outEP.innerHTML = `${getString("ep_label")} ${epv} <span class="warning-icon" title="${getString("warning_tooltip")}">⚠</span>`;
+        } else {
+                outEP.innerHTML = `${getString("ep_label")} ${epv}`;
+        }
+
+        epArrow.innerHTML = "";
+        const cls = window.EPClass.classify(epv, lim.EP);
+        if(cls){
+                const color = window.EPClass.data[cls].colour;
+                const arrow = document.createElement("div");
+                arrow.className = "ep-arrow";
+                arrow.style.backgroundColor = color;
+                arrow.textContent = cls;
+                const tri = document.createElement("div");
+                tri.className = "triangle";
+                tri.style.borderLeftColor = color;
+                arrow.appendChild(tri);
+                epArrow.appendChild(arrow);
+        }
 
 
 	// --- populate limits table ---
