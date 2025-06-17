@@ -69,6 +69,14 @@ Run the C tests with `./run_tests.sh` and check `test_output.txt` for results.
 | `dev/`      | marginally useful files for developement|
 | `tests.html`      |  test file(not very good) |
 
+## Legal Sources
+
+Legal references used in the app are stored in the `sources/` directory:
+
+- `201431.txt` – Landskapslag (2014:31) om energideklaration för byggnader
+- `202511.txt` – Landskapsförordning (2025:11) om fastställande av byggnadens energianvändning
+- `ventilation_guidance.txt` – Anteckningar om ventilationsanvisningar
+
 
 ---
 
