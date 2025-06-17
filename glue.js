@@ -599,7 +599,7 @@ function calculate() {
                 arrow.textContent = cls;
                 const tri = document.createElement("div");
                 tri.className = "triangle";
-                tri.style.borderLeftColor = color;
+                tri.style.borderRightColor = color;
                 arrow.appendChild(tri);
                 epArrow.appendChild(arrow);
         }
