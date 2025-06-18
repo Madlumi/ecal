@@ -157,12 +157,15 @@
     </div>
   </div>
 
+  <script src="epclass.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      const labels = Object.keys(window.EPClass.data);
+      const colors = labels.map(l => window.EPClass.data[l].colour);
       const config = {
-        labels: ['A','B','C','D','E','F','G'],
-        colors: ['#4caf50','#8bc34a','#cddc39','#ffeb3b','#ffc107','#ff9800','#f44336'],
-        highlightIdx: 5,
+        labels,
+        colors,
+        highlightIdx: 0,
         container: { width:73, height:90 },
         margins: { top:10, bottom:5, gap:3 },
         arrow: { minNorm:0.2, maxNorm:0.9, fontSize:5 },
@@ -174,8 +177,8 @@
       const bind = (inputId, displayId) => {
         const inp = document.getElementById(inputId);
         const disp = document.getElementById(displayId);
-        inp.addEventListener('input', () => { disp.textContent = inp.value; updatePreview(); });
-        // initialize
+        const handler = () => { disp.textContent = inp.value; updateAll(); };
+        inp.addEventListener('input', handler);
         disp.textContent = inp.value;
       };
       ['addressInput','municipalityInput','yearInput','idInput',
@@ -183,13 +186,11 @@
        'ovkInput','suggestionsInput','performedInput','validInput'].forEach(id => {
         bind(id, id.replace('Input','Display'));
       });
-      // Draw house & arrows
+
       const roof = document.getElementById('houseRoof'), body = document.getElementById('houseBody');
       const rt = config.house.roofThickness, rg = config.house.roofGap;
       roof.setAttribute('points', [[0,50],[50,0],[100,50],[100-rt,50],[50,rt],[rt,50]].map(p=>p.join(',')).join(' '));
       body.setAttribute('points', [[rt,100],[100-rt,100],[100-rt,50+rg],[50,rt+rg],[rt,50+rg]].map(p=>p.join(',')).join(' '));
-      roof.setAttribute('fill', config.colors[config.highlightIdx]);
-      body.setAttribute('fill', config.colors[config.highlightIdx]);
       const houseSvg = document.getElementById('houseSvg');
       const houseLetter = document.createElementNS(houseSvg.namespaceURI, 'text');
       houseLetter.setAttribute('x', 50 + config.house.letterOffset.x);
@@ -199,42 +200,71 @@
       houseLetter.setAttribute('font-weight', 'bold');
       houseLetter.setAttribute('text-anchor', 'middle');
       houseLetter.setAttribute('dominant-baseline', 'middle');
-      houseLetter.textContent = config.labels[config.highlightIdx];
       houseSvg.appendChild(houseLetter);
       const svg = document.getElementById('energyClasses');
-      const n = config.labels.length;
-      const hAvail = config.container.height - config.margins.top - config.margins.bottom - (n-1) * config.margins.gap;
-      const arrowH = hAvail / n;
-      const tipW = arrowH * Math.sqrt(3) / 2;
-      const sy = config.margins.top + config.highlightIdx * (arrowH + config.margins.gap);
-      const wSel = config.arrow.minNorm * config.container.width + config.highlightIdx * ((config.arrow.maxNorm - config.arrow.minNorm) * config.container.width / (n-1));
-      const selPts = [[0,sy],[wSel,sy],[wSel+tipW,sy+arrowH/2],[wSel,sy+arrowH],[0,sy+arrowH]].map(p=>p.join(',')).join(' ');
-      [{color:'#000',width:config.outline.black},{color:'#fff',width:config.outline.white}].forEach(o => {
-        const pElem = document.createElementNS(svg.namespaceURI,'polygon');
-        pElem.setAttribute('points', selPts);
-        pElem.setAttribute('fill','none');
-        pElem.setAttribute('stroke', o.color);
-        pElem.setAttribute('stroke-width', o.width);
-        svg.appendChild(pElem);
-      });
-      config.labels.forEach((lbl, idx) => {
-        const y = config.margins.top + idx * (arrowH + config.margins.gap);
-        const w = config.arrow.minNorm * config.container.width + idx * ((config.arrow.maxNorm - config.arrow.minNorm) * config.container.width / (n-1));
-        const pts = [[0,y],[w,y],[w+tipW,y+arrowH/2],[w,y+arrowH],[0,y+arrowH]].map(p=>p.join(',')).join(' ');
-        const poly = document.createElementNS(svg.namespaceURI,'polygon'); poly.setAttribute('points', pts); poly.setAttribute('fill', config.colors[idx]); svg.appendChild(poly);
-        const txt = document.createElementNS(svg.namespaceURI,'text');
-        txt.setAttribute('x', w + tipW/2 + config.letterOffset.x);
-        txt.setAttribute('y', y + arrowH/2 + config.letterOffset.y);
-        txt.setAttribute('font-size', `${config.arrow.fontSize}pt`);
-        txt.setAttribute('fill', '#000'); txt.setAttribute('text-anchor','middle'); txt.setAttribute('dominant-baseline','middle'); txt.textContent = lbl;
-        svg.appendChild(txt);
-      });
-      // Update preview function
+
+      function drawVisuals() {
+        const n = config.labels.length;
+        const hAvail = config.container.height - config.margins.top - config.margins.bottom - (n-1) * config.margins.gap;
+        const arrowH = hAvail / n;
+        const tipW = arrowH * Math.sqrt(3) / 2;
+
+        roof.setAttribute('fill', config.colors[config.highlightIdx]);
+        body.setAttribute('fill', config.colors[config.highlightIdx]);
+        houseLetter.textContent = config.labels[config.highlightIdx];
+
+        svg.innerHTML = '';
+        const sy = config.margins.top + config.highlightIdx * (arrowH + config.margins.gap);
+        const wSel = config.arrow.minNorm * config.container.width + config.highlightIdx * ((config.arrow.maxNorm - config.arrow.minNorm) * config.container.width / (n-1));
+        const selPts = [[0,sy],[wSel,sy],[wSel+tipW,sy+arrowH/2],[wSel,sy+arrowH],[0,sy+arrowH]].map(p=>p.join(',')).join(' ');
+        [{color:'#000',width:config.outline.black},{color:'#fff',width:config.outline.white}].forEach(o => {
+          const pElem = document.createElementNS(svg.namespaceURI,'polygon');
+          pElem.setAttribute('points', selPts);
+          pElem.setAttribute('fill','none');
+          pElem.setAttribute('stroke', o.color);
+          pElem.setAttribute('stroke-width', o.width);
+          svg.appendChild(pElem);
+        });
+        config.labels.forEach((lbl, idx) => {
+          const y = config.margins.top + idx * (arrowH + config.margins.gap);
+          const w = config.arrow.minNorm * config.container.width + idx * ((config.arrow.maxNorm - config.arrow.minNorm) * config.container.width / (n-1));
+          const pts = [[0,y],[w,y],[w+tipW,y+arrowH/2],[w,y+arrowH],[0,y+arrowH]].map(p=>p.join(',')).join(' ');
+          const poly = document.createElementNS(svg.namespaceURI,'polygon');
+          poly.setAttribute('points', pts);
+          poly.setAttribute('fill', config.colors[idx]);
+          svg.appendChild(poly);
+          const txt = document.createElementNS(svg.namespaceURI,'text');
+          txt.setAttribute('x', w + tipW/2 + config.letterOffset.x);
+          txt.setAttribute('y', y + arrowH/2 + config.letterOffset.y);
+          txt.setAttribute('font-size', `${config.arrow.fontSize}pt`);
+          txt.setAttribute('fill', '#000');
+          txt.setAttribute('text-anchor','middle');
+          txt.setAttribute('dominant-baseline','middle');
+          txt.textContent = lbl;
+          svg.appendChild(txt);
+        });
+      }
+
+      function computeClass() {
+        const ep = parseFloat(document.getElementById('energyInput').value);
+        const lim = parseFloat(document.getElementById('requirementInput').value);
+        const cls = window.EPClass.classify(ep, lim);
+        const idx = config.labels.indexOf(cls);
+        if(idx !== -1) config.highlightIdx = idx;
+      }
+
       function updatePreview() {
         const preview = document.getElementById('previewContent');
         preview.innerHTML = document.getElementById('printArea').innerHTML;
       }
-      updatePreview();
+
+      function updateAll(){
+        computeClass();
+        drawVisuals();
+        updatePreview();
+      }
+
+      updateAll();
     });
   </script>
 </body>
