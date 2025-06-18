@@ -1,141 +1,240 @@
-
 <!DOCTYPE html>
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
   <title>Energideklaration – Print Layout (Bleed!)</title>
   <style>
-    html, body { margin:0; padding:0; font-family:Arial,sans-serif; font-size:10pt; }
-    .font-arial { font-family:Arial,sans-serif; font-weight:normal; }
-    .font-arial-bold { font-family:Arial,sans-serif; font-weight:bold; }
-    .font-helvetica { font-family:Helvetica,Arial,sans-serif; font-weight:normal; }
-    .font-helvetica-bold { font-family:Helvetica,Arial,sans-serif; font-weight:bold; }
-    #printButton { display:block; margin:2rem auto; padding:1rem 2rem; font-size:1.1rem; background:#3a8f4e; color:#fff; border:none; cursor:pointer; }
-    #printButton:hover { background:#287f53; }
-    .container { position:absolute; border:1px dashed #888; box-sizing:border-box; padding:0; }
-    @media print {
-      @page{margin:0; size:148.5mm 210mm;} html,body{margin:0; padding:0; -webkit-print-color-adjust:exact; color-adjust:exact;} #printButton{display:none!important;} .container{page-break-inside:avoid;}
+    /* Global styles */
+    html, body { margin: 0; padding: 0; font-family: Arial, sans-serif; font-size: 10pt; }
+
+    /* Screen-only styles */
+    @media screen {
+      /* Hide print content */
+      #printArea { display: none; }
+
+      /* Two-column layout */
+      #screenUI { display: flex; gap: 1rem; padding: 1rem; }
+      #dataEntry { flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+      #previewContainer { flex: none; width: 240px; height: 340px; border: 1px dashed #888; box-sizing: border-box; position: relative; overflow: hidden; }
+      #previewContent { position: absolute; top: 0; left: 0; width: 148.5mm; height: 210mm; transform: scale(0.45); transform-origin: top left; }
+
+      /* Print button */
+      #printButton { padding: 1rem; font-size: 1.1rem; background: #3a8f4e; color: #fff; border: none; cursor: pointer; }
+      #printButton:hover { background: #287f53; }
+
+      /* Show dashed outlines */
+      .container { border: 1px dashed #888; }
     }
+
+    /* Print-only styles */
+    @media print {
+      /* Hide screen UI */
+      #screenUI { display: none !important; }
+      @page { margin: 0; size: 148.5mm 210mm; }
+      html, body { margin: 0; padding: 0; -webkit-print-color-adjust: exact; color-adjust: exact; }
+      #printArea { display: block; }
+      .container { border: none !important; page-break-inside: avoid; }
+      .classes-box { border: 1px solid #000 !important; }
+    }
+
+    /* Font classes */
+    .font-arial { font-family: Arial, sans-serif; font-weight: normal; }
+    .font-arial-bold { font-family: Arial, sans-serif; font-weight: bold; }
+    .font-helvetica { font-family: Helvetica, Arial, sans-serif; font-weight: normal; }
+    .font-helvetica-bold { font-family: Helvetica, Arial, sans-serif; font-weight: bold; }
+
+    /* Absolute positioning for print elements */
+    .container { position: absolute; box-sizing: border-box; padding: 0; }
   </style>
 </head>
 <body>
-  <div style="height:10mm;"></div>
-  <div style="position:fixed; top:10mm; left:0; width:148.5mm; height:15mm; background:#000;">
-    <div class="font-helvetica" style="position:absolute; top:0; left:15mm; font-size:10pt; color:#fff;">sammanfattning av</div>
-    <div class="font-helvetica-bold" style="position:absolute; top:5mm; left:15mm; font-size:30pt; color:#fff;">ENERGIDEKLARATION</div>
+  <!-- Screen UI -->
+  <div id="screenUI">
+    <div id="dataEntry">
+      <button id="printButton" onclick="window.print()">Skriv ut</button>
+
+      <label>Byggnadens adress:<br>
+        <input type="text" id="addressInput" placeholder="Oceangränd 1 B2">
+      </label>
+      <label>Kommun:<br>
+        <input type="text" id="municipalityInput" placeholder="Jomala kommun">
+      </label>
+      <label>Nybyggnadsår:<br>
+        <input type="text" id="yearInput" placeholder="2009">
+      </label>
+      <label>Energideklarations-ID:<br>
+        <input type="text" id="idInput" placeholder="3671">
+      </label>
+      <label>Energiprestanda, primärenergital:<br>
+        <input type="text" id="energyInput" placeholder="162"> kWh/m² och år
+      </label>
+      <label>Krav vid uppförande av ny byggnad, primärenergital:<br>
+        <input type="text" id="requirementInput" placeholder="100 kWh/m² och år">
+      </label>
+      <label>Uppvärmningssystem:<br>
+        <input type="text" id="heatingInput" placeholder="Värmepump-luft/luft (el) och el">
+      </label>
+      <label>Radonmätning:<br>
+        <input type="text" id="radonInput" placeholder="Inte utförd">
+      </label>
+      <label>Ventilationskontroll (OVK):<br>
+        <input type="text" id="ovkInput" placeholder="Utförd">
+      </label>
+      <label>Åtgärdsförslag:<br>
+        <input type="text" id="suggestionsInput" placeholder="Har lämnats">
+      </label>
+      <label>Energideklarationen är utförd av:<br>
+        <input type="text" id="performedInput" placeholder="Namn Efternamn, LL, 2025-05-27">
+      </label>
+      <label>Energideklarationen är giltig till:<br>
+        <input type="text" id="validInput" placeholder="2035-05-27">
+      </label>
+    </div>
+    <div id="previewContainer"><div id="previewContent"></div></div>
   </div>
-  <div class="container" style="left:8mm; top:29.5mm; width:73mm; height:12.5mm; font-size:13pt;">
-    <div class="font-arial">Byggnadens adress</div>
-    <div class="font-helvetica">Kommun</div>
+
+  <!-- Printable area -->
+  <div id="printArea">
+    <div style="height:10mm;"></div>
+    <div style="position:fixed; top:10mm; left:0; width:148.5mm; height:15mm; background:#000;">
+      <div class="font-helvetica" style="position:absolute; top:0; left:15mm; font-size:10pt; color:#fff;">sammanfattning av</div>
+      <div class="font-helvetica-bold" style="position:absolute; top:5mm; left:15mm; font-size:30pt; color:#fff;">ENERGIDEKLARATION</div>
+    </div>
+
+    <div class="container" style="left:8mm; top:29.5mm; width:73mm; height:12.5mm; font-size:13pt;">
+      <div><span id="addressDisplay" class="font-arial"></span></div>
+      <div><span id="municipalityDisplay" class="font-helvetica"></span></div>
+    </div>
+    <div class="container" style="left:8mm; top:42.5mm; width:73mm; height:13.5mm; font-size:10pt;">
+      <div><span class="font-arial-bold">Nybyggnadsår:</span> <span id="yearDisplay" class="font-arial"></span></div>
+      <div><span class="font-helvetica-bold">Energideklarations-ID:</span> <span id="idDisplay" class="font-helvetica"></span></div>
+    </div>
+
+    <div class="container classes-box" style="left:8mm; top:56mm; width:73mm; height:90mm; overflow:hidden;">
+      <div class="font-helvetica-bold" style="font-size:11pt; padding:4px;">ENERGIKLASSER</div>
+      <svg id="energyClasses" width="100%" height="calc(100% - 10mm)" viewBox="0 0 73 90" preserveAspectRatio="xMinYMin meet"></svg>
+    </div>
+
+    <div class="container" style="left:8mm; top:164mm; width:73mm; height:15.5mm; font-size:10pt;">
+      <span class="font-helvetica-bold">Energideklarationen i sin helhet</span><br>
+      <span class="font-arial-bold">finns hos byggnadens ägare.</span>
+    </div>
+    <div class="container" style="left:8mm; top:179.5mm; width:73mm; height:10.5mm; font-size:10pt;">
+      <span class="font-arial-bold">För mer information:</span><br>
+      <span class="font-helvetica">www.regeringen.ax</span>
+    </div>
+    <div class="container" style="left:8mm; top:190.5mm; width:73mm; height:9.5mm; font-size:10pt;">
+      <span class="font-arial">Sammanfattningen är upprättad enligt Ålands landskapslag (2014:31) om energideklaration för byggnader.</span>
+    </div>
+
+    <div class="container" style="left:87.5mm; top:56mm; width:calc(26.5mm - 1.5px); height:26.5mm; overflow:hidden;">
+      <svg id="houseSvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%;" preserveAspectRatio="xMinYMin meet">
+        <polygon id="houseRoof" stroke="none" />
+        <polygon id="houseBody" stroke="none" />
+      </svg>
+    </div>
+    <div class="container" style="left:86mm; top:83.5mm; width:28mm; height:7.5mm; font-size:8pt;">
+      <div class="font-arial" style="text-align:center;">DENNA BYGGNADS ENERGIKLASS</div>
+    </div>
+
+    <div class="container" style="left:86mm; top:100mm; width:56.5mm; height:110mm; font-size:10pt;">
+      <div style="white-space:nowrap;"><strong>Energiprestanda, primärenergital:</strong></div>
+      <div><span id="energyDisplay"></span> kWh/m² och år</div><br>
+      <div><strong>Krav vid uppförande av ny byggnad, primärenergital:</strong></div>
+      <div><span id="requirementDisplay"></span></div><br>
+      <div><strong>Uppvärmningssystem:</strong></div>
+      <div><span id="heatingDisplay"></span></div><br>
+      <div><strong>Radonmätning:</strong></div>
+      <div><span id="radonDisplay"></span></div><br>
+      <div><strong>Ventilationskontroll (OVK):</strong></div>
+      <div><span id="ovkDisplay"></span></div><br>
+      <div><strong>Åtgärdsförslag:</strong></div>
+      <div><span id="suggestionsDisplay"></span></div><br>
+      <div><strong>Energideklarationen är utförd av:</strong></div>
+      <div><span id="performedDisplay"></span></div><br>
+      <div><strong>Energideklarationen är giltig till:</strong></div>
+      <div><span id="validDisplay"></span></div>
+    </div>
   </div>
-  <div class="container" style="left:8mm; top:42.5mm; width:73mm; height:13.5mm; font-size:10pt;">
-    <div class="font-arial-bold">Nybyggnadsår:</div>
-    <div class="font-helvetica-bold">Energideklarations-ID:</div>
-  </div>
-  <div class="container" style="left:8mm; top:56mm; width:73mm; height:90mm; border:1px solid #000; box-sizing:border-box; overflow:hidden;">
-    <div class="font-helvetica-bold" style="font-size:11pt; padding:4px;">ENERGIKLASSER</div>
-    <svg id="energyClasses" width="100%" height="calc(100% - 10mm)" viewBox="0 0 73 90" preserveAspectRatio="xMinYMin meet"></svg>
-  </div>
-  <div class="container" style="left:8mm; top:164mm; width:73mm; height:15.5mm; font-size:10pt;">
-    <span class="font-helvetica-bold">Energideklarationen i sin helhet</span><br>
-    <span class="font-arial-bold">finns hos byggnadens ägare.</span>
-  </div>
-  <div class="container" style="left:8mm; top:179.5mm; width:73mm; height:10.5mm; font-size:10pt;">
-    <span class="font-arial-bold">För mer information:</span><br>
-    <span class="font-helvetica">www.regeringen.ax</span>
-  </div>
-  <div class="container" style="left:8mm; top:190.5mm; width:73mm; height:9.5mm; font-size:10pt;">
-    <span class="font-arial">Sammanfattningen är upprättad enligt Ålands landskapslag (2014:31) om energideklaration för byggnader.</span>
-  </div>
-  <div class="container" style="left:87.5mm; top:56mm; width:calc(26.5mm - 1.5px); height:26.5mm; overflow:hidden;">
-    <svg id="houseSvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:calc(26.5mm - 1.5px); height:26.5mm;" preserveAspectRatio="xMinYMin meet">
-      <polygon id="houseRoof" stroke="none" />
-      <polygon id="houseBody" stroke="none" />
-    </svg>
-  </div>
-  <div class="container" style="left:86mm; top:83.5mm; width:28mm; height:7.5mm; font-size:10pt;">
-    <div class="font-arial" style="font-size:8pt; text-align:center;">DENNA BYGGNADS ENERGIKLASS</div>
-  </div>
-  </div>
-  <div class="container" style="left:86mm; top:100mm; width:56.5mm; height:110mm; font-size:10pt;">
-    <div style="white-space:nowrap;"><strong>Energiprestanda, primärenergital:</strong></div>
-    <div>XXXX kWh/m² och år</div><br>
-    <div><strong>Krav vid uppförande av ny byggnad, primärenergital:</strong></div>
-    <div>XXXX</div><br>
-    <div><strong>Uppvärmningssystem:</strong></div>
-    <div>XXXX</div><br>
-    <div><strong>Radonmätning:</strong></div>
-    <div>XXXX</div><br>
-    <div><strong>Ventilationskontroll (OVK):</strong></div>
-    <div>XXXX</div><br>
-    <div><strong>Åtgärdsförslag:</strong></div>
-    <div>XXXX</div><br>
-    <div><strong>Energideklarationen är utförd av:</strong></div>
-    <div>XXXX</div><br>
-    <div><strong>Energideklarationen är giltig till:</strong></div>
-    <div>XXXX</div>
-  </div>
-  <button id="printButton" onclick="window.print()">Skriv ut</button>
+
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const config = {
-        labels:['A','B','C','D','E','F','G'],
-        colors:['#4caf50','#8bc34a','#cddc39','#ffeb3b','#ffc107','#ff9800','#f44336'],
-        highlightIdx:5,
-        container:{width:73,height:90},
-        margins:{top:10,bottom:5,gap:3},
-        arrow:{minNorm:0.2,maxNorm:1.,fontSize:5},
-        letterOffset:{x:-4,y:0.5},
-        outline:{black:2.5,white:1},
-        house:{roofThickness:9,roofGap:6,fontSize:50,letterOffset:{x:0,y:20}}
+        labels: ['A','B','C','D','E','F','G'],
+        colors: ['#4caf50','#8bc34a','#cddc39','#ffeb3b','#ffc107','#ff9800','#f44336'],
+        highlightIdx: 5,
+        container: { width:73, height:90 },
+        margins: { top:10, bottom:5, gap:3 },
+        arrow: { minNorm:0.2, maxNorm:0.9, fontSize:5 },
+        letterOffset: { x:-4, y:0.5 },
+        outline: { black:2.5, white:1 },
+        house: { roofThickness:9, roofGap:6, fontSize:50, letterOffset: { x:0, y:20 } }
       };
-      // House SVG
-      const selColor=config.colors[config.highlightIdx];
-      const roof=document.getElementById('houseRoof'),body=document.getElementById('houseBody');
-      const rt=config.house.roofThickness,rg=config.house.roofGap;
-      roof.setAttribute('points',[[0,50],[50,0],[100,50],[100-rt,50],[50,rt],[rt,50]].map(p=>p.join(',')).join(' '));
-      body.setAttribute('points',[[rt,100],[100-rt,100],[100-rt,50+rg],[50,rt+rg],[rt,50+rg]].map(p=>p.join(',')).join(' '));
-      roof.setAttribute('fill',selColor);body.setAttribute('fill',selColor);
-      // big letter
-      const houseSvg=document.getElementById('houseSvg');
-      const houseLetter=document.createElementNS(houseSvg.namespaceURI,'text');
-      houseLetter.setAttribute('x',(50+config.house.letterOffset.x));
-      houseLetter.setAttribute('y',(55+config.house.letterOffset.y));
-      houseLetter.setAttribute('font-size',config.house.fontSize+'pt');
-      houseLetter.setAttribute('fill','#000');
-      houseLetter.setAttribute('font-weight','bold');
-      houseLetter.setAttribute('text-anchor','middle');
-      houseLetter.setAttribute('dominant-baseline','middle');
-      houseLetter.textContent=config.labels[config.highlightIdx];
+      // Bind inputs to displays
+      const bind = (inputId, displayId) => {
+        const inp = document.getElementById(inputId);
+        const disp = document.getElementById(displayId);
+        inp.addEventListener('input', () => { disp.textContent = inp.value; updatePreview(); });
+        // initialize
+        disp.textContent = inp.value;
+      };
+      ['addressInput','municipalityInput','yearInput','idInput',
+       'energyInput','requirementInput','heatingInput','radonInput',
+       'ovkInput','suggestionsInput','performedInput','validInput'].forEach(id => {
+        bind(id, id.replace('Input','Display'));
+      });
+      // Draw house & arrows
+      const roof = document.getElementById('houseRoof'), body = document.getElementById('houseBody');
+      const rt = config.house.roofThickness, rg = config.house.roofGap;
+      roof.setAttribute('points', [[0,50],[50,0],[100,50],[100-rt,50],[50,rt],[rt,50]].map(p=>p.join(',')).join(' '));
+      body.setAttribute('points', [[rt,100],[100-rt,100],[100-rt,50+rg],[50,rt+rg],[rt,50+rg]].map(p=>p.join(',')).join(' '));
+      roof.setAttribute('fill', config.colors[config.highlightIdx]);
+      body.setAttribute('fill', config.colors[config.highlightIdx]);
+      const houseSvg = document.getElementById('houseSvg');
+      const houseLetter = document.createElementNS(houseSvg.namespaceURI, 'text');
+      houseLetter.setAttribute('x', 50 + config.house.letterOffset.x);
+      houseLetter.setAttribute('y', 55 + config.house.letterOffset.y);
+      houseLetter.setAttribute('font-size', `${config.house.fontSize}pt`);
+      houseLetter.setAttribute('fill', '#000');
+      houseLetter.setAttribute('font-weight', 'bold');
+      houseLetter.setAttribute('text-anchor', 'middle');
+      houseLetter.setAttribute('dominant-baseline', 'middle');
+      houseLetter.textContent = config.labels[config.highlightIdx];
       houseSvg.appendChild(houseLetter);
-      // Arrows
-      const svg=document.getElementById('energyClasses'),n=config.labels.length;
-      const hAvail=config.container.height-config.margins.top-config.margins.bottom-config.margins.gap*(n-1);
-      const arrowH=hAvail/n;
-      // tipW for 30° slopes: tipW = arrowH/2 / tan(30°) = arrowH*(√3/2)
-      const tipW=arrowH*Math.sqrt(3)/2;
-      // outlines
-      const sy=config.margins.top+config.highlightIdx*(arrowH+config.margins.gap);
-      const wSel=config.arrow.minNorm*config.container.width+config.highlightIdx*((config.arrow.maxNorm-config.arrow.minNorm)*config.container.width/(n-1));
-      const selPts=[[0,sy],[wSel,sy],[wSel+tipW,sy+arrowH/2],[wSel,sy+arrowH],[0,sy+arrowH]].map(p=>p.join(',')).join(' ');
-      [{color:'#000',w:config.outline.black},{color:'#fff',w:config.outline.white}].forEach(o=>{
-        const p=document.createElementNS(svg.namespaceURI,'polygon');
-        p.setAttribute('points',selPts);p.setAttribute('fill','none');p.setAttribute('stroke',o.color);p.setAttribute('stroke-width',o.w);
-        svg.appendChild(p);
+      const svg = document.getElementById('energyClasses');
+      const n = config.labels.length;
+      const hAvail = config.container.height - config.margins.top - config.margins.bottom - (n-1) * config.margins.gap;
+      const arrowH = hAvail / n;
+      const tipW = arrowH * Math.sqrt(3) / 2;
+      const sy = config.margins.top + config.highlightIdx * (arrowH + config.margins.gap);
+      const wSel = config.arrow.minNorm * config.container.width + config.highlightIdx * ((config.arrow.maxNorm - config.arrow.minNorm) * config.container.width / (n-1));
+      const selPts = [[0,sy],[wSel,sy],[wSel+tipW,sy+arrowH/2],[wSel,sy+arrowH],[0,sy+arrowH]].map(p=>p.join(',')).join(' ');
+      [{color:'#000',width:config.outline.black},{color:'#fff',width:config.outline.white}].forEach(o => {
+        const pElem = document.createElementNS(svg.namespaceURI,'polygon');
+        pElem.setAttribute('points', selPts);
+        pElem.setAttribute('fill','none');
+        pElem.setAttribute('stroke', o.color);
+        pElem.setAttribute('stroke-width', o.width);
+        svg.appendChild(pElem);
       });
-      // draw
-      config.labels.forEach((lbl,i)=>{
-        const y=config.margins.top+i*(arrowH+config.margins.gap);
-        const w=config.arrow.minNorm*config.container.width+i*((config.arrow.maxNorm-config.arrow.minNorm)*config.container.width/(n-1));
-        const pts=[[0,y],[w,y],[w+tipW,y+arrowH/2],[w,y+arrowH],[0,y+arrowH]].map(p=>p.join(',')).join(' ');
-        const poly=document.createElementNS(svg.namespaceURI,'polygon');poly.setAttribute('points',pts);poly.setAttribute('fill',config.colors[i]);svg.appendChild(poly);
-        const t=document.createElementNS(svg.namespaceURI,'text');
-        t.setAttribute('x',(w+tipW/2+config.letterOffset.x));
-        t.setAttribute('y',(y+arrowH/2+config.letterOffset.y));
-        t.setAttribute('font-size',config.arrow.fontSize+'pt');
-        t.setAttribute('fill','#000');t.setAttribute('text-anchor','middle');t.setAttribute('dominant-baseline','middle');
-        t.textContent=lbl;svg.appendChild(t);
+      config.labels.forEach((lbl, idx) => {
+        const y = config.margins.top + idx * (arrowH + config.margins.gap);
+        const w = config.arrow.minNorm * config.container.width + idx * ((config.arrow.maxNorm - config.arrow.minNorm) * config.container.width / (n-1));
+        const pts = [[0,y],[w,y],[w+tipW,y+arrowH/2],[w,y+arrowH],[0,y+arrowH]].map(p=>p.join(',')).join(' ');
+        const poly = document.createElementNS(svg.namespaceURI,'polygon'); poly.setAttribute('points', pts); poly.setAttribute('fill', config.colors[idx]); svg.appendChild(poly);
+        const txt = document.createElementNS(svg.namespaceURI,'text');
+        txt.setAttribute('x', w + tipW/2 + config.letterOffset.x);
+        txt.setAttribute('y', y + arrowH/2 + config.letterOffset.y);
+        txt.setAttribute('font-size', `${config.arrow.fontSize}pt`);
+        txt.setAttribute('fill', '#000'); txt.setAttribute('text-anchor','middle'); txt.setAttribute('dominant-baseline','middle'); txt.textContent = lbl;
+        svg.appendChild(txt);
       });
+      // Update preview function
+      function updatePreview() {
+        const preview = document.getElementById('previewContent');
+        preview.innerHTML = document.getElementById('printArea').innerHTML;
+      }
+      updatePreview();
     });
   </script>
 </body>
