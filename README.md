@@ -49,13 +49,6 @@ text on click.
 ---
 
 
-## Development and Testing
-
-Run the automated tests by opening `tests.html` in a browser.
-Run the C tests with `./run_tests.sh` and check `test_output.txt` for results.
-
-
----
 ## File Structure
 
 | Filename           | Description                                                    |
@@ -67,7 +60,6 @@ Run the C tests with `./run_tests.sh` and check `test_output.txt` for results.
 | `strings.js`       | User facing strings and translations           |
 | `style.css`        |     css                                                             |
 | `dev/`      | marginally useful files for developement|
-| `tests.html`      |  test file(not very good) |
 
 ## Legal Sources
 
