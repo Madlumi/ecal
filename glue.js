@@ -284,7 +284,7 @@ function registerListeners(){
         print.addEventListener("click",()=>{
             const epv = calculate();
             const eplim = window.last_eplim || 0;
-            window.location.href = `energyprint.html?ep=${epv}&housetype=${type.value}&eplim=${eplim}`;
+            window.location.href = `energyprint_new.html?ep=${epv}&housetype=${type.value}&eplim=${eplim}`;
         });
 	//copy
 	copy.addEventListener("click",()=>{
