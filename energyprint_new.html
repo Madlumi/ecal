@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Energideklaration – Print Layout (Bleed!)</title>
+  <link rel="stylesheet" href="style.css" media="screen" />
   <style>
-    /* Global styles */
-    html, body { margin: 0; padding: 0; font-family: Arial, sans-serif; font-size: 10pt; }
 
     /* Screen-only styles */
     @media screen {
@@ -31,7 +30,14 @@
       /* Hide screen UI */
       #screenUI { display: none !important; }
       @page { margin: 0; size: 148.5mm 210mm; }
-      html, body { margin: 0; padding: 0; -webkit-print-color-adjust: exact; color-adjust: exact; }
+      html, body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        font-size: 10pt;
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+      }
       #printArea { display: block; }
       .container { border: none !important; page-break-inside: avoid; }
       .classes-box { border: 1px solid #000 !important; }
@@ -49,7 +55,7 @@
 </head>
 <body>
   <!-- Screen UI -->
-  <div id="screenUI">
+  <div class="container" id="screenUI">
     <div id="dataEntry">
       <button id="printButton" onclick="window.print()">Skriv ut</button>
 
