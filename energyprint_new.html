@@ -15,6 +15,13 @@
       #screenUI { display: flex; gap: 1rem; padding: 1rem; }
       #dataEntry { flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
 
+      .panel {
+        background: var(--panel-bg);
+        border: 1px solid var(--border-color);
+        padding: 1rem;
+        margin-top: 2rem;
+      }
+
       :root { --preview-scale: 0.42; }
       #previewContainer {
         flex: none;
@@ -50,6 +57,7 @@
       }
       .input-section label { margin: 0; }
       .input-section input { width: 100%; }
+      .input-with-unit { display: flex; align-items: center; gap: 0.25rem; }
 
       /* Print button */
       #printButton { padding: 1rem; font-size: 1.1rem; background: #3a8f4e; color: #fff; border: none; cursor: pointer; }
@@ -89,18 +97,21 @@
 <body>
   <!-- Screen UI -->
   <div id="screenUI">
-    <div id="dataEntry" class="container">
+    <div id="dataEntry" class="panel">
       <div class="input-section">
         <label for="addressInput">Byggnadens adress:</label>
         <input type="text" id="addressInput" placeholder="Oceangränd 1 B2">
         <label for="municipalityInput">Kommun:</label>
         <input type="text" id="municipalityInput" placeholder="Jomala kommun">
         <label for="yearInput">Nybyggnadsår:</label>
-        <input type="text" id="yearInput" placeholder="t.ex. 2009">
+        <input type="text" id="yearInput" placeholder="2009">
         <label for="idInput">Energideklarations-ID:</label>
-        <input type="text" id="idInput" placeholder="t.ex. 3671">
+        <input type="text" id="idInput" placeholder="3671">
         <label for="energyInput">Energiprestanda, primärenergital:</label>
-        <input type="text" id="energyInput" placeholder="t.ex. 162"> kWh/m² och år
+        <div class="input-with-unit">
+          <input type="text" id="energyInput" placeholder="162">
+          <span>kWh/m² och år</span>
+        </div>
         <label for="requirementInput">Krav vid uppförande av<br> ny byggnad, primärenergital:</label>
         <input type="text" id="requirementInput" placeholder="100 kWh/m² och år">
         <label for="heatingInput">Uppvärmningssystem:</label>
