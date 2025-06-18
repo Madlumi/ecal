@@ -42,15 +42,19 @@
         padding: 0.5rem;
         margin-bottom: 0.5rem;
         background: var(--form-bg);
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        column-gap: 0.5rem;
+        row-gap: 0.5rem;
+        align-items: center;
       }
-      .input-section label { display: block; }
+      .input-section label { margin: 0; }
+      .input-section input { width: 100%; }
 
       /* Print button */
       #printButton { padding: 1rem; font-size: 1.1rem; background: #3a8f4e; color: #fff; border: none; cursor: pointer; }
       #printButton:hover { background: #287f53; }
 
-      /* Show dashed outlines */
-      .container { border: 1px dashed #888; }
     }
 
     /* Print-only styles */
@@ -84,48 +88,35 @@
 </head>
 <body>
   <!-- Screen UI -->
-  <div class="container" id="screenUI">
-    <div id="dataEntry">
-      <button id="printButton" onclick="window.print()">Skriv ut</button>
-
+  <div id="screenUI">
+    <div id="dataEntry" class="container">
       <div class="input-section">
-      <label>Byggnadens adress:
+        <label for="addressInput">Byggnadens adress:</label>
         <input type="text" id="addressInput" placeholder="Oceangränd 1 B2">
-      </label>
-      <label>Kommun:
+        <label for="municipalityInput">Kommun:</label>
         <input type="text" id="municipalityInput" placeholder="Jomala kommun">
-      </label>
-      <label>Nybyggnadsår:
-        <input type="text" id="yearInput" placeholder="2009">
-      </label>
-      <label>Energideklarations-ID:
-        <input type="text" id="idInput" placeholder="3671">
-      </label>
-      <label>Energiprestanda, primärenergital:
-        <input type="text" id="energyInput" placeholder="162"> kWh/m² och år
-      </label>
-      <label>Krav vid uppförande av<br> ny byggnad, primärenergital:
+        <label for="yearInput">Nybyggnadsår:</label>
+        <input type="text" id="yearInput" placeholder="t.ex. 2009">
+        <label for="idInput">Energideklarations-ID:</label>
+        <input type="text" id="idInput" placeholder="t.ex. 3671">
+        <label for="energyInput">Energiprestanda, primärenergital:</label>
+        <input type="text" id="energyInput" placeholder="t.ex. 162"> kWh/m² och år
+        <label for="requirementInput">Krav vid uppförande av<br> ny byggnad, primärenergital:</label>
         <input type="text" id="requirementInput" placeholder="100 kWh/m² och år">
-      </label>
-      <label>Uppvärmningssystem:
+        <label for="heatingInput">Uppvärmningssystem:</label>
         <input type="text" id="heatingInput" placeholder="Värmepump-luft/luft (el) och el">
-      </label>
-      <label>Radonmätning:
+        <label for="radonInput">Radonmätning:</label>
         <input type="text" id="radonInput" placeholder="Inte utförd">
-      </label>
-      <label>Ventilationskontroll (OVK):
+        <label for="ovkInput">Ventilationskontroll (OVK):</label>
         <input type="text" id="ovkInput" placeholder="Utförd">
-      </label>
-      <label>Åtgärdsförslag:
+        <label for="suggestionsInput">Åtgärdsförslag:</label>
         <input type="text" id="suggestionsInput" placeholder="Har lämnats">
-      </label>
-      <label>Energideklarationen är utförd av:
+        <label for="performedInput">Energideklarationen är utförd av:</label>
         <input type="text" id="performedInput" placeholder="Namn Efternamn, LL, 2025-05-27">
-      </label>
-      <label>Energideklarationen är giltig till:
+        <label for="validInput">Energideklarationen är giltig till:</label>
         <input type="text" id="validInput" placeholder="2035-05-27">
-      </label>
       </div>
+      <button id="printButton" onclick="window.print()">Skriv ut</button>
     </div>
     <div id="previewContainer"><div id="previewContent"></div></div>
   </div>
