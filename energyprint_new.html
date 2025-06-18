@@ -43,6 +43,7 @@
         margin-bottom: 0.5rem;
         background: var(--form-bg);
       }
+      .input-section label { display: block; }
 
       /* Print button */
       #printButton { padding: 1rem; font-size: 1.1rem; background: #3a8f4e; color: #fff; border: none; cursor: pointer; }
@@ -78,6 +79,7 @@
 
     /* Absolute positioning for print elements */
     .container { position: absolute; box-sizing: border-box; padding: 0; }
+    .print-line { display: block; min-height: 1em; }
   </style>
 </head>
 <body>
@@ -87,40 +89,40 @@
       <button id="printButton" onclick="window.print()">Skriv ut</button>
 
       <div class="input-section">
-      <label>Byggnadens adress:<br>
+      <label>Byggnadens adress:
         <input type="text" id="addressInput" placeholder="Oceangränd 1 B2">
       </label>
-      <label>Kommun:<br>
+      <label>Kommun:
         <input type="text" id="municipalityInput" placeholder="Jomala kommun">
       </label>
-      <label>Nybyggnadsår:<br>
+      <label>Nybyggnadsår:
         <input type="text" id="yearInput" placeholder="2009">
       </label>
-      <label>Energideklarations-ID:<br>
+      <label>Energideklarations-ID:
         <input type="text" id="idInput" placeholder="3671">
       </label>
-      <label>Energiprestanda, primärenergital:<br>
+      <label>Energiprestanda, primärenergital:
         <input type="text" id="energyInput" placeholder="162"> kWh/m² och år
       </label>
-      <label>Krav vid uppförande av<br> ny byggnad, primärenergital:<br>
+      <label>Krav vid uppförande av<br> ny byggnad, primärenergital:
         <input type="text" id="requirementInput" placeholder="100 kWh/m² och år">
       </label>
-      <label>Uppvärmningssystem:<br>
+      <label>Uppvärmningssystem:
         <input type="text" id="heatingInput" placeholder="Värmepump-luft/luft (el) och el">
       </label>
-      <label>Radonmätning:<br>
+      <label>Radonmätning:
         <input type="text" id="radonInput" placeholder="Inte utförd">
       </label>
-      <label>Ventilationskontroll (OVK):<br>
+      <label>Ventilationskontroll (OVK):
         <input type="text" id="ovkInput" placeholder="Utförd">
       </label>
-      <label>Åtgärdsförslag:<br>
+      <label>Åtgärdsförslag:
         <input type="text" id="suggestionsInput" placeholder="Har lämnats">
       </label>
-      <label>Energideklarationen är utförd av:<br>
+      <label>Energideklarationen är utförd av:
         <input type="text" id="performedInput" placeholder="Namn Efternamn, LL, 2025-05-27">
       </label>
-      <label>Energideklarationen är giltig till:<br>
+      <label>Energideklarationen är giltig till:
         <input type="text" id="validInput" placeholder="2035-05-27">
       </label>
       </div>
@@ -137,12 +139,12 @@
     </div>
 
     <div class="container" style="left:8mm; top:29.5mm; width:73mm; height:12.5mm; font-size:13pt;">
-      <div><span id="addressDisplay" class="font-arial"></span></div>
-      <div><span id="municipalityDisplay" class="font-helvetica"></span></div>
+      <div class="print-line"><span id="addressDisplay" class="font-arial"></span></div>
+      <div class="print-line"><span id="municipalityDisplay" class="font-helvetica"></span></div>
     </div>
     <div class="container" style="left:8mm; top:42.5mm; width:73mm; height:13.5mm; font-size:10pt;">
-      <div><span class="font-arial-bold">Nybyggnadsår:</span> <span id="yearDisplay" class="font-arial"></span></div>
-      <div><span class="font-helvetica-bold">Energideklarations-ID:</span> <span id="idDisplay" class="font-helvetica"></span></div>
+      <div class="print-line"><span class="font-arial-bold">Nybyggnadsår:</span> <span id="yearDisplay" class="font-arial"></span></div>
+      <div class="print-line"><span class="font-helvetica-bold">Energideklarations-ID:</span> <span id="idDisplay" class="font-helvetica"></span></div>
     </div>
 
     <div class="container classes-box" style="left:8mm; top:56mm; width:73mm; height:90mm; overflow:hidden;">
@@ -173,22 +175,22 @@
     </div>
 
     <div class="container" style="left:86mm; top:100mm; width:56.5mm; height:110mm; font-size:10pt;">
-      <div style="white-space:nowrap;"><strong>Energiprestanda, primärenergital:</strong></div>
-      <div><span id="energyDisplay"></span> kWh/m² och år</div><br>
-      <div><strong>Krav vid uppförande av<br> ny byggnad, primärenergital:</strong></div>
-      <div><span id="requirementDisplay"></span></div><br>
-      <div><strong>Uppvärmningssystem:</strong></div>
-      <div><span id="heatingDisplay"></span></div><br>
-      <div><strong>Radonmätning:</strong></div>
-      <div><span id="radonDisplay"></span></div><br>
-      <div><strong>Ventilationskontroll (OVK):</strong></div>
-      <div><span id="ovkDisplay"></span></div><br>
-      <div><strong>Åtgärdsförslag:</strong></div>
-      <div><span id="suggestionsDisplay"></span></div><br>
-      <div><strong>Energideklarationen är utförd av:</strong></div>
-      <div><span id="performedDisplay"></span></div><br>
-      <div><strong>Energideklarationen är giltig till:</strong></div>
-      <div><span id="validDisplay"></span></div>
+      <div class="print-line" style="white-space:nowrap;"><strong>Energiprestanda, primärenergital:</strong></div>
+      <div class="print-line"><span id="energyDisplay"></span> kWh/m² och år</div>
+      <div class="print-line"><strong>Krav vid uppförande av<br> ny byggnad, primärenergital:</strong></div>
+      <div class="print-line"><span id="requirementDisplay"></span></div>
+      <div class="print-line"><strong>Uppvärmningssystem:</strong></div>
+      <div class="print-line"><span id="heatingDisplay"></span></div>
+      <div class="print-line"><strong>Radonmätning:</strong></div>
+      <div class="print-line"><span id="radonDisplay"></span></div>
+      <div class="print-line"><strong>Ventilationskontroll (OVK):</strong></div>
+      <div class="print-line"><span id="ovkDisplay"></span></div>
+      <div class="print-line"><strong>Åtgärdsförslag:</strong></div>
+      <div class="print-line"><span id="suggestionsDisplay"></span></div>
+      <div class="print-line"><strong>Energideklarationen är utförd av:</strong></div>
+      <div class="print-line"><span id="performedDisplay"></span></div>
+      <div class="print-line"><strong>Energideklarationen är giltig till:</strong></div>
+      <div class="print-line"><span id="validDisplay"></span></div>
     </div>
   </div>
 
