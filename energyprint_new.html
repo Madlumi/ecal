@@ -14,8 +14,35 @@
       /* Two-column layout */
       #screenUI { display: flex; gap: 1rem; padding: 1rem; }
       #dataEntry { flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
-      #previewContainer { flex: none; width: 240px; height: 340px; border: 1px dashed #888; box-sizing: border-box; position: relative; overflow: hidden; }
-      #previewContent { position: absolute; top: 0; left: 0; width: 148.5mm; height: 210mm; transform: scale(0.45); transform-origin: top left; }
+
+      :root { --preview-scale: 0.42; }
+      #previewContainer {
+        flex: none;
+        width: calc(148.5mm * var(--preview-scale));
+        height: calc(210mm * var(--preview-scale));
+        box-sizing: content-box;
+        border: 3px solid #888;
+        background: #000;
+        position: relative;
+        overflow: hidden;
+      }
+      #previewContent {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 148.5mm;
+        height: 210mm;
+        background: #fff;
+        transform: scale(var(--preview-scale));
+        transform-origin: top left;
+      }
+
+      .input-section {
+        border: 1px solid var(--border-color);
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+        background: var(--form-bg);
+      }
 
       /* Print button */
       #printButton { padding: 1rem; font-size: 1.1rem; background: #3a8f4e; color: #fff; border: none; cursor: pointer; }
@@ -59,6 +86,7 @@
     <div id="dataEntry">
       <button id="printButton" onclick="window.print()">Skriv ut</button>
 
+      <div class="input-section">
       <label>Byggnadens adress:<br>
         <input type="text" id="addressInput" placeholder="Oceangränd 1 B2">
       </label>
@@ -95,6 +123,7 @@
       <label>Energideklarationen är giltig till:<br>
         <input type="text" id="validInput" placeholder="2035-05-27">
       </label>
+      </div>
     </div>
     <div id="previewContainer"><div id="previewContent"></div></div>
   </div>
