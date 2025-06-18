@@ -59,9 +59,9 @@
   </div>
   <div class="container" style="left:86mm; top:100mm; width:56.5mm; height:110mm; font-size:10pt;">
     <div style="white-space:nowrap;"><strong>Energiprestanda, primärenergital:</strong></div>
-    <div>XXXX kWh/m² och år</div><br>
+    <div id="epValue">XXXX kWh/m² och år</div><br>
     <div><strong>Krav vid uppförande av ny byggnad, primärenergital:</strong></div>
-    <div>XXXX</div><br>
+    <div id="limValue">XXXX</div><br>
     <div><strong>Uppvärmningssystem:</strong></div>
     <div>XXXX</div><br>
     <div><strong>Radonmätning:</strong></div>
@@ -76,12 +76,20 @@
     <div>XXXX</div>
   </div>
   <button id="printButton" onclick="window.print()">Skriv ut</button>
+  <script src="epclass.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const ep = parseFloat(params.get('ep')) || 0;
+      const eplim = parseFloat(params.get('eplim')) || 0;
+      const labels = Object.keys(EPClass.data);
+      const colors = labels.map(l => EPClass.data[l].colour);
+      const cls = EPClass.classify(ep, eplim);
+      const highlightIdx = Math.max(0, labels.indexOf(cls));
       const config = {
-        labels:['A','B','C','D','E','F','G'],
-        colors:['#4caf50','#8bc34a','#cddc39','#ffeb3b','#ffc107','#ff9800','#f44336'],
-        highlightIdx:5,
+        labels,
+        colors,
+        highlightIdx,
         container:{width:73,height:90},
         margins:{top:10,bottom:5,gap:3},
         arrow:{minNorm:0.2,maxNorm:1.,fontSize:5},
@@ -89,6 +97,10 @@
         outline:{black:2.5,white:1},
         house:{roofThickness:9,roofGap:6,fontSize:50,letterOffset:{x:0,y:20}}
       };
+      const epValue=document.getElementById('epValue');
+      const limValue=document.getElementById('limValue');
+      if(epValue) epValue.textContent=`${ep} kWh/m² och år`;
+      if(limValue) limValue.textContent=eplim;
       // House SVG
       const selColor=config.colors[config.highlightIdx];
       const roof=document.getElementById('houseRoof'),body=document.getElementById('houseBody');

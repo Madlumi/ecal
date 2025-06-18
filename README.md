@@ -61,7 +61,8 @@ Run the C tests with `./run_tests.sh` and check `test_output.txt` for results.
 | Filename           | Description                                                    |
 |--------------------|----------------------------------------------------------------|
 | `energy.html`      | Main webpage for user interaction                               |
-| `energyprint.html` | A page to print out energy certificate thingie      |
+| `energyprint.html` | Legacy print layout |
+| `energyprint_new.html` | Updated print layout for energy certificates |
 | `energy.js`        | Core calculation logic, (transpiled from ´dev/energy.c´ using gippy) |
 | `glue.js`          | Controls the DOM and ui. |
 | `strings.js`       | User facing strings and translations           |
