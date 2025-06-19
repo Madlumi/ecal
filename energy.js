@@ -62,12 +62,6 @@ const TvvMult = [
   /* LOCAL */ 2
 ];
 
-const PERSON_HEAT = 80; // watts
-// Expose for UI defaults when running in the browser
-if (typeof window !== 'undefined') {
-  window.PERSON_HEAT = PERSON_HEAT;
-}
-
 //============================
 //=Location===================
 //============================

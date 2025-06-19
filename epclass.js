@@ -1,14 +1,15 @@
 (function(){
+  const defaultData = {
+    A: { range: [0, 0.5], colour: '#2ac02c', width: '20%' },
+    B: { range: [0.5, 0.75], colour: '#6cc04a', width: '30%' },
+    C: { range: [0.75, 1.0], colour: '#dbdb29', width: '40%' },
+    D: { range: [1.0, 1.35], colour: '#f0b928', width: '50%' },
+    E: { range: [1.35, 1.8], colour: '#f08d1c', width: '60%' },
+    F: { range: [1.8, 2.35], colour: '#e65400', width: '70%' },
+    G: { range: [2.35, Infinity], colour: '#d90000', width: '80%' }
+  };
   const EPClass = {
-    data: {
-      A: { range: [0, 0.5], colour: '#2ac02c', width: '20%' },
-      B: { range: [0.5, 0.75], colour: '#6cc04a', width: '30%' },
-      C: { range: [0.75, 1.0], colour: '#dbdb29', width: '40%' },
-      D: { range: [1.0, 1.35], colour: '#f0b928', width: '50%' },
-      E: { range: [1.35, 1.8], colour: '#f08d1c', width: '60%' },
-      F: { range: [1.8, 2.35], colour: '#e65400', width: '70%' },
-      G: { range: [2.35, Infinity], colour: '#d90000', width: '80%' }
-    },
+    data: (typeof CONFIG !== 'undefined' && CONFIG.EP_TABLE) ? CONFIG.EP_TABLE : defaultData,
     values(eplim){
       const out = {};
       for(const [k,v] of Object.entries(this.data)){

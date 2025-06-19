@@ -40,7 +40,9 @@ const table = $("energyTable");
 const ROOMS_TO_PERSONS = [1.42, 1.63, 2.18, 2.79, 3.51];
 
 // Lock improbable energy source combinations (none currently)
-const LOCKED_COMBINATIONS = [];
+const LOCKED_COMBINATIONS = (typeof CONFIG !== 'undefined' && CONFIG.CONSTANTS && CONFIG.CONSTANTS.LOCKED_COMBINATIONS)
+  ? CONFIG.CONSTANTS.LOCKED_COMBINATIONS
+  : [];
 window.LOCKED_COMBINATIONS = LOCKED_COMBINATIONS;
 
 function personsFromRooms(n) {
@@ -688,7 +690,8 @@ function prefillFromURL() {
         if (tvvSel) tvvSel.value = params.get("tvv") || "0";
 
         // deduction defaults
-        const perHeatDef = params.get("perheat") || (typeof PERSON_HEAT !== 'undefined' ? PERSON_HEAT : "");
+        const perHeatDef = params.get("perheat") ||
+          (typeof CONFIG !== 'undefined' && CONFIG.CONSTANTS ? CONFIG.CONSTANTS.PERSON_HEAT : "");
         if (dedPersonHeatVB) dedPersonHeatVB.setCalc(perHeatDef);
         if (dedTimeHoursVB) dedTimeHoursVB.setCalc(dedTimeHours.value);
         if (dedTimeDaysVB) dedTimeDaysVB.setCalc(dedTimeDays.value);
