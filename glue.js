@@ -276,6 +276,14 @@ function applyLanguage() {
         if (verEl && typeof CONFIG !== "undefined" && CONFIG.APP_INFO) {
                 verEl.textContent = CONFIG.APP_INFO.VERSION;
         }
+        const repoLbl = $("footer_repo_label");
+        if (repoLbl) {
+                repoLbl.textContent = getString("footer_repo_label");
+        }
+        const verLbl = $("footer_version_label");
+        if (verLbl) {
+                verLbl.textContent = getString("footer_version_label");
+        }
 }
 
 //========================
