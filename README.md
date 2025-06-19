@@ -3,7 +3,7 @@
 
 Calculates EPpet, in accordance with   Landskapsförordning (2015:5) om Ålands byggbestämmelsesamling
 
-Demo hosted at: [https://madlumi.github.io/ecal/energy.html](https://madlumi.github.io/ecal/energy.html). (This site is updated manually and may lag behind the latest commits.)
+Demo hosted at: [https://madlumi.github.io/ecal/src/energy.html](https://madlumi.github.io/ecal/src/energy.html). (This site is updated manually and may lag behind the latest commits.)
 
 
 ---
@@ -51,6 +51,7 @@ text on click.
 
 ## File Structure
 
+<<<<<<< ours
 | Filename           | Description                                                    |
 |--------------------|----------------------------------------------------------------|
 | `energy.html`      | Main webpage for user interaction                               |
@@ -60,15 +61,27 @@ text on click.
 | `strings.js`       | User facing strings and translations           |
 | `style.css`        |     css                                                             |
 | `dev/`      | marginally useful files for developement|
-| `docs/`     | screenshots, TODO list, and assorted notes|
+| `docs/`     | screenshots, TODO list, assorted notes, and legal sources (docs/laws/)|
+=======
+| Filename              | Description |
+|-----------------------|-------------------------------------------------------------|
+| `src/energy.html`      | Main webpage for user interaction |
+| `src/energyprint.html` | A page to print out energy certificate thingie |
+| `src/energy.js`        | Core calculation logic, (transpiled from `dev/energy.c` using gippy) |
+| `src/glue.js`          | Controls the DOM and ui. |
+| `src/strings.js`       | User facing strings and translations |
+| `src/style.css`        | css |
+| `dev/`                 | marginally useful files for developement |
+| `docs/`                | screenshots, TODO list, and assorted notes |
+>>>>>>> theirs
 
 ### Configuration
 
-`config.js` defines an `APP_INFO` object containing the version and repository URL displayed in the footer.
+`src/config.js` defines an `APP_INFO` object containing the version and repository URL displayed in the footer.
 
 ## Legal Sources
 
-Legal references used in the app are stored in the `sources/` directory:
+Legal references used in the app are stored in the `docs/laws/` directory:
 
 - `201431.txt` – Landskapslag (2014:31) om energideklaration för byggnader
 - `202511.txt` – Landskapsförordning (2025:11) om fastställande av byggnadens energianvändning
