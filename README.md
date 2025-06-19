@@ -32,8 +32,10 @@ ep limit för class A-G bör dubbelkollas(found the source 2014:31)
 should make pdf output mimic official doc
 css could use some work
 
+## Issues
 
-
+- Uncertainty about "Inget Krav" EP grade. It is left as N/A, grey as of now.
+- Languages other than Swedish are auto translated.
 
 ## Help-icon logic
 
@@ -51,18 +53,6 @@ text on click.
 
 ## File Structure
 
-<<<<<<< ours
-| Filename           | Description                                                    |
-|--------------------|----------------------------------------------------------------|
-| `energy.html`      | Main webpage for user interaction                               |
-| `energyprint.html` | A page to print out energy certificate thingie      |
-| `energy.js`        | Core calculation logic, (transpiled from ´dev/energy.c´ using gippy) |
-| `glue.js`          | Controls the DOM and ui. |
-| `strings.js`       | User facing strings and translations           |
-| `style.css`        |     css                                                             |
-| `dev/`      | marginally useful files for developement|
-| `docs/`     | screenshots, TODO list, assorted notes, and legal sources (docs/laws/)|
-=======
 | Filename              | Description |
 |-----------------------|-------------------------------------------------------------|
 | `src/energy.html`      | Main webpage for user interaction |
@@ -73,7 +63,6 @@ text on click.
 | `src/style.css`        | css |
 | `dev/`                 | marginally useful files for developement |
 | `docs/`                | screenshots, TODO list, and assorted notes |
->>>>>>> theirs
 
 ### Configuration
 
