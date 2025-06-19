@@ -6,7 +6,10 @@
     CONSTANTS: {
       PERSON_HEAT: 80,
       NOREQ_VALUE: 999999999,
-      LOCKED_COMBINATIONS: []
+      LOCKED_COMBINATIONS: [],
+      ROOMS_TO_PERSONS: [1.42, 1.63, 2.18, 2.79, 3.51],
+      ARROW_LENGTH_IN: 1.5,
+      NA_ARROW_COLOR: "#ccc"
     },
     FEATURES: {
       NOREQ_NACLASS: true,
@@ -40,6 +43,7 @@
       G: { range: [2.35, Infinity], colour: '#d90000', width: '80%' }
     }
   };
+  CONFIG.CONSTANTS.ARROW_LENGTH = `${CONFIG.CONSTANTS.ARROW_LENGTH_IN}in`;
 
   if (typeof window !== 'undefined') {
     window.CONFIG = CONFIG;
