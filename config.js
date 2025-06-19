@@ -12,7 +12,7 @@
       NOREQ_NACLASS: true
     },
     APP_INFO: {
-      VERSION: "α-01",
+      VERSION: "α-02",
       REPO_URL: "https://github.com/digi-regeringen-ax/energy-calculation"
     },
     PRINTING: {
