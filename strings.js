@@ -452,7 +452,7 @@ const PRINT_UI_STRINGS = {
 // Text shown on the printable certificate itself
 const PRINT_STRINGS = {
         summary_of:        { sv: "sammanfattning av", en: "summary of", fi: "yhteenveto" },
-        title:             { sv: "ENERGIDEKLARATION", en: "ENERGY DECLARATION", fi: "ENERGIATODISTUS" },
+        title:             { sv: "ENERGIBERÄKNING", en: "ENERGY DECLARATION", fi: "ENERGIATODISTUS" },
         year_label:        { sv: "Nybyggnadsår:", en: "Year built:", fi: "Rakennusvuosi:" },
         id_label:          { sv: "Energideklarations-ID:", en: "Energy declaration ID:", fi: "Energiatodistus ID:" },
         classes_heading:   { sv: "ENERGIKLASSER", en: "ENERGY CLASSES", fi: "ENERGIALUOKAT" },
