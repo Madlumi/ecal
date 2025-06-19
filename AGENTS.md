@@ -28,3 +28,4 @@
 - Document any new configuration options.
 - Consider accessibility and localization when adding user-facing text.
 - Place all user-facing strings in `strings.js` and avoid hard-coded text.
+- New calculator features should be behind a feature flag
