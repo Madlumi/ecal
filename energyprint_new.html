@@ -91,29 +91,29 @@
   <div id="screenUI">
     <div id="dataEntry">
       <div class="input-section">
-        <label for="addressInput">Byggnadens adress:</label>
+        <label id="lbl_p_address" for="addressInput"></label>
         <input type="text" id="addressInput" placeholder="Oceangränd 1 B2">
-        <label for="municipalityInput">Kommun:</label>
+        <label id="lbl_p_municipality" for="municipalityInput"></label>
         <input type="text" id="municipalityInput" placeholder="Jomala kommun">
-        <label for="yearInput">Nybyggnadsår:</label>
+        <label id="lbl_p_year" for="yearInput"></label>
         <input type="text" id="yearInput" placeholder="t.ex. 2009">
-        <label for="idInput">Energideklarations-ID:</label>
+        <label id="lbl_p_id" for="idInput"></label>
         <input type="text" id="idInput" placeholder="t.ex. 3671">
-        <label for="energyInput">Energiprestanda, primärenergital:</label>
-        <input type="text" id="energyInput" placeholder="t.ex. 162"> 
-        <label for="requirementInput">Krav vid uppförande av<br> ny byggnad, primärenergital:</label>
+        <label id="lbl_p_energy" for="energyInput"></label>
+        <input type="text" id="energyInput" placeholder="t.ex. 162">
+        <label id="lbl_p_requirement" for="requirementInput"></label>
         <input type="text" id="requirementInput" placeholder="100 kWh/m² och år">
-        <label for="heatingInput">Uppvärmningssystem:</label>
+        <label id="lbl_p_heating" for="heatingInput"></label>
         <input type="text" id="heatingInput" placeholder="Värmepump-luft/luft (el) och el">
-        <label for="radonInput">Radonmätning:</label>
+        <label id="lbl_p_radon" for="radonInput"></label>
         <input type="text" id="radonInput" placeholder="Inte utförd">
-        <label for="ovkInput">Ventilationskontroll (OVK):</label>
+        <label id="lbl_p_ovk" for="ovkInput"></label>
         <input type="text" id="ovkInput" placeholder="Utförd">
-        <label for="suggestionsInput">Åtgärdsförslag:</label>
+        <label id="lbl_p_suggestions" for="suggestionsInput"></label>
         <input type="text" id="suggestionsInput" placeholder="Har lämnats">
-        <label for="performedInput">Energideklarationen är utförd av:</label>
+        <label id="lbl_p_performed" for="performedInput"></label>
         <input type="text" id="performedInput" placeholder="Namn Efternamn, LL, 2025-05-27">
-        <label for="validInput">Energideklarationen är giltig till:</label>
+        <label id="lbl_p_valid" for="validInput"></label>
         <input type="text" id="validInput" placeholder="2035-05-27">
       </div>
       <button id="printButton" onclick="window.print()">Skriv ut</button>
@@ -125,8 +125,8 @@
   <div id="printArea">
     <div style="height:10mm;"></div>
     <div style="position:fixed; top:10mm; left:0; width:148.5mm; height:15mm; background:#000;">
-      <div class="font-helvetica" style="position:absolute; top:0; left:15mm; font-size:10pt; color:#fff;">sammanfattning av</div>
-      <div class="font-helvetica-bold" style="position:absolute; top:4mm; left:15mm; font-size:30pt; color:#fff;">ENERGIDEKLARATION</div>
+      <div id="summary_prefix" class="font-helvetica" style="position:absolute; top:0; left:15mm; font-size:10pt; color:#fff;"></div>
+      <div id="summary_title" class="font-helvetica-bold" style="position:absolute; top:4mm; left:15mm; font-size:30pt; color:#fff;"></div>
     </div>
 
     <div class="container" style="left:8mm; top:29.5mm; width:73mm; height:12.5mm; font-size:13pt;">
@@ -134,25 +134,25 @@
       <div class="print-line"><span id="municipalityDisplay" class="font-helvetica"></span></div>
     </div>
     <div class="container" style="left:8mm; top:42.5mm; width:73mm; height:13.5mm; font-size:10pt;">
-      <div class="print-line"><span class="font-arial-bold">Nybyggnadsår:</span> <span id="yearDisplay" class="font-arial"></span></div>
-      <div class="print-line"><span class="font-helvetica-bold">Energideklarations-ID:</span> <span id="idDisplay" class="font-helvetica"></span></div>
+      <div class="print-line"><span id="p_year_label" class="font-arial-bold"></span> <span id="yearDisplay" class="font-arial"></span></div>
+      <div class="print-line"><span id="p_id_label" class="font-helvetica-bold"></span> <span id="idDisplay" class="font-helvetica"></span></div>
     </div>
 
     <div class="container classes-box" style="left:8mm; top:56mm; width:73mm; height:90mm; overflow:hidden;">
-      <div class="font-helvetica-bold" style="font-size:11pt; padding:4px;">ENERGIKLASSER</div>
+      <div id="p_classes_heading" class="font-helvetica-bold" style="font-size:11pt; padding:4px;"></div>
       <svg id="energyClasses" width="100%" height="calc(100% - 10mm)" viewBox="0 0 73 90" preserveAspectRatio="xMinYMin meet"></svg>
     </div>
 
     <div class="container" style="left:8mm; top:164mm; width:73mm; height:15.5mm; font-size:10pt;">
-      <span class="font-helvetica-bold">Energideklarationen i sin helhet</span><br>
-      <span class="font-arial-bold">finns hos byggnadens ägare.</span>
+      <span id="p_full_declaration" class="font-helvetica-bold"></span><br>
+      <span id="p_kept_by_owner" class="font-arial-bold"></span>
     </div>
     <div class="container" style="left:8mm; top:179.5mm; width:73mm; height:10.5mm; font-size:10pt;">
-      <span class="font-arial-bold">För mer information:</span><br>
-      <span class="font-helvetica">www.regeringen.ax</span>
+      <span id="p_more_info" class="font-arial-bold"></span><br>
+      <span id="p_info_site" class="font-helvetica"></span>
     </div>
     <div class="container" style="left:8mm; top:190.5mm; width:73mm; height:9.5mm; font-size:10pt;">
-      <span class="font-arial">Sammanfattningen är upprättad enligt Ålands landskapslag (2014:31) om energideklaration för byggnader.</span>
+      <span id="p_summary_law" class="font-arial"></span>
     </div>
 
     <div class="container" style="left:87.5mm; top:56mm; width:calc(26.5mm - 1.5px); height:26.5mm; overflow:hidden;">
@@ -162,32 +162,106 @@
       </svg>
     </div>
     <div class="container" style="left:86mm; top:83.5mm; width:28mm; height:7.5mm; font-size:8pt;">
-      <div class="font-arial" style="text-align:center;">DENNA BYGGNADS ENERGIKLASS</div>
+      <div id="p_building_class" class="font-arial" style="text-align:center;"></div>
     </div>
 
     <div class="container" style="left:86mm; top:100mm; width:56.5mm; height:110mm; font-size:10pt;">
-      <div class="print-line" style="white-space:nowrap;"><strong>Energiprestanda, primärenergital:</strong></div>
-      <div class="print-line"><span id="energyDisplay"></span> kWh/m² och år</div>
-      <div class="print-line"><strong>Krav vid uppförande av<br> ny byggnad, primärenergital:</strong></div>
+      <div class="print-line" style="white-space:nowrap;"><strong id="p_energy_label"></strong></div>
+      <div class="print-line"><span id="energyDisplay"></span> <span id="p_energy_unit"></span></div>
+      <div class="print-line"><strong id="p_requirement_label"></strong></div>
       <div class="print-line"><span id="requirementDisplay"></span></div>
-      <div class="print-line"><strong>Uppvärmningssystem:</strong></div>
+      <div class="print-line"><strong id="p_heating_label"></strong></div>
       <div class="print-line"><span id="heatingDisplay"></span></div>
-      <div class="print-line"><strong>Radonmätning:</strong></div>
+      <div class="print-line"><strong id="p_radon_label"></strong></div>
       <div class="print-line"><span id="radonDisplay"></span></div>
-      <div class="print-line"><strong>Ventilationskontroll (OVK):</strong></div>
+      <div class="print-line"><strong id="p_ovk_label"></strong></div>
       <div class="print-line"><span id="ovkDisplay"></span></div>
-      <div class="print-line"><strong>Åtgärdsförslag:</strong></div>
+      <div class="print-line"><strong id="p_suggestions_label"></strong></div>
       <div class="print-line"><span id="suggestionsDisplay"></span></div>
-      <div class="print-line"><strong>Energideklarationen är utförd av:</strong></div>
+      <div class="print-line"><strong id="p_performed_label"></strong></div>
       <div class="print-line"><span id="performedDisplay"></span></div>
-      <div class="print-line"><strong>Energideklarationen är giltig till:</strong></div>
+      <div class="print-line"><strong id="p_valid_label"></strong></div>
       <div class="print-line"><span id="validDisplay"></span></div>
     </div>
   </div>
 
   <script src="epclass.js"></script>
   <script src="config.js"></script>
+  <script src="strings.js"></script>
+  <script src="glue.js"></script>
   <script>
+
+    function applyPrintUiStrings() {
+      const labels = {
+        lbl_p_address: 'address_label',
+        lbl_p_municipality: 'municipality_label',
+        lbl_p_year: 'year_label',
+        lbl_p_id: 'id_label',
+        lbl_p_energy: 'energy_label',
+        lbl_p_requirement: 'requirement_label',
+        lbl_p_heating: 'heating_label',
+        lbl_p_radon: 'radon_label',
+        lbl_p_ovk: 'ovk_label',
+        lbl_p_suggestions: 'suggestions_label',
+        lbl_p_performed: 'performed_label',
+        lbl_p_valid: 'valid_label'
+      };
+      for (const [id,key] of Object.entries(labels)) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = getPrintUiString(key);
+      }
+
+      const placeholders = {
+        addressInput: 'address_placeholder',
+        municipalityInput: 'municipality_placeholder',
+        yearInput: 'year_placeholder',
+        idInput: 'id_placeholder',
+        energyInput: 'energy_placeholder',
+        requirementInput: 'requirement_placeholder',
+        heatingInput: 'heating_placeholder',
+        radonInput: 'radon_placeholder',
+        ovkInput: 'ovk_placeholder',
+        suggestionsInput: 'suggestions_placeholder',
+        performedInput: 'performed_placeholder',
+        validInput: 'valid_placeholder'
+      };
+      for (const [id,key] of Object.entries(placeholders)) {
+        const inp = document.getElementById(id);
+        if (inp) inp.placeholder = getPrintUiString(key);
+      }
+
+      const btn = document.getElementById('printButton');
+      if (btn) btn.textContent = getPrintUiString('print_button');
+    }
+
+    function applyPrintStrings() {
+      const map = {
+        summary_prefix: 'summary_of',
+        summary_title: 'title',
+        p_year_label: 'year_label',
+        p_id_label: 'id_label',
+        p_classes_heading: 'classes_heading',
+        p_full_declaration: 'full_declaration',
+        p_kept_by_owner: 'kept_by_owner',
+        p_more_info: 'more_info',
+        p_info_site: 'info_site',
+        p_summary_law: 'summary_law',
+        p_building_class: 'building_class',
+        p_energy_label: 'energy_label',
+        p_energy_unit: 'energy_unit',
+        p_requirement_label: 'requirement_label',
+        p_heating_label: 'heating_label',
+        p_radon_label: 'radon_label',
+        p_ovk_label: 'ovk_label',
+        p_suggestions_label: 'suggestions_label',
+        p_performed_label: 'performed_label',
+        p_valid_label: 'valid_label'
+      };
+      for (const [id,key] of Object.entries(map)) {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = getPrintString(key);
+      }
+    }
 
     function generateName(address, id) {
       // Normalize to NFD so diacritics become separate codepoints and then
@@ -226,6 +300,11 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      detectLang();
+      document.documentElement.lang = window.SELECTED_LANG;
+      applyPrintUiStrings();
+      applyPrintStrings();
+
       const labels = Object.keys(window.EPClass.data);
       const colors = labels.map(l => window.EPClass.data[l].colour);
       let noReq = false;
