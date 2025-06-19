@@ -301,7 +301,7 @@ const STRINGS = {
 		fi: "Ylittää rajan"
 	},
 
-	// “No requirement” literal to replace 9999
+	// “No requirement” literal to replace 999999999
 	no_requirement: {
 		sv: "Inget krav",
 		en: "No requirement",
