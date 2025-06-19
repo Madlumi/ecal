@@ -606,8 +606,8 @@ function calculate() {
 
 
 	// --- populate limits table ---
-	let epLimitDisp = (lim.EP === 9999) ? getString("no_requirement") : lim.EP.toFixed(1);
-	let elLimitDisp = (lim.EL === 9999) ? getString("no_requirement") : lim.EL.toFixed(1);
+	let epLimitDisp = (lim.EP === 999999999) ? getString("no_requirement") : lim.EP.toFixed(1);
+	let elLimitDisp = (lim.EL === 999999999) ? getString("no_requirement") : lim.EL.toFixed(1);
 	let umLimitDisp = lim.UM.toFixed(2);
 
 	// LL: dash + toggle if -1, else the number

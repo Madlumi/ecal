@@ -148,7 +148,7 @@ typedef struct {
 //============================
 //=Helper Functions============
 //============================
-#define NoReq  9999.0
+#define NoReq  999999999.0
 #define seSec  -1.0
 
 D elBase(D F_geo) { R (4.5 + 1.7 * (F_geo - 1.0)); }
