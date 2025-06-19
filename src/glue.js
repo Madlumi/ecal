@@ -164,40 +164,46 @@ function registerListeners(){
     if (fastEnergyType) fastEnergyType.addEventListener("change", update);
     [dedPersons,dedPersonHeat,dedTimeHours,dedTimeDays,dedTimeWeeks].forEach(el=>{ if(el) el.addEventListener("input", update);});
     if (hourlyToggle) hourlyToggle.addEventListener("change", update);
-    if (rooms) rooms.addEventListener("input", () => {
-        const r = parseInt(rooms.value, 10);
-        if (dedPersonsVB) dedPersonsVB.setCalc(personsFromRooms(r).toFixed(2));
-        update();
-    });
+    if (rooms) rooms.addEventListener("input", hookRooms);
 
 	//clear
 	clear.addEventListener("click", clearUI);
 	//print
-        print.addEventListener("click",()=>{
-            const epv = calculate();
-            const eplim = window.last_eplim || 0;
-            window.location.href = `energyprint_new.html?ep=${epv}&housetype=${type.value}&eplim=${eplim}`;
-        });
+        print.addEventListener("click", hookPrint);
 	//copy
-        copy.addEventListener("click", () => {
-                const ta = $("permalink");
-                const text = ta.value;
-                const done = () => {
-                        copy.textContent = getString("copy_button") + " ✔";
-                        setTimeout(() => copy.textContent = getString("copy_button"), 1500);
-                };
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                        navigator.clipboard.writeText(text).then(done).catch(() => {
-                                ta.select(); ta.setSelectionRange(0, 99999);
-                                document.execCommand("copy");
-                                done();
-                        });
-                } else {
+        copy.addEventListener("click", hookCopy);
+}
+
+function hookRooms() {
+        const r = parseInt(rooms.value, 10);
+        if (dedPersonsVB) dedPersonsVB.setCalc(personsFromRooms(r).toFixed(2));
+        update();
+}
+
+function hookPrint() {
+        const epv = calculate();
+        const eplim = window.last_eplim || 0;
+        window.location.href = `energyprint_new.html?ep=${epv}&housetype=${type.value}&eplim=${eplim}`;
+}
+
+function hookCopy() {
+        const ta = $("permalink");
+        const text = ta.value;
+        const done = () => {
+                copy.textContent = getString("copy_button") + " ✔";
+                setTimeout(() => copy.textContent = getString("copy_button"), 1500);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(done).catch(() => {
                         ta.select(); ta.setSelectionRange(0, 99999);
                         document.execCommand("copy");
                         done();
-                }
-        });
+                });
+        } else {
+                ta.select(); ta.setSelectionRange(0, 99999);
+                document.execCommand("copy");
+                done();
+        }
 }
 
 
