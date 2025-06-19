@@ -27,3 +27,4 @@
 - Write clear commit messages summarizing your changes.
 - Document any new configuration options.
 - Consider accessibility and localization when adding user-facing text.
+- Place all user-facing strings in `strings.js` and avoid hard-coded text.
