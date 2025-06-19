@@ -35,6 +35,19 @@ const E_name = [
 ];
 
 //============================
+//=Common numeric constants===
+//============================
+const FLOW_THRESHOLD      = 0.35; // l/s·m² base limit for flow calculations
+const MAX_CREDITED_FLOW   = 0.6;  // highest q_medel allowed in ep4
+const EP_FLOW_FACTOR      = 40;   // multiplier for ventilation additions to EP
+const EL_FLOW_BASE        = 0.022; // base coefficient for EL increase due to flow
+const EL_F_GEO_MULT       = 0.02; // factor applied to F_geo in EL formulas
+const EL_AREA_BASE        = 0.025; // base coefficient for EL increase due to area
+const ATEMP_LIMIT         = 130;  // area limit for certain EL calculations
+const AREA_THRESHOLD      = 50;   // common area threshold for multi dwelling rules
+const INFILTRATION_LIMIT  = 0.60; // air leakage limit for houses without EP req
+
+//============================
 //=Tappvarmvatten=============
 //============================
 class TvvEntry {
@@ -164,44 +177,44 @@ function elBase(F_geo) {
 
 function el1(F_geo, atemp) {
   // (0,025 + 0,02 × (F_geo − 1)) × (Atemp − 130) om Atemp > 130 m²
-  if (atemp <= 130) { return 0; }
-  return (0.025 + 0.02 * (F_geo - 1.0)) * (atemp - 130);
+  if (atemp <= ATEMP_LIMIT) { return 0; }
+  return (EL_AREA_BASE + EL_F_GEO_MULT * (F_geo - 1.0)) * (atemp - ATEMP_LIMIT);
 }
 
 function ep2(qavg) {
   // 40 × (q_medel − 0,35) om q_medel > 0,35
-  if (qavg <= 0.35) { return 0; }
-  return 40 * (qavg - 0.35);
+  if (qavg <= FLOW_THRESHOLD) { return 0; }
+  return EP_FLOW_FACTOR * (qavg - FLOW_THRESHOLD);
 }
 
 function el3(F_geo, flow, atemp) {
   // (0,022 + 0,02 × (F_geo − 1)) × (flow − 0,35) × Atemp om flow > 0,35 l/s·m²
-  if (flow <= 0.35) { return 0; }
-  return (0.022 + 0.02 * (F_geo - 1.0)) * (flow - 0.35) * atemp;
+  if (flow <= FLOW_THRESHOLD) { return 0; }
+  return (EL_FLOW_BASE + EL_F_GEO_MULT * (F_geo - 1.0)) * (flow - FLOW_THRESHOLD) * atemp;
 }
 
 function ep4(F_geo, flow, qavg, atemp, Foot4) {
   // ... i flerbostadshus där Atemp är 50 m² eller större
-  if (atemp < 50) { return 0; }
+  if (atemp < AREA_THRESHOLD) { return 0; }
   // q_medel är uteluftsflödet i temperaturreglerade utrymmen överstiger 0,35 l/s·m²
-  if (qavg <= 0.35) { return 0; }
+  if (qavg <= FLOW_THRESHOLD) { return 0; }
   // Tillägget kan enbart användas på grund av krav på ventilation i särskilda utrymmen som badrum, toalett och kök
   if (!Foot4) { return 0; }
   // q_medel får högst tillgodoräknas upp till 0,6 l/s·m²
-  if (qavg > 0.6) { qavg = 0.6; }
-  return 40 * (qavg - 0.35);
+  if (qavg > MAX_CREDITED_FLOW) { qavg = MAX_CREDITED_FLOW; }
+  return EP_FLOW_FACTOR * (qavg - FLOW_THRESHOLD);
 }
 
 function el5(F_geo, flow, atemp, Foot5) {
   // ... i flerbostadshus där Atemp är 50 m² eller större
-  if (atemp < 50) { return 0; }
+  if (atemp < AREA_THRESHOLD) { return 0; }
   // Tillägget kan enbart användas då det maximala uteluftsflödet vid DVUT ... överstiger 0,35 l/s·m²
-  if (flow <= 0.35) { return 0; }
+  if (flow <= FLOW_THRESHOLD) { return 0; }
   // på grund av krav på ventilation i särskilda utrymmen som badrum, toalett och kök
   // och som till övervägande delen (>50 % Atemp) inrymmer lägenheter med en boarea om högst 35 m² vardera
   if (!Foot5) { return 0; }
   // Tillägg får göras med (0,022 + 0,02 × (F_geo − 1)) × (flow − 0,35) × Atemp
-  return (0.022 + 0.02 * (F_geo - 1.0)) * (flow - 0.35) * atemp;
+  return (EL_FLOW_BASE + EL_F_GEO_MULT * (F_geo - 1.0)) * (flow - FLOW_THRESHOLD) * atemp;
 }
 
 function Tvv(house) {
@@ -237,7 +250,7 @@ function limit(house) {
   const qavg = house.qavg;
 
   if (house.type === HouseType.SMALL) {
-    if (atemp > 130) {
+    if (atemp > ATEMP_LIMIT) {
       l.EP = 90.0;
       l.EL = elBase(F_geo) + el1(F_geo, atemp);
       l.UM = 0.30;
@@ -247,7 +260,7 @@ function limit(house) {
       l.EL = elBase(F_geo) + el1(F_geo, atemp);
       l.UM = 0.30;
       l.LL = seSec;
-    } else if (atemp > 50) {
+    } else if (atemp > AREA_THRESHOLD) {
       l.EP = 100.0;
       l.EL = elBase(F_geo) + el1(F_geo, atemp);
       l.UM = 0.30;
@@ -256,7 +269,7 @@ function limit(house) {
       l.EP = NoReq;
       l.EL = NoReq;
       l.UM = 0.33;
-      l.LL = 0.60;
+      l.LL = INFILTRATION_LIMIT;
     }
   }
   else if (house.type === HouseType.MULTI) {
@@ -270,7 +283,7 @@ function limit(house) {
     }
   }
   else if (house.type === HouseType.LOCAL) {
-    if (atemp > 50) {
+    if (atemp > AREA_THRESHOLD) {
       // Only add ep2(qavg) if foot2 is checked
       const ep_add = house.foot2 ? ep2(qavg) : 0;
       // Only add el3(...) if foot3 is checked
@@ -286,7 +299,7 @@ function limit(house) {
       l.EP = NoReq;
       l.EL = NoReq;
       l.UM = 0.33;
-      l.LL = 0.60;
+      l.LL = INFILTRATION_LIMIT;
     }
   }
 
