@@ -9,12 +9,12 @@ const STRINGS = {
 	app_title: {
 		sv: "Energi kalkyl",
 		en: "Energy Calculator",
-		fi: "Energi laskuri"
+                fi: "Energialaskuri"
 	},
 
-	print_button		: {sv:"Skriv ut", en:"print"},
+	print_button            : { sv: "Skriv ut", en: "Print", fi: "Tulosta" },
 	option_housetype_SMALL 	: { sv:"Småhus", en:"Single House", fi:"Pientalo" },
-	option_housetype_MULTI 	: { sv:"Flerbostadshus", en:"Multi-family", fi:"Moniasunto" },
+	option_housetype_MULTI  : { sv: "Flerbostadshus", en: "Multi-family", fi: "Kerrostalo" },
 	option_housetype_LOCAL 	: { sv:"Lokal", en:"Commercial", fi:"Liiketila" },
 	upper_limits_heading 	: { sv:"Övre gränser:", en:"Upper limits:", fi:"Ylärajat:" },
 
@@ -136,7 +136,7 @@ const STRINGS = {
         dedTime_weeks_unit: {
                 sv: "v/år",
                 en: "w/yr",
-                fi: "v/v"
+                fi: "vk/v"
         },
         // Footnotes heading + labels
 	footnotes_heading: {
@@ -202,8 +202,8 @@ const STRINGS = {
 	},
 	flow_help: {
 		sv: "Utluftsflöde i liter per sekund och kvadratmeter.",
-		en: "Outairflow in liters per second per square meter.",
-		fi: "Ulkouutislämpö litroina sekunnissa neliömetrillä."
+		en: "Exhaust airflow in liters per second per square meter.",
+		fi: "Poistoilmavirta litroina sekunnissa neliömetriä kohti."
 	},
 
 	// Atemp
@@ -307,7 +307,7 @@ const STRINGS = {
 	no_requirement: {
 		sv: "Inget krav",
 		en: "No requirement",
-		fi: "Ei vaatimus"
+		fi: "Ei vaatimusta"
 	},
 
 	// Energy‐use table label + row labels
@@ -339,19 +339,19 @@ const STRINGS = {
 
 	// Row‐specific help
 	energy_row_heat_help: {
-		sv: "Energi till uppvärmning",
-		en: "",
-		fi: ""
+                sv: "Energi till uppvärmning",
+                en: "Energy for heating",
+                fi: "Energia lämmitykseen"
 	},
 	energy_row_cool_help: {
-		sv: "Energi till komfortkyla, kWh/år. Den till byggnaden levererade kyl- eller energimängd som används för att sänka byggnadens innetemperatur för människors komfort.  Kylenergi som hämtas direkt från omgivningen utan kylmaskin från sjövatten, uteluft eller dylikt (s.k. frikyla), inräknas inte.",
-		en: "",
-		fi: ""
+                sv: "Energi till komfortkyla, kWh/år. Den till byggnaden levererade kyl- eller energimängd som används för att sänka byggnadens innetemperatur för människors komfort.  Kylenergi som hämtas direkt från omgivningen utan kylmaskin från sjövatten, uteluft eller dylikt (s.k. frikyla), inräknas inte.",
+                en: "Energy for comfort cooling, kWh/yr. Cooling or energy delivered to the building to lower indoor temperature for occupant comfort. Cooling energy taken directly from the surroundings without a chiller (so-called free cooling) is not included.",
+                fi: "Mukavuusjäähdytyksen energia, kWh/v. Rakennukseen toimitettu jäähdytys- tai energiamäärä, jota käytetään sisälämpötilan alentamiseen. Ympäristöstä suoraan ilman kylmäkonetta otettava jäähdytysenergia (ns. vapaajäähdytys) ei sisälly."
 	},
 	energy_row_watr_help: {
-		sv: "Energi till tappvarmvatten",
-		en: "",
-		fi: ""
+                sv: "Energi till tappvarmvatten",
+                en: "Energy for domestic hot water",
+                fi: "Lämpimän käyttöveden energia"
 	},
 	energy_row_fast_help: {
 		sv: "Fastighetsenergi, kWh/år. Den del av byggnadens energianvändning som är relaterad till byggnadens behov där den energikrävande apparaten finns inom under eller anbringad på utsidan av byggnaden. I fastighetsenergin ingår fast belysning i allmänna utrymmen och driftsutrymmen. Dessutom ingår energi som används i värmekablar, pumpar, fläktar, motorer, styr‐ och övervakningsutrustning och dylikt. Även externt lokalt placerad apparat som försörjer byggnaden, exempelvis pumpar och fläktar för frikyla, inräknas. Apparater avsedda för annan användning än för byggnaden, exempelvis motor‐ och kupévärmare för fordon, batteriladdare för extern användare, belysning i trädgård och på gångstråk, inräknas inte. Med fastighetsel menas den del av fastighetsenergin som är elbaserad.",
