@@ -38,9 +38,13 @@ const foot3Lbl    = $("lbl_foot3");
 const foot4Lbl    = $("lbl_foot4");
 const foot5Lbl    = $("lbl_foot5");
 const outEP    = $("ep_label"), limitsT  = $("limitsTable");
+const epValue  = $("ep_value");
 const epArrow  = $("ep_arrow");
 const table = $("energyTable");
 const ROOMS_TO_PERSONS = [1.42, 1.63, 2.18, 2.79, 3.51];
+
+const ARROW_LENGTH_IN = 1.5;
+const ARROW_LENGTH = `${ARROW_LENGTH_IN}in`;
 
 // Lock improbable energy source combinations (none currently)
 const LOCKED_COMBINATIONS = (typeof CONFIG !== 'undefined' && CONFIG.CONSTANTS && CONFIG.CONSTANTS.LOCKED_COMBINATIONS)
@@ -638,20 +642,22 @@ function calculate() {
         const lim = limit(h);
         window.last_eplim = lim.EP;
 
+        outEP.innerHTML = getString("ep_label");
         if (epv > lim.EP) {
-                outEP.innerHTML = `${getString("ep_label")} ${epv} <span class="warning-icon" title="${getString("warning_tooltip")}">⚠</span>`;
+                epValue.innerHTML = `${epv} <span class="warning-icon" title="${getString("warning_tooltip")}">⚠</span>`;
         } else {
-                outEP.innerHTML = `${getString("ep_label")} ${epv}`;
+                epValue.textContent = epv;
         }
 
         epArrow.innerHTML = "";
         const cls = window.EPClass.classify(epv, lim.EP);
-        if(cls){
+        if (cls) {
                 const color = window.EPClass.data[cls].colour;
                 const arrow = document.createElement("div");
                 arrow.className = "ep-arrow";
                 arrow.style.backgroundColor = color;
-                arrow.textContent = cls;
+                arrow.style.width = ARROW_LENGTH;
+                arrow.textContent = `${cls}(${epv}/${Math.round(lim.EP)})`;
                 const tri = document.createElement("div");
                 tri.className = "triangle";
                 tri.style.borderRightColor = color;
