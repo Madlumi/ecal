@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2025 Edvin svenblad
+
 (function(){
   const defaultData = {
     A: { range: [0, 0.5], colour: '#2ac02c', width: '20%' },
