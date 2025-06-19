@@ -60,6 +60,7 @@ text on click.
 | `strings.js`       | User facing strings and translations           |
 | `style.css`        |     css                                                             |
 | `dev/`      | marginally useful files for developement|
+| `docs/`     | screenshots, TODO list, and assorted notes|
 
 ## Legal Sources
 
@@ -76,11 +77,11 @@ Legal references used in the app are stored in the `sources/` directory:
 
 ### Main Interface
 
-![Screenshot showing the energy calculator's main interface](screenshot.png)
+![Screenshot showing the energy calculator's main interface](docs/screenshot.png)
 
 ### Printed Certificate PDF
 
-![Screenshot showing a generated energy certificate PDF](screenshot_output.png)
+![Screenshot showing a generated energy certificate PDF](docs/screenshot_output.png)
 
 ---
 
