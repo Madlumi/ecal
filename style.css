@@ -409,10 +409,18 @@ button:hover,
 
 footer#appFooter {
   text-align: center;
-  margin-top: 1rem;
+  margin-top: 0;
   font-size: 0.8rem;
   background: var(--form-bg);
-  border: 2px solid var(--header-bg);
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem 0;
+}
+
+#footerDivider {
+  border: none;
+  border-top: 3px solid var(--header-bg);
+  margin: 2rem 0 0;
   width: 100%;
   box-sizing: border-box;
 }
