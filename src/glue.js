@@ -43,11 +43,19 @@ const outEP    = $("ep_label"), limitsT  = $("limitsTable");
 const epValue  = $("ep_value");
 const epArrow  = $("ep_arrow");
 const table = $("energyTable");
-const ROOMS_TO_PERSONS = [1.42, 1.63, 2.18, 2.79, 3.51];
 
-const ARROW_LENGTH_IN = 1.5;
-const ARROW_LENGTH = `${ARROW_LENGTH_IN}in`;
-const NA_ARROW_COLOR = '#ccc';
+function requireConfigConst(name) {
+  const val = CONFIG?.CONSTANTS?.[name];
+  if (val === undefined) {
+    throw new Error(`Missing CONFIG.CONSTANTS.${name}`);
+  }
+  return val;
+}
+
+const ROOMS_TO_PERSONS = requireConfigConst('ROOMS_TO_PERSONS');
+const ARROW_LENGTH_IN = requireConfigConst('ARROW_LENGTH_IN');
+const ARROW_LENGTH    = requireConfigConst('ARROW_LENGTH');
+const NA_ARROW_COLOR  = requireConfigConst('NA_ARROW_COLOR');
 
 // Lock improbable energy source combinations (none currently)
 const LOCKED_COMBINATIONS = (typeof CONFIG !== 'undefined' && CONFIG.CONSTANTS && CONFIG.CONSTANTS.LOCKED_COMBINATIONS)
@@ -125,173 +133,6 @@ class ValueBox {
 
 
 const flowContainer = $("flowContainer");
-
-//========================
-// LOCALIZATION
-//========================
-function detectLang() {
-	const urlParams = new URLSearchParams(window.location.search);
-	let lang = urlParams.get("lang") || "sv";
-	if (!["sv","en","fi"].includes(lang)) lang = "sv";
-	window.SELECTED_LANG = lang;
-}
-
-function getString(key) {
-        if (typeof STRINGS === "undefined" || !STRINGS.hasOwnProperty(key)) { return "[no string found]"; }
-        const entry = STRINGS[key];
-        if (typeof entry === "string") { return entry; }
-        const val = entry[window.SELECTED_LANG];
-        if (val !== undefined) { return val; }
-        if (entry.sv !== undefined) { return entry.sv; }
-        return "";
-}
-
-function getPrintUiString(key) {
-        if (typeof PRINT_UI_STRINGS === "undefined" || !PRINT_UI_STRINGS.hasOwnProperty(key)) { return "[no string found]"; }
-        const entry = PRINT_UI_STRINGS[key];
-        if (typeof entry === "string") { return entry; }
-        const val = entry[window.SELECTED_LANG];
-        if (val !== undefined) { return val; }
-        if (entry.sv !== undefined) { return entry.sv; }
-        return "";
-}
-
-function getPrintString(key) {
-        if (typeof PRINT_STRINGS === "undefined" || !PRINT_STRINGS.hasOwnProperty(key)) { return "[no string found]"; }
-        const entry = PRINT_STRINGS[key];
-        if (typeof entry === "string") { return entry; }
-        const val = entry[window.SELECTED_LANG];
-        if (val !== undefined) { return val; }
-        if (entry.sv !== undefined) { return entry.sv; }
-        return "";
-}
-
-function setupHelp(iconId, boxId, key) {
-	try {
-		const icon = $(iconId);
-		const box  = $(boxId);
-
-		// Bail out if either element is missing
-		if (!icon || !box) {
-			console.warn(`setupHelp: missing element`, { iconId, boxId });
-			return;
-		}
-
-		const txt = getString(key) || "";
-		if (!txt) {
-			// No help text → hide the icon
-			icon.style.display = "none";
-			return;
-		}
-
-		// We have help text: wire it up
-		icon.textContent = getString("info_icon");
-		icon.title = "";  // clear any old tooltip
-		icon.onclick = () => {
-			box.innerHTML = txt;
-			box.style.display = box.style.display === "block" ? "none" : "block";
-		};
-	} catch (err) {
-		console.error(`setupHelp(${iconId}, ${boxId}, ${key}) failed:`, err);
-		// don't rethrow—just leave the icon hidden
-		const icon = $(iconId);
-		if (icon) icon.style.display = "none";
-	}
-}
-
-
-
-function applyLanguage() {
-	// Language‐selector opacity
-	document.querySelectorAll(".lang-button").forEach(btn => { btn.style.opacity = btn.dataset.lang === window.SELECTED_LANG ? "1" : "0.5"; });
-
-	const keys = [];
-	const helpBases = []; 
-
-
-
-
-	Object.keys(STRINGS).forEach(k => {
-		const txt = getString(k).trim();  // strip whitespace
-		if (k.endsWith("_help")) {
-			// only register help if there's real content
-			if (txt !== "") {
-				helpBases.push(k.slice(0, -5)); // e.g. "geography_help" → "geography"
-			}
-		} else {
-			// register every non-help key for UI rendering, even if empty
-			keys.push(k);
-		}
-	});
-
-	// 3) Apply all non‐help keys
-        keys.forEach(key => {
-                const el = $(key);
-                if (!el) return;
-                const str = getString(key) || "";
-
-                // Some strings (for example EP\u2004labels) contain markup like
-                // <sub>. We use innerHTML so those elements render correctly.
-                // Be cautious about inserting untrusted text here as it would be
-                // interpreted as HTML and could open an XSS vector.
-                if (key === "disclaimer") {
-                        el.innerHTML = str;
-                        el.style.display = str ? "block" : "none";
-                } else {
-                        el.innerHTML = str;
-                }
-        });
-
-        // 4) Ensure each help base has its icon & box, then hook them up
-        helpBases.forEach(base => {
-                const iconId = `${base}_help_icon`;
-                const boxId  = `${base}_help`;
-
-                let icon = $(iconId);
-                let box  = $(boxId);
-
-                // Insert missing elements after the label container if present,
-                // otherwise after the base element itself
-                const ref = $(`lbl_${base}`) ||
-                            $(base);
-                if (!ref) return; // nothing to attach to
-
-                if (!icon) {
-                        icon = document.createElement("span");
-                        icon.className = "info-icon";
-                        icon.id = iconId;
-                        icon.setAttribute("aria-label", "Show help");
-                        ref.parentNode.insertBefore(icon, ref.nextSibling);
-                }
-
-                if (!box) {
-                        box = document.createElement("div");
-                        box.className = "help-box";
-                        box.id = boxId;
-                        icon.parentNode.insertBefore(box, icon.nextSibling);
-                }
-
-                setupHelp(iconId, boxId, `${base}_help`);
-        });
-
-        const repoLink = $("footer_repo_link");
-        if (repoLink && typeof CONFIG !== "undefined" && CONFIG.APP_INFO) {
-                repoLink.href = CONFIG.APP_INFO.REPO_URL;
-                repoLink.textContent = CONFIG.APP_INFO.REPO_URL;
-        }
-        const verEl = $("app_version");
-        if (verEl && typeof CONFIG !== "undefined" && CONFIG.APP_INFO) {
-                verEl.textContent = CONFIG.APP_INFO.VERSION;
-        }
-        const repoLbl = $("footer_repo_label");
-        if (repoLbl) {
-                repoLbl.textContent = getString("footer_repo_label");
-        }
-        const verLbl = $("footer_version_label");
-        if (verLbl) {
-                verLbl.textContent = getString("footer_version_label");
-        }
-}
 
 //========================
 // INIT FUNCTIONS
