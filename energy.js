@@ -162,7 +162,8 @@ class LimitVals {
 //============================
 //=Helper Functions============
 //============================
-const NoReq = 999999999.0;
+// Value representing "no requirement" for EP and EL limits
+const NoReq = CONFIG.CONSTANTS.NOREQ_VALUE;
 const seSec = -1.0;
 
 function elBase(F_geo) {
