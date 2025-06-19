@@ -19,11 +19,11 @@ const STRINGS = {
 	upper_limits_heading 	: { sv:"Övre gränser:", en:"Upper limits:", fi:"Ylärajat:" },
 
 	// Disclaimer (only shown if non‐empty)
-	disclaimer: {
-		sv: "",
-		en: "⚠  Unverified Machine translated text",
-		fi: "⚠ Tämä teksti on konekäännetty eikä sitä ole tarkistanut ihminen."
-	},
+        disclaimer: {
+                sv: "⚠ Du ansvarar själv för de beräknade resultaten.",
+                en: "⚠ Unverified machine translated text. You are responsible for the calculated results.",
+                fi: "⚠ Tämä teksti on konekäännetty eikä sitä ole tarkistanut ihminen. Käyttäjä on vastuussa laskettujen tulosten paikkansapitävyydestä."
+        },
 
 	// Language selector (labels not strictly necessary since flags are obvious)
 	language_label: {
@@ -309,11 +309,18 @@ const STRINGS = {
 	},
 
 	// “No requirement” literal to replace 999999999
-	no_requirement: {
-		sv: "Inget krav",
-		en: "No requirement",
-		fi: "Ei vaatimusta"
-	},
+        no_requirement: {
+                sv: "Inget krav",
+                en: "No requirement",
+                fi: "Ei vaatimusta"
+        },
+
+        // Text shown when no energy class applies
+        na_label: {
+                sv: "N/A",
+                en: "N/A",
+                fi: "N/A"
+        },
 
 	// Energy‐use table label + row labels
 	energy_table_label: {
