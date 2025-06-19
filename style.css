@@ -148,15 +148,6 @@ textarea#permalink {
   margin-bottom: 0.5rem;
 }
 
-.help-box {
-  background: #eef;
-  border: 0.06rem solid #99c;
-  padding: 0.4rem;
-  font-size: 0.85rem;
-  margin-top: 0.25rem;
-  display: none;
-  white-space: normal;
-}
 
 .info-icon {
   color: blue;
@@ -297,6 +288,10 @@ button:hover {
   background: var(--help-bg);
   border: 1px solid var(--help-border);
   padding: 0.4rem;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  display: none;
+  white-space: normal;
 }
 
 /* Tables inside help text should size to content */
