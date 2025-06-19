@@ -416,3 +416,61 @@ const STRINGS = {
 		fi: ""
 	},
 };
+
+// Labels and placeholders for the print page UI
+const PRINT_UI_STRINGS = {
+        address_label:    { sv: "Byggnadens adress:", en: "Building address:", fi: "Rakennuksen osoite:" },
+        municipality_label:{ sv: "Kommun:", en: "Municipality:", fi: "Kunta:" },
+        year_label:       { sv: "Nybyggnadsår:", en: "Year built:", fi: "Rakennusvuosi:" },
+        id_label:         { sv: "Energideklarations-ID:", en: "Energy declaration ID:", fi: "Energiatodistus ID:" },
+        energy_label:     { sv: "Energiprestanda, primärenergital:", en: "Energy performance, primary energy value:", fi: "Energiatehokkuus, primäärienergialuku:" },
+        requirement_label:{ sv: "Krav vid uppförande av\n ny byggnad, primärenergital:", en: "Requirement for new building, primary energy value:", fi: "Uuden rakennuksen vaatimus, primäärienergialuku:" },
+        heating_label:    { sv: "Uppvärmningssystem:", en: "Heating system:", fi: "Lämmitysjärjestelmä:" },
+        radon_label:      { sv: "Radonmätning:", en: "Radon measurement:", fi: "Radonmittaus:" },
+        ovk_label:        { sv: "Ventilationskontroll (OVK):", en: "Ventilation inspection (OVK):", fi: "Ilmanvaihdon tarkastus (OVK):" },
+        suggestions_label:{ sv: "Åtgärdsförslag:", en: "Proposed measures:", fi: "Toimenpide-ehdotukset:" },
+        performed_label:  { sv: "Energideklarationen är utförd av:", en: "Declaration performed by:", fi: "Energiatodistuksen on laatinut:" },
+        valid_label:      { sv: "Energideklarationen är giltig till:", en: "Declaration valid until:", fi: "Energiatodistus voimassa asti:" },
+
+        address_placeholder:     { sv: "Oceangränd 1 B2", en: "Oceangränd 1 B2", fi: "Oceangränd 1 B2" },
+        municipality_placeholder:{ sv: "Jomala kommun", en: "Jomala kommun", fi: "Jomala kommun" },
+        year_placeholder:        { sv: "t.ex. 2009", en: "e.g. 2009", fi: "esim. 2009" },
+        id_placeholder:          { sv: "t.ex. 3671", en: "e.g. 3671", fi: "esim. 3671" },
+        energy_placeholder:      { sv: "t.ex. 162", en: "e.g. 162", fi: "esim. 162" },
+        requirement_placeholder: { sv: "100 kWh/m² och år", en: "100 kWh/m² per year", fi: "100 kWh/m² vuodessa" },
+        heating_placeholder:     { sv: "Värmepump-luft/luft (el) och el", en: "Air heat pump (electric) and electricity", fi: "Ilmalämpöpumppu (sähkö) ja sähkö" },
+        radon_placeholder:       { sv: "Inte utförd", en: "Not performed", fi: "Ei tehty" },
+        ovk_placeholder:         { sv: "Utförd", en: "Performed", fi: "Suoritettu" },
+        suggestions_placeholder: { sv: "Har lämnats", en: "Provided", fi: "Annettu" },
+        performed_placeholder:   { sv: "Namn Efternamn, LL, 2025-05-27", en: "Name Surname, LL, 2025-05-27", fi: "Nimi Sukunimi, LL, 2025-05-27" },
+        valid_placeholder:       { sv: "2035-05-27", en: "2035-05-27", fi: "2035-05-27" },
+        print_button:            { sv: "Skriv ut", en: "Print", fi: "Tulosta" },
+};
+
+// Text shown on the printable certificate itself
+const PRINT_STRINGS = {
+        summary_of:        { sv: "sammanfattning av", en: "summary of", fi: "yhteenveto" },
+        title:             { sv: "ENERGIDEKLARATION", en: "ENERGY DECLARATION", fi: "ENERGIATODISTUS" },
+        year_label:        { sv: "Nybyggnadsår:", en: "Year built:", fi: "Rakennusvuosi:" },
+        id_label:          { sv: "Energideklarations-ID:", en: "Energy declaration ID:", fi: "Energiatodistus ID:" },
+        classes_heading:   { sv: "ENERGIKLASSER", en: "ENERGY CLASSES", fi: "ENERGIALUOKAT" },
+        full_declaration:  { sv: "Energideklarationen i sin helhet", en: "The full energy declaration", fi: "Koko energiatodistus" },
+        kept_by_owner:     { sv: "finns hos byggnadens ägare.", en: "is kept by the building owner.", fi: "on rakennuksen omistajalla." },
+        more_info:         { sv: "För mer information:", en: "For more information:", fi: "Lisätietoja:" },
+        info_site:         { sv: "www.regeringen.ax", en: "www.regeringen.ax", fi: "www.regeringen.ax" },
+        summary_law:       { sv: "Sammanfattningen är upprättad enligt Ålands landskapslag (2014:31) om energideklaration för byggnader.",
+                             en: "This summary is prepared according to Åland's Act (2014:31) on energy declarations for buildings.",
+                             fi: "Yhteenveto on laadittu Ahvenanmaan maakuntalain (2014:31) mukaisesti rakennusten energiatodistuksista." },
+        building_class:    { sv: "DENNA BYGGNADS ENERGIKLASS", en: "THIS BUILDING'S ENERGY CLASS", fi: "TÄMÄN RAKENNUKSEN ENERGIATODISTUSLUOKKA" },
+        energy_label:      { sv: "Energiprestanda, primärenergital:", en: "Energy performance, primary energy value:", fi: "Energiatehokkuus, primäärienergialuku:" },
+        energy_unit:       { sv: "kWh/m² och år", en: "kWh/m² per year", fi: "kWh/m² vuodessa" },
+        requirement_label: { sv: "Krav vid uppförande av<br> ny byggnad, primärenergital:",
+                             en: "Requirement for new building, primary energy value:",
+                             fi: "Uuden rakennuksen vaatimus, primäärienergialuku:" },
+        heating_label:     { sv: "Uppvärmningssystem:", en: "Heating system:", fi: "Lämmitysjärjestelmä:" },
+        radon_label:       { sv: "Radonmätning:", en: "Radon measurement:", fi: "Radonmittaus:" },
+        ovk_label:         { sv: "Ventilationskontroll (OVK):", en: "Ventilation inspection (OVK):", fi: "Ilmanvaihdon tarkastus (OVK):" },
+        suggestions_label: { sv: "Åtgärdsförslag:", en: "Proposed measures:", fi: "Toimenpide-ehdotukset:" },
+        performed_label:   { sv: "Energideklarationen är utförd av:", en: "Declaration performed by:", fi: "Energiatodistuksen on laatinut:" },
+        valid_label:       { sv: "Energideklarationen är giltig till:", en: "Declaration valid until:", fi: "Energiatodistus voimassa asti:" },
+};

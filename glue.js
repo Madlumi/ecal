@@ -127,13 +127,33 @@ function detectLang() {
 }
 
 function getString(key) {
-	if (typeof STRINGS === "undefined" || !STRINGS.hasOwnProperty(key)) { return "[no string found]"; }
-	const entry = STRINGS[key];
-	if (typeof entry === "string") { return entry; }
-	const val = entry[window.SELECTED_LANG];
-	if (val !== undefined) { return val; }
-	if (entry.sv !== undefined) { return entry.sv; }
-	return "";
+        if (typeof STRINGS === "undefined" || !STRINGS.hasOwnProperty(key)) { return "[no string found]"; }
+        const entry = STRINGS[key];
+        if (typeof entry === "string") { return entry; }
+        const val = entry[window.SELECTED_LANG];
+        if (val !== undefined) { return val; }
+        if (entry.sv !== undefined) { return entry.sv; }
+        return "";
+}
+
+function getPrintUiString(key) {
+        if (typeof PRINT_UI_STRINGS === "undefined" || !PRINT_UI_STRINGS.hasOwnProperty(key)) { return "[no string found]"; }
+        const entry = PRINT_UI_STRINGS[key];
+        if (typeof entry === "string") { return entry; }
+        const val = entry[window.SELECTED_LANG];
+        if (val !== undefined) { return val; }
+        if (entry.sv !== undefined) { return entry.sv; }
+        return "";
+}
+
+function getPrintString(key) {
+        if (typeof PRINT_STRINGS === "undefined" || !PRINT_STRINGS.hasOwnProperty(key)) { return "[no string found]"; }
+        const entry = PRINT_STRINGS[key];
+        if (typeof entry === "string") { return entry; }
+        const val = entry[window.SELECTED_LANG];
+        if (val !== undefined) { return val; }
+        if (entry.sv !== undefined) { return entry.sv; }
+        return "";
 }
 
 function setupHelp(iconId, boxId, key) {
