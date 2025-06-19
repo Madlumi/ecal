@@ -227,6 +227,9 @@
     document.addEventListener('DOMContentLoaded', () => {
       const labels = Object.keys(window.EPClass.data);
       const colors = labels.map(l => window.EPClass.data[l].colour);
+      const FEATURE_NOREQ_NACLASS = true;
+      const NOREQ_VALUE = 999999999;
+      let noReq = false;
       const config = {
         labels,
         colors,
@@ -242,9 +245,18 @@
       const bind = (inputId, displayId) => {
         const inp = document.getElementById(inputId);
         const disp = document.getElementById(displayId);
-        const handler = () => { disp.textContent = inp.value; updateAll(); };
+        const setDisp = () => {
+          let val = inp.value;
+          if (FEATURE_NOREQ_NACLASS && inputId === 'requirementInput' &&
+              parseFloat(val) >= NOREQ_VALUE) {
+            disp.textContent = 'N/A';
+          } else {
+            disp.textContent = val;
+          }
+        };
+        const handler = () => { setDisp(); updateAll(); };
         inp.addEventListener('input', handler);
-        disp.textContent = inp.value;
+        setDisp();
       };
       ['addressInput','municipalityInput','yearInput','idInput',
        'energyInput','requirementInput','heatingInput','radonInput',
@@ -297,22 +309,28 @@
         const arrowH = hAvail / n;
         const tipW = arrowH * Math.sqrt(3) / 2;
 
-        roof.setAttribute('fill', config.colors[config.highlightIdx]);
-        body.setAttribute('fill', config.colors[config.highlightIdx]);
-        houseLetter.textContent = config.labels[config.highlightIdx];
-
         svg.innerHTML = '';
-        const sy = config.margins.top + config.highlightIdx * (arrowH + config.margins.gap);
-        const wSel = config.arrow.minNorm * config.container.width + config.highlightIdx * ((config.arrow.maxNorm - config.arrow.minNorm) * config.container.width / (n-1));
-        const selPts = [[0,sy],[wSel,sy],[wSel+tipW,sy+arrowH/2],[wSel,sy+arrowH],[0,sy+arrowH]].map(p=>p.join(',')).join(' ');
-        [{color:'#000',width:config.outline.black},{color:'#fff',width:config.outline.white}].forEach(o => {
-          const pElem = document.createElementNS(svg.namespaceURI,'polygon');
-          pElem.setAttribute('points', selPts);
-          pElem.setAttribute('fill','none');
-          pElem.setAttribute('stroke', o.color);
-          pElem.setAttribute('stroke-width', o.width);
-          svg.appendChild(pElem);
-        });
+        if (!noReq) {
+          roof.setAttribute('fill', config.colors[config.highlightIdx]);
+          body.setAttribute('fill', config.colors[config.highlightIdx]);
+          houseLetter.textContent = config.labels[config.highlightIdx];
+
+          const sy = config.margins.top + config.highlightIdx * (arrowH + config.margins.gap);
+          const wSel = config.arrow.minNorm * config.container.width + config.highlightIdx * ((config.arrow.maxNorm - config.arrow.minNorm) * config.container.width / (n-1));
+          const selPts = [[0,sy],[wSel,sy],[wSel+tipW,sy+arrowH/2],[wSel,sy+arrowH],[0,sy+arrowH]].map(p=>p.join(',')).join(' ');
+          [{color:'#000',width:config.outline.black},{color:'#fff',width:config.outline.white}].forEach(o => {
+            const pElem = document.createElementNS(svg.namespaceURI,'polygon');
+            pElem.setAttribute('points', selPts);
+            pElem.setAttribute('fill','none');
+            pElem.setAttribute('stroke', o.color);
+            pElem.setAttribute('stroke-width', o.width);
+            svg.appendChild(pElem);
+          });
+        } else {
+          roof.setAttribute('fill', '#ccc');
+          body.setAttribute('fill', '#ccc');
+          houseLetter.textContent = 'N/A';
+        }
         config.labels.forEach((lbl, idx) => {
           const y = config.margins.top + idx * (arrowH + config.margins.gap);
           const w = config.arrow.minNorm * config.container.width + idx * ((config.arrow.maxNorm - config.arrow.minNorm) * config.container.width / (n-1));
@@ -334,9 +352,11 @@
       }
 
       function computeClass() {
+        const limRaw = parseFloat(document.getElementById('requirementInput').value);
+        noReq = FEATURE_NOREQ_NACLASS && !isNaN(limRaw) && limRaw >= NOREQ_VALUE;
+        if (noReq) return;
         const ep = parseFloat(document.getElementById('energyInput').value);
-        const lim = parseFloat(document.getElementById('requirementInput').value);
-        const cls = window.EPClass.classify(ep, lim);
+        const cls = window.EPClass.classify(ep, limRaw);
         const idx = config.labels.indexOf(cls);
         if(idx !== -1) config.highlightIdx = idx;
       }
