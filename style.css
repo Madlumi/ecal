@@ -407,3 +407,11 @@ button:hover,
   border-bottom: 15px solid transparent;
   border-right: 30px solid transparent;
 }
+
+footer#appFooter {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  background: var(--form-bg);
+  border: 2px solid var(--header-bg);
+}
