@@ -417,6 +417,8 @@ const STRINGS = {
 		en: "",
 		fi: ""
 	},
+        footer_repo_label:  { sv: "Källkod:", en: "Source code:", fi: "Lähdekoodi:" },
+        footer_version_label:{ sv: "Version:", en: "Version:", fi: "Versio:" }
 };
 
 // Labels and placeholders for the print page UI
@@ -475,6 +477,4 @@ const PRINT_STRINGS = {
         suggestions_label: { sv: "Åtgärdsförslag:", en: "Proposed measures:", fi: "Toimenpide-ehdotukset:" },
         performed_label:   { sv: "Energideklarationen är utförd av:", en: "Declaration performed by:", fi: "Energiatodistuksen on laatinut:" },
         valid_label:       { sv: "Energideklarationen är giltig till:", en: "Declaration valid until:", fi: "Energiatodistus voimassa asti:" },
-        footer_repo_label:  { sv: "Källkod:", en: "Source code:", fi: "Lähdekoodi:" },
-        footer_version_label:{ sv: "Version:", en: "Version:", fi: "Versio:" }
 };
