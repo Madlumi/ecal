@@ -45,6 +45,7 @@ const ROOMS_TO_PERSONS = [1.42, 1.63, 2.18, 2.79, 3.51];
 
 const ARROW_LENGTH_IN = 1.5;
 const ARROW_LENGTH = `${ARROW_LENGTH_IN}in`;
+const NA_ARROW_COLOR = '#ccc';
 
 // Lock improbable energy source combinations (none currently)
 const LOCKED_COMBINATIONS = (typeof CONFIG !== 'undefined' && CONFIG.CONSTANTS && CONFIG.CONSTANTS.LOCKED_COMBINATIONS)
@@ -650,25 +651,42 @@ function calculate() {
         }
 
         epArrow.innerHTML = "";
-        const cls = window.EPClass.classify(epv, lim.EP);
-        if (cls) {
-                const color = window.EPClass.data[cls].colour;
+        const noReqArrow = CONFIG.FEATURES.NOREQ_NACLASS &&
+                           lim.EP >= CONFIG.CONSTANTS.NOREQ_VALUE;
+        if (noReqArrow) {
                 const arrow = document.createElement("div");
                 arrow.className = "ep-arrow";
-                arrow.style.backgroundColor = color;
+                arrow.style.backgroundColor = NA_ARROW_COLOR;
                 arrow.style.width = ARROW_LENGTH;
-                arrow.textContent = `${cls}(${epv}/${Math.round(lim.EP)})`;
+                arrow.textContent = getString("na_label");
                 const tri = document.createElement("div");
                 tri.className = "triangle";
-                tri.style.borderRightColor = color;
+                tri.style.borderRightColor = NA_ARROW_COLOR;
                 arrow.appendChild(tri);
                 epArrow.appendChild(arrow);
+        } else {
+                const cls = window.EPClass.classify(epv, lim.EP);
+                if (cls) {
+                        const color = window.EPClass.data[cls].colour;
+                        const arrow = document.createElement("div");
+                        arrow.className = "ep-arrow";
+                        arrow.style.backgroundColor = color;
+                        arrow.style.width = ARROW_LENGTH;
+                        arrow.textContent = `${cls}(${epv}/${Math.round(lim.EP)})`;
+                        const tri = document.createElement("div");
+                        tri.className = "triangle";
+                        tri.style.borderRightColor = color;
+                        arrow.appendChild(tri);
+                        epArrow.appendChild(arrow);
+                }
         }
 
 
 	// --- populate limits table ---
-	let epLimitDisp = (lim.EP === 999999999) ? getString("no_requirement") : lim.EP.toFixed(1);
-	let elLimitDisp = (lim.EL === 999999999) ? getString("no_requirement") : lim.EL.toFixed(1);
+        let epLimitDisp = (lim.EP === CONFIG.CONSTANTS.NOREQ_VALUE) ?
+                getString("no_requirement") : lim.EP.toFixed(1);
+        let elLimitDisp = (lim.EL === CONFIG.CONSTANTS.NOREQ_VALUE) ?
+                getString("no_requirement") : lim.EL.toFixed(1);
 	let umLimitDisp = lim.UM.toFixed(2);
 
 	// LL: dash + toggle if -1, else the number

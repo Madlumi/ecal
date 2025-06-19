@@ -304,11 +304,18 @@ const STRINGS = {
 	},
 
 	// “No requirement” literal to replace 999999999
-	no_requirement: {
-		sv: "Inget krav",
-		en: "No requirement",
-		fi: "Ei vaatimusta"
-	},
+        no_requirement: {
+                sv: "Inget krav",
+                en: "No requirement",
+                fi: "Ei vaatimusta"
+        },
+
+        // Text shown when no energy class applies
+        na_label: {
+                sv: "N/A",
+                en: "N/A",
+                fi: "N/A"
+        },
 
 	// Energy‐use table label + row labels
 	energy_table_label: {

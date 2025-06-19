@@ -164,7 +164,8 @@ class LimitVals {
 //============================
 //=Helper Functions============
 //============================
-const NoReq = 999999999.0;
+// “No requirement” value (falls back to large number if not configured)
+const NoReq = CONFIG?.CONSTANTS?.NOREQ_VALUE ?? 999999999.0;
 const seSec = -1.0;
 
 function elBase(F_geo) {
