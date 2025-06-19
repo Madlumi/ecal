@@ -12,3 +12,5 @@
 - Help tooltips appear and disappear abruptly by design. Please do not add
   animations or transitions.
 - Limited location options are intentional and match the available factors in Åland's regulations.
+
+- Avoid "magic" numbers or strings in scripts. Declare descriptive constants for values that may be adjusted or reused.

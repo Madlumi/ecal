@@ -187,6 +187,43 @@
 
   <script src="epclass.js"></script>
   <script>
+    const ADDRESS_LIMIT = 80;
+    const MAX_FILENAME_LENGTH = 100;
+
+    function generateName(address, id) {
+      // Normalize to NFD so diacritics become separate codepoints and then
+      // strip them (\u0300-\u036f matches combining marks). We also map
+      // common Å, Ä, Ö characters to plain a/o for local audience.
+      const translit = str =>
+        str.normalize('NFD')
+           .replace(/[\u0300-\u036f]/g, '')
+           .replace(/[åäÅÄ]/g, 'a')
+           .replace(/[öÖ]/g, 'o');
+
+      const sanitize = str =>
+        translit(str)
+          .replace(/\s+/g, '_')
+          .replace(/[^0-9A-Za-z_-]/g, '');
+
+      const safeId = sanitize(String(id || ''));
+      let safeAddr = sanitize(String(address || '')); 
+      if (safeAddr.length > ADDRESS_LIMIT) safeAddr = safeAddr.slice(0, ADDRESS_LIMIT);
+
+      let base = `energideklaration-${safeId}-${safeAddr}`;
+      if (base.length + 4 > MAX_FILENAME_LENGTH) {
+        const excess = base.length + 4 - MAX_FILENAME_LENGTH;
+        base = base.slice(0, base.length - excess);
+      }
+      return base + '.pdf';
+    }
+
+    function updateFileName() {
+      const address = document.getElementById('addressInput').value;
+      const id = document.getElementById('idInput').value;
+      const name = generateName(address, id);
+      document.title = name;
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       const labels = Object.keys(window.EPClass.data);
       const colors = labels.map(l => window.EPClass.data[l].colour);
@@ -310,6 +347,7 @@
       }
 
       function updateAll(){
+        updateFileName();
         computeClass();
         drawVisuals();
         updatePreview();
