@@ -9,12 +9,15 @@ body {
   font-family: sans-serif;
   margin: 1rem;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
 }
 
 .container {
   max-width: 50rem; /* ~800px */
   width: 100%;
+  flex: 1;
 }
 
 /* Language selector at top right */
@@ -262,6 +265,7 @@ body {
   border: 1px solid var(--border-color);
   padding: 1rem;
   margin-top: 2rem;
+  flex: 1;
 }
 
 h1 {
@@ -409,4 +413,6 @@ footer#appFooter {
   font-size: 0.8rem;
   background: var(--form-bg);
   border: 2px solid var(--header-bg);
+  width: 100%;
+  box-sizing: border-box;
 }
