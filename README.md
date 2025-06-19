@@ -62,6 +62,10 @@ text on click.
 | `dev/`      | marginally useful files for developement|
 | `docs/`     | screenshots, TODO list, and assorted notes|
 
+### Configuration
+
+`config.js` defines an `APP_INFO` object containing the version and repository URL displayed in the footer.
+
 ## Legal Sources
 
 Legal references used in the app are stored in the `sources/` directory:

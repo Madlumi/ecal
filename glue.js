@@ -263,6 +263,15 @@ function applyLanguage() {
 
                 setupHelp(iconId, boxId, `${base}_help`);
         });
+
+        const repoLink = $("footer_repo_link");
+        if (repoLink && typeof CONFIG !== "undefined" && CONFIG.APP_INFO) {
+                repoLink.href = CONFIG.APP_INFO.REPO_URL;
+        }
+        const verEl = $("app_version");
+        if (verEl && typeof CONFIG !== "undefined" && CONFIG.APP_INFO) {
+                verEl.textContent = CONFIG.APP_INFO.VERSION;
+        }
 }
 
 //========================
