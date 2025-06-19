@@ -23,6 +23,8 @@ const clear    	= $("clear_button");
 const copy     	= $("copy_button");
 const print       = $("print_button");    
 const form     	  = $("houseForm");
+const hourlyToggle = $("useHourly");
+const hourlyContainer = $("hourlyToggleContainer");
 const footnoteBox = $("footnoteBox");
 const heatEnergyInput = $("heatEnergy");
 const heatEnergyType = $("heatEnergyType");
@@ -320,6 +322,7 @@ function registerListeners(){
     if (fastEnergyInput) fastEnergyInput.addEventListener("input", update);
     if (fastEnergyType) fastEnergyType.addEventListener("change", update);
     [dedPersons,dedPersonHeat,dedTimeHours,dedTimeDays,dedTimeWeeks].forEach(el=>{ if(el) el.addEventListener("input", update);});
+    if (hourlyToggle) hourlyToggle.addEventListener("change", update);
     if (rooms) rooms.addEventListener("input", () => {
         const r = parseInt(rooms.value, 10);
         if (dedPersonsVB) dedPersonsVB.setCalc(personsFromRooms(r).toFixed(2));
@@ -639,7 +642,9 @@ function calculate() {
                 h.E.fast[i] = parseFloat( window.fastEls[i]?.getValue() ) || 0;
         }
 
-        const epv = EPpet(h) | 0;
+        const useHourly = hourlyToggle && hourlyToggle.checked;
+        const epRaw = useHourly && typeof hourlyEPpet === 'function' ? hourlyEPpet(h) : EPpet(h);
+        const epv = epRaw | 0;
         const lim = limit(h);
         window.last_eplim = lim.EP;
 
@@ -735,10 +740,11 @@ function calculate() {
 	if(!isNaN(fv))ps.set("flow",fv);
 	if(f2.checked)ps.set("foot2","1");
 	if(f3.checked)ps.set("foot3","1");
-	if(f4.checked)ps.set("foot4","1");
-	if(f5.checked)ps.set("foot5","1");
-	for (let i=0;i<EType.E_TYPE_COUNT;i++){
-		if(h.E.heat[i])ps.set(`heat${i}`, h.E.heat[i]);
+        if(f4.checked)ps.set("foot4","1");
+        if(f5.checked)ps.set("foot5","1");
+        if(hourlyToggle && hourlyToggle.checked)ps.set("hourly","1");
+        for (let i=0;i<EType.E_TYPE_COUNT;i++){
+                if(h.E.heat[i])ps.set(`heat${i}`, h.E.heat[i]);
 		if(h.E.cool[i])ps.set(`cool${i}`, h.E.cool[i]);
 		if(h.E.watr[i])ps.set(`watr${i}`, h.E.watr[i]);
 		if(h.E.fast[i])ps.set(`fast${i}`, h.E.fast[i]);
@@ -775,7 +781,9 @@ function prefillFromURL() {
         if (dedTimeWeeksVB) dedTimeWeeksVB.setCalc(dedTimeWeeks.value);
 
 	// foot2–foot5 checkboxes: default false if no "1"
-	[f2, f3, f4, f5].forEach((el, idx) => { el.checked = params.get(`foot${idx + 2}`) === "1"; });
+        [f2, f3, f4, f5].forEach((el, idx) => { el.checked = params.get(`foot${idx + 2}`) === "1"; });
+
+        if (hourlyToggle) hourlyToggle.checked = params.get("hourly") === "1";
 
 	// energy inputs: heat0, heat1, … cool0, … etc.
         ["heat","cool","watr","fast"].forEach(key => {
@@ -805,7 +813,14 @@ function main(){
     loadEnergyTypeDropdown(heatEnergyType);
     loadEnergyTypeDropdown(coolEnergyType);
     loadEnergyTypeDropdown(fastEnergyType);
-	prefillFromURL();
+    if (hourlyContainer) {
+        const hasFeature = typeof CONFIG !== 'undefined' && CONFIG.FEATURES && CONFIG.FEATURES.HOURLY_MODEL;
+        hourlyContainer.style.display = hasFeature ? "block" : "none";
+        if (hasFeature && typeof validateHourlyModel === 'function') {
+            console.log('Hourly model validation', validateHourlyModel());
+        }
+    }
+    prefillFromURL();
 
         registerListeners();
 

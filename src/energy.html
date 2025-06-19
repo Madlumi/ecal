@@ -10,6 +10,7 @@
                 <script src="strings.js"></script>
                 <script src="config.js"></script>
                 <script src="energy.js"></script>
+                <script src="hourlyModel.js"></script>
                 <script src="epclass.js"></script>
                 <script src="glue.js" defer ></script>
         </head>
@@ -184,7 +185,11 @@
 				<hr />
                                 <button id="clear_button" class="clear-btn" type="button" style="display: block; margin: 0.5rem auto;" > </button>
 
-			</form>
+                                <div id="hourlyToggleContainer" style="display:none; margin:0.5rem 0; text-align:center;">
+                                        <label><input type="checkbox" id="useHourly"> <span id="hourly_label"></span></label>
+                                </div>
+
+                        </form>
 
                         <div id="results">
                                 <div id="epRow">

@@ -9,7 +9,8 @@
       LOCKED_COMBINATIONS: []
     },
     FEATURES: {
-      NOREQ_NACLASS: true
+      NOREQ_NACLASS: true,
+      HOURLY_MODEL: false
     },
     APP_INFO: {
       VERSION: "α-02",

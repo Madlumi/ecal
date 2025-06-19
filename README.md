@@ -17,9 +17,13 @@ just serve the files in your preferred way, all the logic happens client side
 
 ## Features
 
-- **Calculates EPpet**  
-- **Shows relevant limits**  
+- **Calculates EPpet**
+- **Shows relevant limits**
 - **Prints a fancy energy certificate**
+
+## In Development
+
+- Prototype hourly simulation (ISO 13790 according to chatgpt; should be reimplemented with the actual standard or ISO 52016-1:2017)
 
 ---
 
@@ -54,7 +58,7 @@ text on click.
 ## File Structure
 
 | Filename              | Description |
-|-----------------------|-------------------------------------------------------------|
+|-----------------------|--------------------------------------------------------------|
 | `src/energy.html`      | Main webpage for user interaction |
 | `src/energyprint.html` | A page to print out energy certificate thingie |
 | `src/energy.js`        | Core calculation logic, (transpiled from `dev/energy.c` using gippy) |
@@ -64,9 +68,12 @@ text on click.
 | `dev/`                 | marginally useful files for developement |
 | `docs/`                | screenshots, TODO list, and assorted notes |
 
+
 ### Configuration
 
 `src/config.js` defines an `APP_INFO` object containing the version and repository URL displayed in the footer.
+The same file exposes feature flags under `CONFIG.FEATURES`. Set `HOURLY_MODEL` to
+`true` to show a toggle for the prototype hourly simulation in the interface.
 
 ## Legal Sources
 

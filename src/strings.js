@@ -252,11 +252,16 @@ const STRINGS = {
 		en: "Clear Form",
 		fi: "Tyhjennä lomake"
 	},
-	copy_button: {
-		sv: "Kopiera länk",
-		en: "Copy Link",
-		fi: "Kopioi linkki"
-	},
+        copy_button: {
+                sv: "Kopiera länk",
+                en: "Copy Link",
+                fi: "Kopioi linkki"
+        },
+        hourly_label: {
+                sv: "Använd timvis simulering",
+                en: "Use hourly simulation",
+                fi: "Käytä tuntilaskentaa"
+        },
 
 	// EPpet + help
 	ep_label: {
