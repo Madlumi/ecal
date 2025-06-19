@@ -235,6 +235,23 @@ button.copy-btn {
   white-space: nowrap;
 }
 
+#epRowTable {
+  border-collapse: collapse;
+  margin-bottom: 0.5rem;
+  width: 100%;
+  table-layout: fixed;
+}
+
+#epRowTable th,
+#epRowTable td {
+  padding: 0.2rem 0.5rem;
+  border: 0.06rem solid #ccc;
+  font-size: 0.9rem;
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 /*----------------------------------*/
 
 
