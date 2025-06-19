@@ -321,13 +321,25 @@ function registerListeners(){
             window.location.href = `energyprint_new.html?ep=${epv}&housetype=${type.value}&eplim=${eplim}`;
         });
 	//copy
-	copy.addEventListener("click",()=>{
-		const ta=$("permalink");
-		ta.select(); ta.setSelectionRange(0,99999);
-		document.execCommand("copy");
-		copy.textContent=getString("copy_button")+" ✔";
-		setTimeout(()=>copy.textContent=getString("copy_button"),1500);
-	});
+        copy.addEventListener("click", () => {
+                const ta = $("permalink");
+                const text = ta.value;
+                const done = () => {
+                        copy.textContent = getString("copy_button") + " ✔";
+                        setTimeout(() => copy.textContent = getString("copy_button"), 1500);
+                };
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text).then(done).catch(() => {
+                                ta.select(); ta.setSelectionRange(0, 99999);
+                                document.execCommand("copy");
+                                done();
+                        });
+                } else {
+                        ta.select(); ta.setSelectionRange(0, 99999);
+                        document.execCommand("copy");
+                        done();
+                }
+        });
 }
 
 
