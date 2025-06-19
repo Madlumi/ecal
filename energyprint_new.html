@@ -186,9 +186,8 @@
   </div>
 
   <script src="epclass.js"></script>
+  <script src="config.js"></script>
   <script>
-    const ADDRESS_LIMIT = 80;
-    const MAX_FILENAME_LENGTH = 100;
 
     function generateName(address, id) {
       // Normalize to NFD so diacritics become separate codepoints and then
@@ -207,11 +206,13 @@
 
       const safeId = sanitize(String(id || ''));
       let safeAddr = sanitize(String(address || '')); 
-      if (safeAddr.length > ADDRESS_LIMIT) safeAddr = safeAddr.slice(0, ADDRESS_LIMIT);
+      if (safeAddr.length > CONFIG.PRINTING.NAME_LIMITS.ADDRESS) {
+        safeAddr = safeAddr.slice(0, CONFIG.PRINTING.NAME_LIMITS.ADDRESS);
+      }
 
       let base = `energideklaration-${safeId}-${safeAddr}`;
-      if (base.length + 4 > MAX_FILENAME_LENGTH) {
-        const excess = base.length + 4 - MAX_FILENAME_LENGTH;
+      if (base.length + 4 > CONFIG.PRINTING.NAME_LIMITS.FILENAME) {
+        const excess = base.length + 4 - CONFIG.PRINTING.NAME_LIMITS.FILENAME;
         base = base.slice(0, base.length - excess);
       }
       return base + '.pdf';
@@ -227,19 +228,18 @@
     document.addEventListener('DOMContentLoaded', () => {
       const labels = Object.keys(window.EPClass.data);
       const colors = labels.map(l => window.EPClass.data[l].colour);
-      const FEATURE_NOREQ_NACLASS = true;
-      const NOREQ_VALUE = 999999999;
       let noReq = false;
+      const base = CONFIG.PRINTING.CLASS_LAYOUT;
       const config = {
         labels,
         colors,
         highlightIdx: 0,
-        container: { width:73, height:90 },
-        margins: { top:10, bottom:5, gap:3 },
-        arrow: { minNorm:0.2, maxNorm:0.9, fontSize:5 },
-        letterOffset: { x:-4, y:0.5 },
-        outline: { black:2.5, white:1 },
-        house: { roofThickness:9, roofGap:6, fontSize:50, letterOffset: { x:0, y:20 } }
+        container: base.container,
+        margins: base.margins,
+        arrow: base.arrow,
+        letterOffset: base.letterOffset,
+        outline: base.outline,
+        house: base.house
       };
       // Bind inputs to displays
       const bind = (inputId, displayId) => {
@@ -247,8 +247,8 @@
         const disp = document.getElementById(displayId);
         const setDisp = () => {
           let val = inp.value;
-          if (FEATURE_NOREQ_NACLASS && inputId === 'requirementInput' &&
-              parseFloat(val) >= NOREQ_VALUE) {
+          if (CONFIG.FEATURES.NOREQ_NACLASS && inputId === 'requirementInput' &&
+              parseFloat(val) >= CONFIG.CONSTANTS.NOREQ_VALUE) {
             disp.textContent = 'N/A';
           } else {
             disp.textContent = val;
@@ -353,7 +353,7 @@
 
       function computeClass() {
         const limRaw = parseFloat(document.getElementById('requirementInput').value);
-        noReq = FEATURE_NOREQ_NACLASS && !isNaN(limRaw) && limRaw >= NOREQ_VALUE;
+        noReq = CONFIG.FEATURES.NOREQ_NACLASS && !isNaN(limRaw) && limRaw >= CONFIG.CONSTANTS.NOREQ_VALUE;
         if (noReq) return;
         const ep = parseFloat(document.getElementById('energyInput').value);
         const cls = window.EPClass.classify(ep, limRaw);
