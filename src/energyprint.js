@@ -2,7 +2,13 @@
 // Copyright (C) 2025 Edvin svenblad
 
 (function(){
-  const EPClass = window.EPClass;
+  let EPClass = {};
+  if (typeof window !== 'undefined' && window.EPClass) {
+    EPClass = window.EPClass;
+  }
+  if (typeof module !== 'undefined' && module.exports) {
+    EPClass = require('./config.js').EPClass;
+  }
 
   function build(){
     const params = new URLSearchParams(window.location.search);
