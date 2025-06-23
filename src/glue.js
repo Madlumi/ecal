@@ -578,28 +578,36 @@ function calculate() {
 	}
 	// --- end populate limits table ---
 
-	// Build permalink
-	const ps = new URLSearchParams();
-	ps.set("geography",geo.value);
-	ps.set("housetype",type.value);
-        ps.set("atemp",atv);
-        ps.set("tvv", tvvIdx);
-	if(!isNaN(fv))ps.set("flow",fv);
-	if(f2.checked)ps.set("foot2","1");
-	if(f3.checked)ps.set("foot3","1");
-        if(f4.checked)ps.set("foot4","1");
-        if(f5.checked)ps.set("foot5","1");
-        if(hourlyToggle && hourlyToggle.checked)ps.set("hourly","1");
-        for (let i=0;i<EType.E_TYPE_COUNT;i++){
-                if(h.E.heat[i])ps.set(`heat${i}`, h.E.heat[i]);
-		if(h.E.cool[i])ps.set(`cool${i}`, h.E.cool[i]);
-		if(h.E.watr[i])ps.set(`watr${i}`, h.E.watr[i]);
-		if(h.E.fast[i])ps.set(`fast${i}`, h.E.fast[i]);
-	}
-        const newUrl = window.location.pathname + "?" + ps.toString();
+        const newUrl = buildPermalink(h);
         $("permalink").value = newUrl;
         history.replaceState(null, "", newUrl);
         return epv;
+}
+
+// Build the permalink URL from current inputs
+function buildPermalink(house) {
+        const atv = parseInt(at.value, 10) || 0;
+        const fv = parseFloat(fl.value) || 0;
+        const tvvIdx = parseInt(tvvSel.value, 10) || 0;
+
+        const ps = new URLSearchParams();
+        ps.set("geography", geo.value);
+        ps.set("housetype", type.value);
+        ps.set("atemp", atv);
+        ps.set("tvv", tvvIdx);
+        if (!isNaN(fv)) ps.set("flow", fv);
+        if (f2.checked) ps.set("foot2", "1");
+        if (f3.checked) ps.set("foot3", "1");
+        if (f4.checked) ps.set("foot4", "1");
+        if (f5.checked) ps.set("foot5", "1");
+        if (hourlyToggle && hourlyToggle.checked) ps.set("hourly", "1");
+        for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
+                if (house.E.heat[i]) ps.set(`heat${i}`, house.E.heat[i]);
+                if (house.E.cool[i]) ps.set(`cool${i}`, house.E.cool[i]);
+                if (house.E.watr[i]) ps.set(`watr${i}`, house.E.watr[i]);
+                if (house.E.fast[i]) ps.set(`fast${i}`, house.E.fast[i]);
+        }
+        return window.location.pathname + "?" + ps.toString();
 }
 
 
