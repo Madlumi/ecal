@@ -369,6 +369,20 @@
         }
       }
 
+      const typeMap = {
+        SMALL: 'option_housetype_SMALL',
+        MULTI: 'option_housetype_MULTI',
+        LOCAL: 'option_housetype_LOCAL'
+      };
+      const typeParam = (params.get('housetype') || '').toUpperCase();
+      const typeKey = typeMap[typeParam];
+      if (typeKey) {
+        const clsHead = document.getElementById('p_classes_heading');
+        if (clsHead) {
+          clsHead.textContent += ' – ' + getString(typeKey);
+        }
+      }
+
       const roof = document.getElementById('houseRoof'), body = document.getElementById('houseBody');
       const rt = config.house.roofThickness, rg = config.house.roofGap;
       roof.setAttribute('points', [[0,50],[50,0],[100,50],[100-rt,50],[50,rt],[rt,50]].map(p=>p.join(',')).join(' '));
