@@ -29,6 +29,7 @@ just serve the files in your preferred way, all the logic happens client side
 - pdf energiklasser A-G har ingen font specifierad inom "Allmänna råd till LANDSKAPSFÖRORDNING om energideklaration för byggnader"
 - Uncertainty about "Inget Krav" EP grade. It is left as N/A, grey as of now.
 - Languages other than Swedish are auto translated.
+- someone ought to add some tests for core calculator(energy.js) logic
 
 
 
