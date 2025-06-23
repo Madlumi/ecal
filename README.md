@@ -21,25 +21,16 @@ just serve the files in your preferred way, all the logic happens client side
 - **Shows relevant limits**
 - **Prints a fancy energy certificate**
 
-## In Development
 
-- Prototype hourly simulation (ISO 13790 according to chatgpt; should be reimplemented with the actual standard or ISO 52016-1:2017)
+## TODO/Issues
 
----
-
-
-## TODO
-
-Flerbostadshus, lokal, fotnoter bör dubbelkollas.
-ep limit för class A-G bör dubbelkollas(found the source 2014:31) 
-
-should make pdf output mimic official doc
-css could use some work
-
-## Issues
-
+- Flerbostadshus, lokal, fotnoter bör dubbelkollas. 
+- timvis energikalkyl enlight någon iso bör införas.
+- pdf energiklasser A-G har ingen font specifierad inom "Allmänna råd till LANDSKAPSFÖRORDNING om energideklaration för byggnader"
 - Uncertainty about "Inget Krav" EP grade. It is left as N/A, grey as of now.
 - Languages other than Swedish are auto translated.
+
+
 
 ## Help-icon logic
 
@@ -61,7 +52,7 @@ text on click.
 |-----------------------|--------------------------------------------------------------|
 | `src/energy.html`      | Main webpage for user interaction |
 | `src/energyprint.html` | A page to print out energy certificate thingie |
-| `src/energy.js`        | Core calculation logic, (transpiled from `dev/energy.c` using gippy) |
+| `src/energy.js`        | Core calculation logic|
 | `src/glue.js`          | Controls the DOM and ui. |
 | `src/strings.js`       | User facing strings and translations |
 | `src/style.css`        | css |
