@@ -51,10 +51,20 @@
       }
       icon.textContent = getString('info_icon');
       icon.title = '';
-      icon.onclick = () => {
+      icon.setAttribute('aria-label', getString('help_icon_label'));
+      icon.setAttribute('role', 'button');
+      icon.tabIndex = 0;
+      const toggle = () => {
         box.innerHTML = txt;
         box.style.display = box.style.display === 'block' ? 'none' : 'block';
       };
+      icon.onclick = toggle;
+      icon.addEventListener('keydown', ev => {
+        if(ev.key === 'Enter' || ev.key === ' ') {
+          ev.preventDefault();
+          toggle();
+        }
+      });
     } catch(err){
       console.error(`setupHelp(${iconId}, ${boxId}, ${key}) failed:`, err);
       const icon = document.getElementById(iconId);
@@ -101,7 +111,6 @@
         icon = document.createElement('span');
         icon.className = 'info-icon';
         icon.id = iconId;
-        icon.setAttribute('aria-label', 'Show help');
         ref.parentNode.insertBefore(icon, ref.nextSibling);
       }
       if(!box){
