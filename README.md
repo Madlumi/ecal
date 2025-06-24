@@ -24,14 +24,20 @@ just serve the files in your preferred way, all the logic happens client side
 
 ## TODO/Issues
 
+
+### Code Quality
+- glue.js ought to be cleaned up or something
+- someone ought to add some tests for core calculator(energy.js) logic
+- screenshots out of date
 - Flerbostadshus, lokal, fotnoter bör dubbelkollas. 
-- timvis energikalkyl enlight någon iso bör införas.
+
+### Usablility
+- Languages other than Swedish are auto translated.
+
+### Legal
 - pdf energiklasser A-G har ingen font specifierad inom "Allmänna råd till LANDSKAPSFÖRORDNING om energideklaration för byggnader"
 - Uncertainty about "Inget Krav" EP grade. It is left as N/A, grey as of now.
-- Languages other than Swedish are auto translated.
-- someone ought to add some tests for core calculator(energy.js) logic
-
-
+- timvis energikalkyl enlight någon iso bör införas.
 
 ## Help-icon logic
 
