@@ -6,6 +6,9 @@
 
 - Adding code linters or their configuration is unwanted.
 
+- Issues called out in `README.md` are already known. Don't focus on fixing
+  them unless specifically requested.
+
 - Some `_help` entries in `strings.js` are blank on purpose. Leave them empty if
   there is no help text to provide.
 
