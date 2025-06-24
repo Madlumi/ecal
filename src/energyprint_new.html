@@ -362,9 +362,11 @@
         valid: 'validInput'
       };
       for (const [p, id] of Object.entries(paramMap)) {
+        const inp = document.getElementById(id);
         const val = params.get(p);
-        if (val !== null) {
-          document.getElementById(id).value = val;
+        if (inp && val !== null) {
+          inp.value = val;
+          inp.dispatchEvent(new Event('input'));
         }
       }
 
