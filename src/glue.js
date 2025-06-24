@@ -277,17 +277,26 @@ function loadEnergyTable() {
                         const icon = document.createElement("span");
                         icon.className   = "info-icon";
                         icon.textContent = getString("info_icon");
-                        icon.setAttribute("aria-label", "Show help");
-                        icon.onclick = () => {
-				const box = $("energyRowHelpBox");
-				if (box.innerHTML === helpText && box.style.display === "block") {
-					box.style.display = "none";
-				} else {
-					box.innerHTML     = helpText;
-					box.style.display = "block";
-				}
-			};
-			cell.appendChild(icon);
+                        icon.setAttribute("aria-label", getString("help_icon_label"));
+                        icon.setAttribute("role", "button");
+                        icon.tabIndex = 0;
+                        const toggle = () => {
+                                const box = $("energyRowHelpBox");
+                                if (box.innerHTML === helpText && box.style.display === "block") {
+                                        box.style.display = "none";
+                                } else {
+                                        box.innerHTML     = helpText;
+                                        box.style.display = "block";
+                                }
+                        };
+                        icon.onclick = toggle;
+                        icon.addEventListener("keydown", ev => {
+                                if (ev.key === "Enter" || ev.key === " ") {
+                                        ev.preventDefault();
+                                        toggle();
+                                }
+                        });
+                        cell.appendChild(icon);
 		}
 
                 // add cells
@@ -544,7 +553,7 @@ function calculate() {
 	// LL: dash + toggle if -1, else the number
 	let llCellHtml;
 	if (lim.LL === -1) {
-                llCellHtml = `– <span class="info-icon" id="llIcon" aria-label="Show help">${getString("info_icon")}</span>`;
+                llCellHtml = `– <span class="info-icon" id="llIcon" aria-label="${getString("help_icon_label")}" role="button" tabindex="0">${getString("info_icon")}</span>`;
         } else {
                 llCellHtml = lim.LL.toFixed(2);
         }
@@ -571,10 +580,19 @@ function calculate() {
 		limitsTable.parentNode.insertBefore(helpDiv, limitsTable.nextSibling);
 
 		// toggle visibility when “?” clicked
-		$("llIcon").addEventListener("click", () => {
-			const hb = $("limitLLHelp");
-			hb.style.display = hb.style.display === "block" ? "none" : "block";
-		});
+                const llIconEl = $("llIcon");
+                const toggle = () => {
+                        const hb = $("limitLLHelp");
+                        hb.style.display = hb.style.display === "block" ? "none" : "block";
+                };
+                llIconEl.addEventListener("click", toggle);
+                llIconEl.addEventListener("keydown", ev => {
+                        if (ev.key === "Enter" || ev.key === " ") {
+                                ev.preventDefault();
+                                toggle();
+                        }
+                });
+
 	}
 	// --- end populate limits table ---
 

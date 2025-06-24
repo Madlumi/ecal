@@ -302,11 +302,17 @@ const STRINGS = {
 		fi: "Rakennuksen lämmöneristys on oltava niin tiivis, että ensisijainen energiakerroin ja asennettu lämmitystehovaatimus täyttyvät."
 	},
 
-	warning_tooltip: {
-		sv: "Överskrider gräns",
-		en: "Exceeds limit",
-		fi: "Ylittää rajan"
-	},
+        warning_tooltip: {
+                sv: "Överskrider gräns",
+                en: "Exceeds limit",
+                fi: "Ylittää rajan"
+        },
+
+        help_icon_label: {
+                sv: "Visa hjälp",
+                en: "Show help",
+                fi: "Näytä ohje"
+        },
 
 	// “No requirement” literal to replace 999999999
         no_requirement: {
