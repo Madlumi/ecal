@@ -320,6 +320,11 @@ button:hover {
   white-space: normal;
 }
 
+/* Basic style for invalid numeric inputs */
+input.invalid {
+  border-color: red;
+}
+
 /* Tables inside help text should size to content */
 .help-box table {
   width: auto;
