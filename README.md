@@ -52,7 +52,8 @@ text on click.
 | Filename              | Description |
 |-----------------------|--------------------------------------------------------------|
 | `src/energy.html`      | Main webpage for user interaction |
-| `src/energyprint.html` | A page to print out energy certificate thingie |
+| `src/energyprint_new.html` | Maintained print-friendly layout |
+| `src/energyprint.html` | Deprecated print template |
 | `src/energy.js`        | Core calculation logic|
 | `src/glue.js`          | Controls the DOM and ui. |
 | `src/strings.js`       | User facing strings and translations |
