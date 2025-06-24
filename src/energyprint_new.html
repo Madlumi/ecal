@@ -194,6 +194,7 @@
   <script>
 
     function applyPrintUiStrings() {
+      document.documentElement.lang = window.SELECTED_LANG;
       const labels = {
         lbl_p_address: 'address_label',
         lbl_p_municipality: 'municipality_label',
@@ -303,7 +304,6 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       detectLang();
-      document.documentElement.lang = window.SELECTED_LANG;
       applyPrintUiStrings();
       applyPrintStrings();
 

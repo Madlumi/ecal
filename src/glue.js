@@ -656,8 +656,8 @@ function prefillFromURL() {
 // ENTRY POINT
 //========================
 function main(){
-	detectLang()
-	applyLanguage();
+        detectLang()
+        applyLanguage();
 
     loadGeography();
         loadEnergyTable();

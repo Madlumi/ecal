@@ -63,6 +63,9 @@
   }
 
   function applyLanguage(){
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = window.SELECTED_LANG;
+    }
     document.querySelectorAll('.lang-button').forEach(btn => {
       btn.style.opacity = btn.dataset.lang === window.SELECTED_LANG ? '1' : '0.5';
     });
