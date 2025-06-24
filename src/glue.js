@@ -11,6 +11,8 @@ const at       = $("atemp");
 const rooms    = $("rooms");
 const fl       = $("flow");
 const tvvSel   = $("tvvType");
+const atempError = $("atempError");
+const flowError  = $("flowError");
 const coolEnergyInput = $("coolEnergy");
 const coolEnergyType  = $("coolEnergyType");
 const fastEnergyInput = $("fastEnergy");
@@ -44,6 +46,9 @@ const epValue  = $("ep_value");
 const epArrow  = $("ep_arrow");
 const table = $("energyTable");
 
+const MAX_ATEMP_INPUT = 100000; // reasonable upper limit for area
+const MAX_FLOW_INPUT  = 5.0;    // l/s·m², beyond typical use
+
 function requireConfigConst(name) {
   const val = CONFIG?.CONSTANTS?.[name];
   if (val === undefined) {
@@ -67,6 +72,21 @@ function personsFromRooms(n) {
     if (!n || n <= 0) return 0;
     if (n >= 5) return ROOMS_TO_PERSONS[4];
     return ROOMS_TO_PERSONS[n - 1];
+}
+
+function parseValidatedNumber(el, max, errorEl, errKey) {
+    const num = parseFloat(el.value);
+    if (isNaN(num) || num < 0 || num > max) {
+        if (errorEl) {
+            errorEl.textContent = getString(errKey);
+            errorEl.style.display = 'block';
+        }
+        el.classList.add('invalid');
+        return null;
+    }
+    if (errorEl) errorEl.style.display = 'none';
+    el.classList.remove('invalid');
+    return num;
 }
 
 
@@ -472,8 +492,8 @@ function calculate() {
         updateTvvRow();
         const locObj = locations.find(l=>l.name===geo.value);
         const htNum  = HouseType[type.value];
-        const atv    = parseInt(at.value,10)||0;
-        const fv     = parseFloat(fl.value)||0;
+        const atv    = parseValidatedNumber(at, MAX_ATEMP_INPUT, atempError, 'atemp_error') ?? 0;
+        const fv     = parseValidatedNumber(fl, MAX_FLOW_INPUT, flowError, 'flow_error') ?? 0;
         const tvvIdx = parseInt(tvvSel.value,10) || 0;
         const h      = new House(htNum, atv, locObj, tvvFactors[tvvIdx]);
 	h.flow = fv; h.qavg = fv;
@@ -586,8 +606,8 @@ function calculate() {
 
 // Build the permalink URL from current inputs
 function buildPermalink(house) {
-        const atv = parseInt(at.value, 10) || 0;
-        const fv = parseFloat(fl.value) || 0;
+        const atv = parseValidatedNumber(at, MAX_ATEMP_INPUT, atempError, 'atemp_error') ?? 0;
+        const fv = parseValidatedNumber(fl, MAX_FLOW_INPUT, flowError, 'flow_error') ?? 0;
         const tvvIdx = parseInt(tvvSel.value, 10) || 0;
 
         const ps = new URLSearchParams();

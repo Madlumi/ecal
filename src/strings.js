@@ -200,11 +200,16 @@ const STRINGS = {
 		en: "Flow (q):",
 		fi: "Virtaus (q):"
 	},
-	flow_help: {
-		sv: "Utluftsflöde i liter per sekund och kvadratmeter.",
-		en: "Exhaust airflow in liters per second per square meter.",
-		fi: "Poistoilmavirta litroina sekunnissa neliömetriä kohti."
-	},
+        flow_help: {
+                sv: "Utluftsflöde i liter per sekund och kvadratmeter.",
+                en: "Exhaust airflow in liters per second per square meter.",
+                fi: "Poistoilmavirta litroina sekunnissa neliömetriä kohti."
+        },
+        flow_error: {
+                sv: "Ogiltigt flöde.",
+                en: "Invalid flow value.",
+                fi: "Virheellinen virtausarvo."
+        },
 
 	// Atemp
 	atemp_label: {
@@ -216,6 +221,11 @@ const STRINGS = {
                 sv: "Arean av samtliga våningsplan, vindsplan och källarplan för temperaturreglerade utrymmen, avsedda att värmas till mer än 10 °C, som begränsas av klimatskärmens insida. Area som upptas av innerväggar, öppningar för trappa, schakt och dylikt inräknas. Area för garage inräknas inte.",
                 en: "The area of all floors, attic, and basement for temperature‐controlled spaces intended to be heated above 10 °C, bounded by the interior of the building envelope. Area occupied by interior walls, stair openings, shafts, etc., is included; garage area (inside the building) is not counted.",
                 fi: "Lämpötilasäädeltyjen tilojen pinta‐ala, mukaan lukien kaikki kerrokset, yläkerrat ja kellarit, jotka on tarkoitus lämmittää yli 10 °C, sisäisen rakennuskuoren sisällä. Sisäseinien, portaiden, hormien jne. pinta‐ala sisältyy; autotallin pinta‐alaa ei lasketa."
+        },
+        atemp_error: {
+                sv: "Ogiltigt Atemp-värde.",
+                en: "Invalid Atemp value.",
+                fi: "Virheellinen Atemp-arvo."
         },
         rooms_label: {
                 sv: "Rum + kök:",
