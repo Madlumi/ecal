@@ -448,8 +448,8 @@ const PRINT_UI_STRINGS = {
         performed_label:  { sv: "Energideklarationen är utförd av:", en: "Declaration performed by:", fi: "Energiatodistuksen on laatinut:" },
         valid_label:      { sv: "Energideklarationen är giltig till:", en: "Declaration valid until:", fi: "Energiatodistus voimassa asti:" },
 
-        address_placeholder:     { sv: "Oceangränd 1 B2", en: "Oceangränd 1 B2", fi: "Oceangränd 1 B2" },
-        municipality_placeholder:{ sv: "Jomala kommun", en: "Jomala kommun", fi: "Jomala kommun" },
+        address_placeholder:     { sv: "Gatunamn", en: "Street name", fi: "Katuosoite" },
+        municipality_placeholder:{ sv: "kommun", en: "municipality", fi: "kunta" },
         year_placeholder:        { sv: "t.ex. 2009", en: "e.g. 2009", fi: "esim. 2009" },
         id_placeholder:          { sv: "t.ex. 3671", en: "e.g. 3671", fi: "esim. 3671" },
         energy_placeholder:      { sv: "t.ex. 162", en: "e.g. 162", fi: "esim. 162" },
