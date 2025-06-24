@@ -64,7 +64,6 @@ text on click.
 | `src/glue.js`          | Controls the DOM and ui. |
 | `src/strings.js`       | User facing strings and translations |
 | `src/style.css`        | css |
-| `dev/`                 | marginally useful files for developement |
 | `docs/`                | screenshots, TODO list, and assorted notes |
 
 
