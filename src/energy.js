@@ -50,6 +50,20 @@ const AREA_THRESHOLD      = 50;   // common area threshold for multi dwelling ru
 const INFILTRATION_LIMIT  = 0.60; // air leakage limit for houses without EP req
 
 //============================
+//=Limit constants============
+//============================
+const SMALL_LIMIT_HIGH_ATEMP = 90;  // threshold for second EP band in small houses
+const SMALL_EP_OVER_ATEMP_LIMIT = 90.0; // EP limit when Atemp > ATEMP_LIMIT
+const SMALL_EP_MID_ATEMP = 95.0;   // EP limit when Atemp > SMALL_LIMIT_HIGH_ATEMP
+const SMALL_EP_BASE = 100.0;       // EP limit when Atemp > AREA_THRESHOLD
+const SMALL_U_VALUE = 0.30;        // U-value limit for small houses
+const NO_REQ_U_VALUE = 0.33;       // U-value limit when no EP requirement applies
+const MULTI_EP_BASE = 75.0;        // base EP requirement for multi-dwelling houses
+const MULTI_U_VALUE = 0.40;        // U-value requirement for multi-dwelling houses
+const LOCAL_EP_BASE = 70.0;        // base EP requirement for local premises
+const LOCAL_U_VALUE = 0.50;        // U-value requirement for local premises
+
+//============================
 //=Tappvarmvatten=============
 //============================
 class TvvEntry {
@@ -248,34 +262,34 @@ function limit(house) {
 
   if (house.type === HouseType.SMALL) {
     if (atemp > ATEMP_LIMIT) {
-      l.EP = 90.0;
+      l.EP = SMALL_EP_OVER_ATEMP_LIMIT;
       l.EL = elBase(F_geo) + el1(F_geo, atemp);
-      l.UM = 0.30;
+      l.UM = SMALL_U_VALUE;
       l.LL = seSec;
-    } else if (atemp > 90) {
-      l.EP = 95.0;
+    } else if (atemp > SMALL_LIMIT_HIGH_ATEMP) {
+      l.EP = SMALL_EP_MID_ATEMP;
       l.EL = elBase(F_geo) + el1(F_geo, atemp);
-      l.UM = 0.30;
+      l.UM = SMALL_U_VALUE;
       l.LL = seSec;
     } else if (atemp > AREA_THRESHOLD) {
-      l.EP = 100.0;
+      l.EP = SMALL_EP_BASE;
       l.EL = elBase(F_geo) + el1(F_geo, atemp);
-      l.UM = 0.30;
+      l.UM = SMALL_U_VALUE;
       l.LL = seSec;
     } else /* atemp >= 0 */ {
       l.EP = NoReq;
       l.EL = NoReq;
-      l.UM = 0.33;
+      l.UM = NO_REQ_U_VALUE;
       l.LL = INFILTRATION_LIMIT;
     }
   }
   else if (house.type === HouseType.MULTI) {
     if (atemp >= 0) {
-      l.EP = 75.0 + ep4(F_geo, flow, qavg, atemp, house.foot4);
+      l.EP = MULTI_EP_BASE + ep4(F_geo, flow, qavg, atemp, house.foot4);
       l.EL = elBase(F_geo)
              + el1(F_geo, atemp)
              + el5(F_geo, flow, atemp, house.foot5);
-      l.UM = 0.40;
+      l.UM = MULTI_U_VALUE;
       l.LL = seSec;
     }
   }
@@ -286,16 +300,16 @@ function limit(house) {
       // Only add el3(...) if foot3 is checked
       const el_add = house.foot3 ? el3(F_geo, flow, atemp) : 0;
 
-      l.EP = 70.0 + ep_add;
+      l.EP = LOCAL_EP_BASE + ep_add;
       l.EL = elBase(F_geo)
              + el1(F_geo, atemp)
              + el_add;
-      l.UM = 0.50;
+      l.UM = LOCAL_U_VALUE;
       l.LL = seSec;
     } else /* atemp >= 0 */ {
       l.EP = NoReq;
       l.EL = NoReq;
-      l.UM = 0.33;
+      l.UM = NO_REQ_U_VALUE;
       l.LL = INFILTRATION_LIMIT;
     }
   }
