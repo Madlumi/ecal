@@ -257,6 +257,11 @@ const STRINGS = {
                 en: "Copy Link",
                 fi: "Kopioi linkki"
         },
+        clipboard_error: {
+                sv: "Urklipp inte tillgängligt, kopiera manuellt.",
+                en: "Clipboard unavailable, please copy manually.",
+                fi: "Leikepöytä ei käytettävissä, kopioi käsin."
+        },
         hourly_label: {
                 sv: "Använd timvis simulering",
                 en: "Use hourly simulation",

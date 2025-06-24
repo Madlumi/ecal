@@ -195,14 +195,10 @@ function hookCopy() {
         };
         if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(text).then(done).catch(() => {
-                        ta.select(); ta.setSelectionRange(0, 99999);
-                        document.execCommand("copy");
-                        done();
+                        alert(getString("clipboard_error"));
                 });
         } else {
-                ta.select(); ta.setSelectionRange(0, 99999);
-                document.execCommand("copy");
-                done();
+                alert(getString("clipboard_error"));
         }
 }
 
