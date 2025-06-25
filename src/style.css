@@ -224,9 +224,20 @@ textarea#permalink {
   #ep_arrow {
     margin-top: 0.25rem;
     flex-basis: 100%;
+    margin-left: 0;
+    margin-right: var(--ep-triangle-width);
   }
   .ep-arrow {
     width: 100%;
+  }
+  .ep-arrow .triangle {
+    left: auto;
+    right: calc(-1 * var(--ep-triangle-width));
+    border-right: none;
+    border-left: var(--ep-triangle-width) solid transparent;
+  }
+  #epRow #ep_value {
+    font-size: 2rem;
   }
 }
 

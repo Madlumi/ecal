@@ -560,6 +560,7 @@ function calculate() {
                 const tri = document.createElement("div");
                 tri.className = "triangle";
                 tri.style.borderRightColor = NA_ARROW_COLOR;
+                tri.style.borderLeftColor = NA_ARROW_COLOR;
                 arrow.appendChild(tri);
                 epArrow.appendChild(arrow);
         } else {
@@ -574,6 +575,7 @@ function calculate() {
                         const tri = document.createElement("div");
                         tri.className = "triangle";
                         tri.style.borderRightColor = color;
+                        tri.style.borderLeftColor = color;
                         arrow.appendChild(tri);
                         epArrow.appendChild(arrow);
                 }
