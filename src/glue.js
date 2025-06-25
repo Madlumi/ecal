@@ -77,16 +77,25 @@ function personsFromRooms(n) {
 
 function parseValidatedNumber(el, max, errorEl, errKey) {
     const num = parseFloat(el.value);
-    if (isNaN(num) || num < 0 || num > max) {
+    const invalid = isNaN(num) || num < 0 || num > max;
+    if (invalid) {
         if (errorEl) {
             errorEl.textContent = getString(errKey);
             errorEl.style.display = 'block';
+            errorEl.setAttribute('role', 'alert');
         }
         el.classList.add('invalid');
+        el.setAttribute('aria-invalid', 'true');
+        if (errorEl) el.setAttribute('aria-describedby', errorEl.id);
         return null;
     }
-    if (errorEl) errorEl.style.display = 'none';
+    if (errorEl) {
+        errorEl.style.display = 'none';
+        errorEl.removeAttribute('role');
+    }
     el.classList.remove('invalid');
+    el.removeAttribute('aria-invalid');
+    if (errorEl) el.removeAttribute('aria-describedby');
     return num;
 }
 
