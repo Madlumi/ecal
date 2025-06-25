@@ -234,9 +234,11 @@ textarea#permalink {
     left: auto !important;
     right: calc(-1 * var(--ep-triangle-width)) !important;
     border-right: none !important;
-    border-left: var(--ep-triangle-width) solid transparent !important;
+    border-left-width: var(--ep-triangle-width) !important;
+    border-left-style: solid !important;
   }
   #epRow #ep_value {
+    flex-basis: 100%;
     font-size: 2rem !important;
   }
 }
