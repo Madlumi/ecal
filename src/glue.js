@@ -61,6 +61,7 @@ const ROOMS_TO_PERSONS = requireConfigConst('ROOMS_TO_PERSONS');
 const ARROW_LENGTH_IN = requireConfigConst('ARROW_LENGTH_IN');
 const ARROW_LENGTH    = requireConfigConst('ARROW_LENGTH');
 const NA_ARROW_COLOR  = requireConfigConst('NA_ARROW_COLOR');
+const INFO_ICON_CLASS = 'info-icon';
 
 // Lock improbable energy source combinations (none currently)
 const LOCKED_COMBINATIONS = (typeof CONFIG !== 'undefined' && CONFIG.CONSTANTS && CONFIG.CONSTANTS.LOCKED_COMBINATIONS)
@@ -87,6 +88,17 @@ function parseValidatedNumber(el, max, errorEl, errKey) {
     if (errorEl) errorEl.style.display = 'none';
     el.classList.remove('invalid');
     return num;
+}
+
+function ensureInfoIconsFocusable() {
+  document.querySelectorAll('.' + INFO_ICON_CLASS).forEach(icon => {
+    if (!icon.hasAttribute('role')) {
+      icon.setAttribute('role', 'button');
+    }
+    if (icon.tabIndex < 0) {
+      icon.tabIndex = 0;
+    }
+  });
 }
 
 
@@ -697,6 +709,7 @@ function main(){
         loadEnergyTable();
     initDeductions();
         applyLanguage(); // add help icons for dynamically created elements
+        ensureInfoIconsFocusable();
         loadTvvDropdown();
 
     loadEnergyTypeDropdown(heatEnergyType);
