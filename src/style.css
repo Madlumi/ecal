@@ -119,7 +119,7 @@ form#houseForm table {
 form#houseForm table th,
 form#houseForm table td {
   border: 0.06rem solid #ccc;
-  padding: 0.2rem;
+  padding: 0;
   text-align: center;
   font-size: 0.85rem;
   overflow: hidden;
@@ -130,7 +130,7 @@ form#houseForm table td {
 /* Keep narrow columns readable on small screens */
 #energyTable th,
 #energyTable td {
-  padding: 0.15rem;
+  padding: 0;
   min-width: 3.5rem;
 }
 
@@ -153,6 +153,15 @@ form#houseForm select {
   padding: 0.15rem;
   font-size: 0.9rem;
   box-sizing: border-box;
+}
+
+/* Remove extra spacing for inputs nested in tables */
+#energyInputTable input,
+#energyInputTable select,
+#energyTable input,
+#energyTable select {
+  margin-right: 0;
+  margin-bottom: 0;
 }
 
 /* Collapsible input subsections */
@@ -419,7 +428,7 @@ th, td {
 }
 #energyInputTable td {
   border: none;
-  padding: 0.25rem 0.5rem 0.25rem 0;
+  padding: 0;
 }
 
 /* The input table shouldn't inherit the narrow last column used by
