@@ -510,4 +510,6 @@ const PRINT_STRINGS = {
         suggestions_label: { sv: "Åtgärdsförslag:", en: "Proposed measures:", fi: "Toimenpide-ehdotukset:" },
         performed_label:   { sv: "Energideklarationen är utförd av:", en: "Declaration performed by:", fi: "Energiatodistuksen on laatinut:" },
         valid_label:       { sv: "Energideklarationen är giltig till:", en: "Declaration valid until:", fi: "Energiatodistus voimassa asti:" },
+        classes_svg_title: { sv: "Skala med energiklasser", en: "Scale of energy classes", fi: "Energialuokkaskaala" },
+        house_svg_title:   { sv: "Illustration av byggnadens energiklass", en: "Illustration of the building's energy class", fi: "Rakennuksen energialuokan kuva" },
 };

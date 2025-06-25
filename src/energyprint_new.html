@@ -153,7 +153,9 @@
 
     <div class="container classes-box" style="left:8mm; top:56mm; width:73mm; height:90mm; overflow:hidden;">
       <div id="p_classes_heading" class="font-helvetica-bold" style="font-size:11pt; padding:4px;"></div>
-      <svg id="energyClasses" width="100%" height="calc(100% - 10mm)" viewBox="0 0 73 90" preserveAspectRatio="xMinYMin meet"></svg>
+      <svg id="energyClasses" width="100%" height="calc(100% - 10mm)" viewBox="0 0 73 90" preserveAspectRatio="xMinYMin meet">
+        <title id="energyClassesTitle"></title>
+      </svg>
     </div>
 
     <div class="container" style="left:8mm; top:164mm; width:73mm; height:15.5mm; font-size:10pt;">
@@ -170,6 +172,7 @@
 
     <div class="container" style="left:87.5mm; top:56mm; width:calc(26.5mm - 1.5px); height:26.5mm; overflow:hidden;">
       <svg id="houseSvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%;" preserveAspectRatio="xMinYMin meet">
+        <title id="houseSvgTitle"></title>
         <polygon id="houseRoof" stroke="none" />
         <polygon id="houseBody" stroke="none" />
       </svg>
@@ -317,6 +320,10 @@
       detectLang();
       applyPrintUiStrings();
       applyPrintStrings();
+      const tEnergy = document.getElementById('energyClassesTitle');
+      if (tEnergy) tEnergy.textContent = getPrintString('classes_svg_title');
+      const tHouse = document.getElementById('houseSvgTitle');
+      if (tHouse) tHouse.textContent = getPrintString('house_svg_title');
 
       const labels = Object.keys(window.EPClass.data);
       const colors = labels.map(l => window.EPClass.data[l].colour);
@@ -418,6 +425,10 @@
         const tipW = arrowH * Math.sqrt(3) / 2;
 
         svg.innerHTML = '';
+        const clsTitle = document.createElementNS(svg.namespaceURI, 'title');
+        clsTitle.id = 'energyClassesTitle';
+        clsTitle.textContent = getPrintString('classes_svg_title');
+        svg.appendChild(clsTitle);
         if (!noReq) {
           roof.setAttribute('fill', config.colors[config.highlightIdx]);
           body.setAttribute('fill', config.colors[config.highlightIdx]);
