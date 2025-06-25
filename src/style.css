@@ -126,6 +126,13 @@ form#houseForm table td {
   max-width: 4rem;
 }
 
+/* Keep narrow columns readable on small screens */
+#energyTable th,
+#energyTable td {
+  padding: 0.15rem;
+  min-width: 3.5rem;
+}
+
 /* Let tables within the form use natural width for their last column
    unless specifically overridden */
 form#houseForm table th:last-child,
@@ -382,12 +389,16 @@ th, td {
 /* Ensure label and calc columns have room for icons */
 #energyTable th:first-child,
 #energyTable td:first-child {
-  min-width: 6rem;
+  min-width: 5rem;
 }
 
 #energyTable th:last-child,
 #energyTable td:last-child {
   width: 3.5rem;
+}
+
+#energyTable .value-box {
+  width: 100%;
 }
 
 /* Energy input table without borders */
