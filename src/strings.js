@@ -26,11 +26,18 @@ const STRINGS = {
         },
 
 	// Language selector (labels not strictly necessary since flags are obvious)
-	language_label: {
-		sv: "Språk:",
-		en: "Language:",
-		fi: "Kieli:"
-	},
+        language_label: {
+                sv: "Språk:",
+                en: "Language:",
+                fi: "Kieli:"
+        },
+
+        // Skip link text
+        skip_main: {
+                sv: "Hoppa till huvudinnehåll",
+                en: "Skip to main content",
+                fi: "Siirry pääsisältöön"
+        },
 
 	// Geography
 	geography_label: {
