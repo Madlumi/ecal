@@ -53,10 +53,14 @@
       icon.title = '';
       icon.setAttribute('aria-label', getString('help_icon_label'));
       icon.setAttribute('role', 'button');
+      icon.setAttribute('aria-controls', boxId);
+      icon.setAttribute('aria-expanded', 'false');
       icon.tabIndex = 0;
       const toggle = () => {
+        const shouldShow = box.style.display !== 'block';
         box.innerHTML = txt;
-        box.style.display = box.style.display === 'block' ? 'none' : 'block';
+        box.style.display = shouldShow ? 'block' : 'none';
+        icon.setAttribute('aria-expanded', shouldShow ? 'true' : 'false');
       };
       icon.onclick = toggle;
       icon.addEventListener('keydown', ev => {
