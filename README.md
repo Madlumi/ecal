@@ -32,12 +32,15 @@ just serve the files in your preferred way, all the logic happens client side
 - Flerbostadshus, lokal, fotnoter bör dubbelkollas. 
 
 ### Usablility
+- lack of clear user story n shit
 - Languages other than Swedish are auto translated.
+- the caltulate/manual toggle is not as elegant a solution as i would want. look into improvements
 
 ### Legal
-- pdf energiklasser A-G har ingen font specifierad inom "Allmänna råd till LANDSKAPSFÖRORDNING om energideklaration för byggnader"
-- Uncertainty about "Inget Krav" EP grade. It is left as N/A, grey as of now.
 - timvis energikalkyl enlight någon iso bör införas.
+- pdf energiklasser A-G har ingen font specifierad inom "Allmänna råd till LANDSKAPSFÖRORDNING om energideklaration för byggnader"
+-house/energy class look not defined in reference documents, recreated by eye
+- Uncertainty about "Inget Krav" EP grade. It is left as N/A, grey as of now.
 
 ## Help-icon logic
 
