@@ -216,7 +216,9 @@ textarea#permalink {
 }
 
 .ded-pair {
-  white-space: nowrap;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 
