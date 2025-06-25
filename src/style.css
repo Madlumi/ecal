@@ -164,6 +164,12 @@ form#houseForm select {
   margin-bottom: 0;
 }
 
+/* Keep energy type dropdowns compact on small screens */
+#energyInputTable select {
+  width: auto;
+  min-width: 6rem;
+}
+
 /* Collapsible input subsections */
 details.input-section {
   border: 1px solid var(--border-color);
