@@ -226,12 +226,19 @@ textarea#permalink {
     overflow-x: auto;
   }
   #epRow {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-areas:
+      "label value"
+      "arrow value";
+    align-items: center;
   }
-  #ep_arrow {
-    margin-top: 0.25rem;
-    flex-basis: 100%;
-    margin-left: 0;
+  #epRow #ep_label {
+    grid-area: label;
+  }
+  #epRow #ep_arrow {
+    grid-area: arrow;
+    margin: 0;
     margin-right: var(--ep-triangle-width);
   }
   .ep-arrow {
@@ -242,10 +249,12 @@ textarea#permalink {
     right: calc(-1 * var(--ep-triangle-width));
     border-right: none;
     border-left: var(--ep-triangle-width) solid transparent;
-    /* move the arrow head to the right when the layout wraps */
   }
   #epRow #ep_value {
-    font-size: 2rem;
+    grid-area: value;
+    font-size: 2.8rem;
+    display: flex;
+    align-items: center;
   }
 }
 
@@ -526,10 +535,19 @@ button:hover,
 /* override arrow layout after base rules to ensure flip works */
 @media (max-width: 30rem) {
   #epRow {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-areas:
+      "label value"
+      "arrow value";
+    align-items: center;
+  }
+  #epRow #ep_label {
+    grid-area: label;
   }
   #epRow #ep_arrow {
-    margin-top: 0.25rem;
+    /* center the arrow under the enlarged EPpet value */
+    margin-top: 1rem;
     flex-basis: 100%;
     margin-left: 0;
     margin-right: var(--ep-triangle-width);
@@ -544,7 +562,8 @@ button:hover,
     border-left: var(--ep-triangle-width) solid transparent;
   }
   #epRow #ep_value {
-    font-size: 2rem;
+    /* enlarge value when arrow wraps below */
+    font-size: 2.8rem;
   }
 }
 
