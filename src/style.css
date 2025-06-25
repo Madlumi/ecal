@@ -228,7 +228,7 @@ textarea#permalink {
     margin-right: var(--ep-triangle-width) !important;
   }
   .ep-arrow {
-    width: 100% !important;
+    /* Keep arrow body width constant so the value can expand */
   }
   .ep-arrow .triangle {
     left: auto !important;
