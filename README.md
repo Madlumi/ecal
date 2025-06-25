@@ -35,6 +35,7 @@ just serve the files in your preferred way, all the logic happens client side
 - lack of clear user story n shit
 - Languages other than Swedish are auto translated.
 - the caltulate/manual toggle is not as elegant a solution as i would want. look into improvements
+- Should A-G class colours be displayin in high contrast mode? 
 
 ### Legal
 - timvis energikalkyl enlight någon iso bör införas.
