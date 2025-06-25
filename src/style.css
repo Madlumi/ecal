@@ -3,6 +3,7 @@
 
 :root {
   font-size: 16px;
+  --ep-triangle-width: 30px;
 }
 
 body {
@@ -200,6 +201,16 @@ textarea#permalink {
   #limitsTable {
     display: block;
     overflow-x: auto;
+  }
+  #epRow {
+    flex-wrap: wrap;
+  }
+  #ep_arrow {
+    margin-top: 0.25rem;
+    flex-basis: 100%;
+  }
+  .ep-arrow {
+    width: 100%;
   }
 }
 
@@ -447,7 +458,7 @@ button:hover,
 
 /* EP class arrow displayed next to the EPpet value */
 #ep_arrow {
-  margin-left: 0.5rem;
+  margin-left: var(--ep-triangle-width);
 }
 
 .ep-arrow {
@@ -458,17 +469,18 @@ button:hover,
   font-weight: bold;
   color: white;
   position: relative;
+  max-width: calc(100% - var(--ep-triangle-width));
 }
 
 .ep-arrow .triangle {
   position: absolute;
-  left: -29px;
+  left: calc(-1 * var(--ep-triangle-width));
   top: 0;
   width: 0;
   height: 0;
   border-top: 15px solid transparent;
   border-bottom: 15px solid transparent;
-  border-right: 30px solid transparent;
+  border-right: var(--ep-triangle-width) solid transparent;
 }
 
 footer#appFooter {
