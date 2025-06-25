@@ -242,6 +242,7 @@ textarea#permalink {
     right: calc(-1 * var(--ep-triangle-width));
     border-right: none;
     border-left: var(--ep-triangle-width) solid transparent;
+    /* move the arrow head to the right when the layout wraps */
   }
   #epRow #ep_value {
     font-size: 2rem;

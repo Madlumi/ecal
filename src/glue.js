@@ -560,6 +560,7 @@ function calculate() {
                 const tri = document.createElement("div");
                 tri.className = "triangle";
                 tri.style.borderRightColor = NA_ARROW_COLOR;
+                /* border-left color is used when the arrow flips on narrow screens */
                 tri.style.borderLeftColor = NA_ARROW_COLOR;
                 arrow.appendChild(tri);
                 epArrow.appendChild(arrow);
@@ -575,6 +576,7 @@ function calculate() {
                         const tri = document.createElement("div");
                         tri.className = "triangle";
                         tri.style.borderRightColor = color;
+                        /* maintain color when triangle shifts to the right */
                         tri.style.borderLeftColor = color;
                         arrow.appendChild(tri);
                         epArrow.appendChild(arrow);
