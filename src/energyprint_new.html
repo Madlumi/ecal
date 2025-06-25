@@ -69,10 +69,13 @@
         padding: 0;
         font-family: Arial, sans-serif;
         font-size: 10pt;
+        background: #fff;
         -webkit-print-color-adjust: exact;
         color-adjust: exact;
+        forced-color-adjust: none;
       }
-      #printArea { display: block; }
+      #printArea { display: block; forced-color-adjust: none; }
+      #printArea * { forced-color-adjust: none; }
       .container { border: none !important; page-break-inside: avoid; }
       .classes-box { border: 1px solid #000 !important; }
     }
