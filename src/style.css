@@ -523,6 +523,31 @@ button:hover,
   border-right: var(--ep-triangle-width) solid transparent;
 }
 
+/* override arrow layout after base rules to ensure flip works */
+@media (max-width: 30rem) {
+  #epRow {
+    flex-wrap: wrap;
+  }
+  #epRow #ep_arrow {
+    margin-top: 0.25rem;
+    flex-basis: 100%;
+    margin-left: 0;
+    margin-right: var(--ep-triangle-width);
+  }
+  #epRow .ep-arrow {
+    width: 100%;
+  }
+  #epRow .ep-arrow .triangle {
+    left: auto;
+    right: calc(-1 * var(--ep-triangle-width));
+    border-right: none;
+    border-left: var(--ep-triangle-width) solid transparent;
+  }
+  #epRow #ep_value {
+    font-size: 2rem;
+  }
+}
+
 footer#appFooter {
   text-align: center;
   margin-top: 0;
