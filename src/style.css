@@ -36,6 +36,14 @@ body {
   border: 2px solid var(--header-bg);
 }
 
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+}
+
 .container {
   max-width: 50rem; /* ~800px */
   width: 100%;
