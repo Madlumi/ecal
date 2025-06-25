@@ -521,6 +521,12 @@ button:hover,
   max-width: calc(100% - var(--ep-triangle-width));
 }
 
+@media (forced-colors: active) {
+  .ep-arrow {
+    border: 1px solid CanvasText;
+  }
+}
+
 .ep-arrow .triangle {
   position: absolute;
   left: calc(-1 * var(--ep-triangle-width));
