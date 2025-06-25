@@ -417,7 +417,8 @@ button,
   color: ButtonText;
 
   border: 1px solid ButtonText;
-  forced-color-adjust: none;
+  /* Allow high-contrast themes to recolor buttons */
+  forced-color-adjust: auto;
 }
 
 button:focus,
