@@ -205,42 +205,42 @@ function registerListeners(){
     if (fastEnergyType) fastEnergyType.addEventListener("change", update);
     [dedPersons,dedPersonHeat,dedTimeHours,dedTimeDays,dedTimeWeeks].forEach(el=>{ if(el) el.addEventListener("input", update);});
     if (hourlyToggle) hourlyToggle.addEventListener("change", update);
-    if (rooms) rooms.addEventListener("input", hookRooms);
+    if (rooms) rooms.addEventListener("input", handleUiAction);
 
-	//clear
-	clear.addEventListener("click", clearUI);
-	//print
-        print.addEventListener("click", hookPrint);
-	//copy
-        copy.addEventListener("click", hookCopy);
+    //clear
+    clear.addEventListener("click", clearUI);
+    //print
+    print.addEventListener("click", handleUiAction);
+    //copy
+    copy.addEventListener("click", handleUiAction);
 }
 
-function hookRooms() {
+function handleUiAction(ev) {
+    if (ev.currentTarget === rooms) {
         const r = parseInt(rooms.value, 10);
-        if (dedPersonsVB) dedPersonsVB.setCalc(personsFromRooms(r).toFixed(2));
+        if (dedPersonsVB) {
+            dedPersonsVB.setCalc(personsFromRooms(r).toFixed(2));
+        }
         update();
-}
-
-function hookPrint() {
+    } else if (ev.currentTarget === print) {
         const epv = calculate();
         const eplim = window.last_eplim || 0;
         window.location.href = `energyprint_new.html?ep=${epv}&housetype=${type.value}&eplim=${eplim}`;
-}
-
-function hookCopy() {
+    } else if (ev.currentTarget === copy) {
         const ta = $("permalink");
         const text = ta.value;
         const done = () => {
-                copy.textContent = getString("copy_button") + " ✔";
-                setTimeout(() => copy.textContent = getString("copy_button"), 1500);
+            copy.textContent = getString("copy_button") + " ✔";
+            setTimeout(() => copy.textContent = getString("copy_button"), 1500);
         };
         if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(done).catch(() => {
-                        alert(getString("clipboard_error"));
-                });
-        } else {
+            navigator.clipboard.writeText(text).then(done).catch(() => {
                 alert(getString("clipboard_error"));
+            });
+        } else {
+            alert(getString("clipboard_error"));
         }
+    }
 }
 
 
@@ -258,137 +258,133 @@ function clearUI() {
 //========================
 // INIT HELPERS
 //========================
-function loadGeography() {
-        const sel = $("geography");
-        sel.innerHTML = "";
-        locations.forEach(loc => { sel.add(new Option(loc.name, loc.name)); });
-}
 
-function loadTvvDropdown() {
-        if (!tvvSel) return;
+function GenerateUi() {
+    // Geography dropdown
+    const geoSel = $("geography");
+    if (geoSel) {
+        geoSel.innerHTML = "";
+        locations.forEach(loc => { geoSel.add(new Option(loc.name, loc.name)); });
+    }
+
+    // Energy source dropdowns
+    [heatEnergyType, coolEnergyType, fastEnergyType].forEach(sel => {
+        if (!sel) return;
+        sel.innerHTML = "";
+        E_name.forEach((n, i) => { sel.add(new Option(n, i)); });
+    });
+
+    // TVV dropdown
+    if (tvvSel) {
         tvvSel.innerHTML = "";
         tvvFactors.forEach((f, idx) => { tvvSel.add(new Option(f.name, idx)); });
-}
-function loadEnergyTypeDropdown(sel) {
-    if (!sel) return;
-    sel.innerHTML = "";
-    E_name.forEach((n, i) => { sel.add(new Option(n, i)); });
-}
+    }
 
+    // Energy table
+    const table = $("energyTable");
+    table.innerHTML = "";
 
-function loadEnergyTable() {
-        const table = $("energyTable");
-        table.innerHTML = "";
+    const measureKeys = ["heat","cool","watr","fast"];
+    const measureBoxes = {};
+    measureKeys.forEach(k => measureBoxes[k] = []);
 
-        // Prepare per-key arrays of ValueBox objects
-        const measureKeys = ["heat","cool","watr","fast"];
-        const measureBoxes  = {};
-        measureKeys.forEach(k => measureBoxes[k] = []);
+    const thead = table.createTHead();
+    const hr = thead.insertRow();
+    hr.insertCell().textContent = "";
+    E_name.forEach(name => hr.insertCell().textContent = name);
+    const calcCell = hr.insertCell();
+    const calcSpan = document.createElement("span");
+    calcSpan.id = "calc";
+    calcSpan.textContent = getString("calc_icon");
+    calcCell.appendChild(calcSpan);
+    calcCell.title = getString("calc_help");
 
-	// Header
-	const thead = table.createTHead();
-	const hr    = thead.insertRow();
-        hr.insertCell().textContent = "";
-        E_name.forEach(name => hr.insertCell().textContent = name);
-        const calcCell = hr.insertCell();
-        const calcSpan = document.createElement("span");
-        calcSpan.id = "calc";
-        calcSpan.textContent = getString("calc_icon");
-        calcCell.appendChild(calcSpan);
-        calcCell.title = getString("calc_help");
+    const tbody = table.createTBody();
+    const rowLocks = {};
+    measureKeys.forEach(key => {
+        const labelKey = `energy_row_${key}`;
+        const helpKey = `${labelKey}_help`;
+        const row = tbody.insertRow();
+        const cell = row.insertCell();
 
-	const tbody = table.createTBody();
-        const rowLocks = {};
-        measureKeys.forEach(key => {
-                const labelKey = `energy_row_${key}`;
-                const helpKey  = `${labelKey}_help`;
-                const row      = tbody.insertRow();
-                const cell     = row.insertCell();
+        cell.textContent = getString(labelKey);
 
-		// Row label
-		cell.textContent = getString(labelKey);
-
-		// Generate help
-		const helpText = getString(helpKey).trim();
-		if (helpText) {
-                        const icon = document.createElement("span");
-                        icon.className   = "info-icon";
-                        icon.textContent = getString("info_icon");
-                        icon.setAttribute("aria-label", getString("help_icon_label"));
-                        icon.setAttribute("role", "button");
-                        icon.tabIndex = 0;
-                        const toggle = () => {
-                                const box = $("energyRowHelpBox");
-                                if (box.innerHTML === helpText && box.style.display === "block") {
-                                        box.style.display = "none";
-                                } else {
-                                        box.innerHTML     = helpText;
-                                        box.style.display = "block";
-                                }
-                        };
-                        icon.onclick = toggle;
-                        icon.addEventListener("keydown", ev => {
-                                if (ev.key === "Enter" || ev.key === " ") {
-                                        ev.preventDefault();
-                                        toggle();
-                                }
-                        });
-                        cell.appendChild(icon);
-		}
-
-                // add cells
-                const lockRow = true;
-                const rowBoxes = [];
-                for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
-                        const c = row.insertCell();
-                        const id = `${key}-${E_name[i].toLowerCase().replace(/\s+/g, "_")}`;
-
-                        const inp = Object.assign(document.createElement("input"), {
-                                type: "number",
-                                step: "any",
-                                id,
-                                name: id
-                        });
-                        const but = document.createElement("button"); // hidden button to satisfy ValueBox
-                        const span = document.createElement("span");
-                        span.className = "value-box";
-                        span.appendChild(inp);
-                        // button not shown for row-wise lock
-                        const noToggle = LOCKED_COMBINATIONS.some(l => l.measureKey === key && l.sourceIndex === i);
-                        const vb = new ValueBox(inp, but, lockRow || noToggle, !noToggle);
-                        c.appendChild(span);
-                        rowBoxes.push(vb);
+        const helpText = getString(helpKey).trim();
+        if (helpText) {
+            const icon = document.createElement("span");
+            icon.className = "info-icon";
+            icon.textContent = getString("info_icon");
+            icon.setAttribute("aria-label", getString("help_icon_label"));
+            icon.setAttribute("role", "button");
+            icon.tabIndex = 0;
+            const toggle = () => {
+                const box = $("energyRowHelpBox");
+                if (box.innerHTML === helpText && box.style.display === "block") {
+                    box.style.display = "none";
+                } else {
+                    box.innerHTML = helpText;
+                    box.style.display = "block";
                 }
-                const lockCell = row.insertCell();
-                const chk = Object.assign(document.createElement("input"), {type:"checkbox", checked: lockRow});
-                chk.addEventListener("change", () => {
-                        rowBoxes.forEach(vb => {
-                                if (!vb.allowToggle) return;
-                                if (chk.checked) {
-                                        vb.valueInp = vb.box.value;
-                                        vb.box.value = vb.valueCalc;
-                                } else {
-                                        vb.valueCalc = vb.box.value;
-                                }
-                                vb.locked = chk.checked;
-                                vb.updateVisual();
-                        });
-                        calculate();
-                });
-                lockCell.appendChild(chk);
-                measureBoxes[key] = rowBoxes;
-                rowLocks[key] = chk;
+            };
+            icon.onclick = toggle;
+            icon.addEventListener("keydown", ev => {
+                if (ev.key === "Enter" || ev.key === " ") {
+                    ev.preventDefault();
+                    toggle();
+                }
+            });
+            cell.appendChild(icon);
+        }
+
+        const lockRow = true;
+        const rowBoxes = [];
+        for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
+            const c = row.insertCell();
+            const id = `${key}-${E_name[i].toLowerCase().replace(/\s+/g, "_")}`;
+
+            const inp = Object.assign(document.createElement("input"), {
+                type: "number",
+                step: "any",
+                id,
+                name: id
+            });
+            const but = document.createElement("button");
+            const span = document.createElement("span");
+            span.className = "value-box";
+            span.appendChild(inp);
+            const noToggle = LOCKED_COMBINATIONS.some(l => l.measureKey === key && l.sourceIndex === i);
+            const vb = new ValueBox(inp, but, lockRow || noToggle, !noToggle);
+            c.appendChild(span);
+            rowBoxes.push(vb);
+        }
+        const lockCell = row.insertCell();
+        const chk = Object.assign(document.createElement("input"), {type:"checkbox", checked: lockRow});
+        chk.addEventListener("change", () => {
+            rowBoxes.forEach(vb => {
+                if (!vb.allowToggle) return;
+                if (chk.checked) {
+                    vb.valueInp = vb.box.value;
+                    vb.box.value = vb.valueCalc;
+                } else {
+                    vb.valueCalc = vb.box.value;
+                }
+                vb.locked = chk.checked;
+                vb.updateVisual();
+            });
+            calculate();
         });
+        lockCell.appendChild(chk);
+        measureBoxes[key] = rowBoxes;
+        rowLocks[key] = chk;
+    });
 
-        // Expose arrays on window
-        window.heatEls = measureBoxes.heat;
-        window.coolEls = measureBoxes.cool;
-        window.watrEls = measureBoxes.watr;
-        window.fastEls = measureBoxes.fast;
-        window.rowLocks = rowLocks;
+    window.heatEls = measureBoxes.heat;
+    window.coolEls = measureBoxes.cool;
+    window.watrEls = measureBoxes.watr;
+    window.fastEls = measureBoxes.fast;
+    window.rowLocks = rowLocks;
 
-	// hide the row‐help box initially
-        $("energyRowHelpBox").style.display = "none";
+    $("energyRowHelpBox").style.display = "none";
 }
 
 function initDeductions() {
@@ -718,16 +714,10 @@ function main(){
         detectLang()
         applyLanguage();
 
-    loadGeography();
-        loadEnergyTable();
+    GenerateUi();
     initDeductions();
-        applyLanguage(); // add help icons for dynamically created elements
-        ensureInfoIconsFocusable();
-        loadTvvDropdown();
-
-    loadEnergyTypeDropdown(heatEnergyType);
-    loadEnergyTypeDropdown(coolEnergyType);
-    loadEnergyTypeDropdown(fastEnergyType);
+    applyLanguage(); // add help icons for dynamically created elements
+    ensureInfoIconsFocusable();
     if (hourlyContainer) {
         const hasFeature = typeof CONFIG !== 'undefined' && CONFIG.FEATURES && CONFIG.FEATURES.HOURLY_MODEL;
         hourlyContainer.style.display = hasFeature ? "block" : "none";
