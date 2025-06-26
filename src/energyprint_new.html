@@ -15,12 +15,38 @@
       #printArea { display: none; }
 
       /* Two-column layout */
-      #screenUI { display: flex; gap: 1rem; padding: 1rem; }
-      #dataEntry { flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+      #screenUI {
+        display: flex;
+        gap: 1rem;
+        padding: 1rem;
+        width: 100%;
+        max-width: 50rem;
+        margin-inline: auto;
+        box-sizing: border-box;
+        min-width: 0;
+        justify-content: center;
+        align-items: flex-start;
+      }
+      #dataEntry {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+        max-width: 32rem;
+        box-sizing: border-box;
+        min-width: 0;
+      }
+      html,
+      body {
+        margin: 0;
+        overflow-x: hidden;
+      }
 
       :root { --preview-scale: 0.42; }
       #previewContainer {
         flex: none;
+        max-width: 100%;
         width: calc(148.5mm * var(--preview-scale));
         height: calc(210mm * var(--preview-scale));
         box-sizing: content-box;
@@ -46,13 +72,25 @@
         margin-bottom: 0.5rem;
         background: var(--form-bg);
         display: grid;
-        grid-template-columns: max-content 1fr;
+        grid-template-columns: auto minmax(40%, 1fr);
         column-gap: 0.5rem;
         row-gap: 0.5rem;
         align-items: center;
+        box-sizing: border-box;
       }
-      .input-section label { margin: 0; }
-      .input-section input { width: 100%; }
+      .input-section label {
+        margin: 0;
+        min-width: 0;
+        max-width: 60%;
+        white-space: normal;
+        word-break: break-word;
+      }
+      .input-section input {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        margin: 0;
+      }
 
       /* Print button */
       #printButton {
@@ -66,6 +104,39 @@
       }
       #printButton:hover { background: #287f53; }
 
+    }
+
+    @media screen and (max-width: 30rem) {
+      .input-section {
+        grid-template-columns: 1fr;
+        max-width: 90%;
+        margin-inline: auto;
+      }
+      .input-section label {
+        white-space: normal;
+        word-break: break-word;
+      }
+      .input-section input {
+        width: 100%;
+      }
+      #dataEntry {
+        max-width: 100%;
+      }
+      #screenUI {
+        flex-direction: column;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+      }
+      #printButton {
+        width: 80%;
+        margin-inline: auto;
+      }
+      #previewContainer {
+        margin-inline: auto;
+        /* Keep the preview's original aspect ratio */
+        max-width: 100%;
+      }
     }
 
     /* Print-only styles */
