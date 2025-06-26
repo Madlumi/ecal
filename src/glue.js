@@ -61,7 +61,6 @@ const ROOMS_TO_PERSONS = requireConfigConst('ROOMS_TO_PERSONS');
 const ARROW_LENGTH_IN = requireConfigConst('ARROW_LENGTH_IN');
 const ARROW_LENGTH    = requireConfigConst('ARROW_LENGTH');
 const NA_ARROW_COLOR  = requireConfigConst('NA_ARROW_COLOR');
-const INFO_ICON_CLASS = 'info-icon';
 
 // Lock improbable energy source combinations (none currently)
 const LOCKED_COMBINATIONS = (typeof CONFIG !== 'undefined' && CONFIG.CONSTANTS && CONFIG.CONSTANTS.LOCKED_COMBINATIONS)
@@ -69,115 +68,6 @@ const LOCKED_COMBINATIONS = (typeof CONFIG !== 'undefined' && CONFIG.CONSTANTS &
 	: [];
 window.LOCKED_COMBINATIONS = LOCKED_COMBINATIONS;
 
-//why is this a function and not inlined?
-function personsFromRooms(n) {
-	if (!n || n <= 0) return 0;
-	if (n >= 5) return ROOMS_TO_PERSONS[4];
-	return ROOMS_TO_PERSONS[n - 1];
-}
-
-//MOVE TO UTIL
-function parseValidatedNumber(el, max, errorEl, errKey) {
-	const num = parseFloat(el.value);
-	const invalid = isNaN(num) || num < 0 || num > max;
-	if (invalid) {
-		if (errorEl) {
-			errorEl.textContent = getString(errKey);
-			errorEl.style.display = 'block';
-			errorEl.setAttribute('role', 'alert');
-		}
-		el.classList.add('invalid');
-		el.setAttribute('aria-invalid', 'true');
-		if (errorEl) el.setAttribute('aria-describedby', errorEl.id);
-		return null;
-	}
-	if (errorEl) {
-		errorEl.style.display = 'none';
-		errorEl.removeAttribute('role');
-	}
-	el.classList.remove('invalid');
-	el.removeAttribute('aria-invalid');
-	if (errorEl) el.removeAttribute('aria-describedby');
-	return num;
-}
-
-//MOVE TO UTIL
-function ensureInfoIconsFocusable() {
-	document.querySelectorAll('.' + INFO_ICON_CLASS).forEach(icon => {
-		if (!icon.hasAttribute('role')) {
-			icon.setAttribute('role', 'button');
-		}
-		if (icon.tabIndex < 0) {
-			icon.tabIndex = 0;
-		}
-	});
-}
-
-
-//MOVE TO UTIL
-//========================
-// CLASS: ValueBox
-//========================
-class ValueBox {
-	constructor(box, but, locked = true, allowToggle = true) {
-		this.box = box;
-		this.but = but;
-		this.locked = locked;
-		this.allowToggle = allowToggle;
-		this.valueCalc = "";
-		this.valueInp = "";
-		if (this.allowToggle) { this.but.addEventListener("click", () => this.toggleLock());
-		} else {
-			this.but.style.display = "none";
-			this.box.disabled = true;
-		}
-		this.updateVisual();
-	}
-	updateVisual() {
-		if (this.allowToggle) {
-			this.box.disabled = this.locked;
-		} else {
-			this.box.disabled = true;
-		}
-		if (this.locked) {
-			this.box.classList.add("locked");
-		} else {
-			this.box.classList.remove("locked");
-		}
-		// show an icon on toggleable buttons
-		if (this.allowToggle) {
-			this.but.textContent = this.locked ? getString("calc_icon") : getString("pen_icon");
-			const tip = this.locked ? getString("calc_tooltip") : getString("pen_tooltip");
-			this.but.title = tip;
-			this.but.setAttribute("aria-label", tip);
-		}
-	}
-	setCalc(v) {
-		this.valueCalc = v;
-		if (this.locked) this.box.value = v;
-	}
-	toggleLock() {
-		if (!this.allowToggle) return;
-		if (this.locked) {
-			this.valueCalc = this.box.value;
-		} else {
-			this.valueInp = this.box.value;
-			this.box.value = this.valueCalc;
-		}
-		this.locked = !this.locked;
-		this.updateVisual();
-		calculate();
-	}
-	getValue() { return this.locked ? this.valueCalc : this.box.value; }
-}
-
-
-
-
-
-
-
-//why this middle of the page
 const flowContainer = $("flowContainer");
 
 
@@ -219,12 +109,13 @@ function registerListeners(){
 }
 
 function handleUiAction(ev) {
-	if (ev.currentTarget === rooms) {
-		const r = parseInt(rooms.value, 10);
-		if (dedPersonsVB) {
-			dedPersonsVB.setCalc(personsFromRooms(r).toFixed(2));
-		}
-		update();
+        if (ev.currentTarget === rooms) {
+                const r = parseInt(rooms.value, 10);
+                const persons = (!r || r <= 0) ? 0 : (r >= 5 ? ROOMS_TO_PERSONS[4] : ROOMS_TO_PERSONS[r - 1]);
+                if (dedPersonsVB) {
+                        dedPersonsVB.setCalc(persons.toFixed(2));
+                }
+                update();
 	} else if (ev.currentTarget === print) {
 		const epv = calculate();
 		const eplim = window.last_eplim || 0;
@@ -382,28 +273,25 @@ function GenerateUi() {
 	window.fastEls = measureBoxes.fast;
 	window.rowLocks = rowLocks;
 
-	$("energyRowHelpBox").style.display = "none";
-}
+        $("energyRowHelpBox").style.display = "none";
 
-//why is this its own element?
-function initDeductions() {
-	if (dedPersons) {
-		const btn = dedPersons.parentElement.querySelector("button");
-		dedPersonsVB = new ValueBox(dedPersons, btn, true, true);
-	}
-	if (dedPersonHeat) {
-		const btn = dedPersonHeat.parentElement.querySelector("button");
-		dedPersonHeatVB = new ValueBox(dedPersonHeat, btn, true, true);
-	}
-	if (dedTimeLock && dedTimeHours) {
-		dedTimeHoursVB = new ValueBox(dedTimeHours, dedTimeLock, true, true);
-	}
-	if (dedTimeLock && dedTimeDays) {
-		dedTimeDaysVB = new ValueBox(dedTimeDays, dedTimeLock, true, true);
-	}
-	if (dedTimeLock && dedTimeWeeks) {
-		dedTimeWeeksVB = new ValueBox(dedTimeWeeks, dedTimeLock, true, true);
-	}
+        if (dedPersons) {
+                const btn = dedPersons.parentElement.querySelector("button");
+                dedPersonsVB = new ValueBox(dedPersons, btn, true, true);
+        }
+        if (dedPersonHeat) {
+                const btn = dedPersonHeat.parentElement.querySelector("button");
+                dedPersonHeatVB = new ValueBox(dedPersonHeat, btn, true, true);
+        }
+        if (dedTimeLock && dedTimeHours) {
+                dedTimeHoursVB = new ValueBox(dedTimeHours, dedTimeLock, true, true);
+        }
+        if (dedTimeLock && dedTimeDays) {
+                dedTimeDaysVB = new ValueBox(dedTimeDays, dedTimeLock, true, true);
+        }
+        if (dedTimeLock && dedTimeWeeks) {
+                dedTimeWeeksVB = new ValueBox(dedTimeWeeks, dedTimeLock, true, true);
+        }
 }
 
 //========================
@@ -448,7 +336,6 @@ function updateTvvRow() {
 		}
 	}
 }
-//ok wtf is this mess
 function updateDeductions() {
 	if (!window.heatEls) return;
 	const energy = parseFloat(heatEnergyInput.value) || 0;
@@ -500,15 +387,6 @@ function updateDeductions() {
 		}
 	}
 }
-
-// lets move this to be next to main.
-function update() {
-	updateFootnotes();
-	updateDeductions();
-	calculate();
-}
-
-
 
 //Connect to energy.js and display output, and build the perma link
 function calculate() {
@@ -678,8 +556,9 @@ function prefillFromURL() {
 	type.value = params.get("housetype") || "SMALL";
 	at.value = params.get("atemp")       || "";
 	rooms.value = params.get("rooms")    || "0";
-	const r = parseInt(rooms.value, 10)  || 0;
-	if (dedPersonsVB) dedPersonsVB.setCalc(personsFromRooms(r).toFixed(2));
+        const r = parseInt(rooms.value, 10)  || 0;
+        const persons = (!r || r <= 0) ? 0 : (r >= 5 ? ROOMS_TO_PERSONS[4] : ROOMS_TO_PERSONS[r - 1]);
+        if (dedPersonsVB) dedPersonsVB.setCalc(persons.toFixed(2));
 	fl.value = params.get("flow") || "";
 	if (tvvSel) tvvSel.value = params.get("tvv") || "0";
 
@@ -709,16 +588,21 @@ function prefillFromURL() {
 }
 
 function clearUI() {
-	history.replaceState(null, "", location.pathname);
-	prefillFromURL();
-	update();
+        history.replaceState(null, "", location.pathname);
+        prefillFromURL();
+        update();
+}
+
+function update() {
+        updateFootnotes();
+        updateDeductions();
+        calculate();
 }
 function main(){
 	detectLang()
 	applyLanguage();
 
-	GenerateUi();
-	initDeductions();
+        GenerateUi();
 	applyLanguage(); // add help icons for dynamically created elements
 	ensureInfoIconsFocusable();
 	if (hourlyContainer) {
