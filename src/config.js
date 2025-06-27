@@ -26,7 +26,8 @@
     },
     APP_INFO: {
       VERSION: "α-02",
-      REPO_URL: "https://github.com/digi-regeringen-ax/energy-calculation"
+      //REPO_URL: "https://github.com/digi-regeringen-ax/energy-calculation"
+      REPO_URL: "https://github.com/Madlumi/ecal"
     },
     PRINTING: {
       NAME_LIMITS: {
