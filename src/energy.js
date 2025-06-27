@@ -317,32 +317,6 @@ function limit(house) {
   return l;
 }
 
-//============================
-//=Print House Data===========
-//============================
-function printHouse(house) {
-  console.log(`House type: ${HouseType_name[house.type]}`);
-  console.log(`Atemp: ${house.Atemp} m²`);
-  console.log(`Location: ${house.L.name} (F_geo = ${house.L.F_geo.toFixed(2)})`);
-  console.log(`Rooms: ${house.Rooms}`);
-  console.log(`Household energy: ${house.HouseHoldEnergy.toFixed(1)}`);
-  console.log(`U_roof: ${house.uval.U_roof.toFixed(2)}`);
-  console.log(`Flow (q): ${house.flow.toFixed(2)}   qavg (q_medel): ${house.qavg.toFixed(2)}`);
-  console.log(`Foot2: ${house.foot2 ? "Yes" : "No"}   Foot3: ${house.foot3 ? "Yes" : "No"}   Foot4: ${house.foot4 ? "Yes" : "No"}   Foot5: ${house.foot5 ? "Yes" : "No"}`);
-  console.log("Energy use:");
-  for (let i = 0; i < EType.E_TYPE_COUNT; i++) {
-    let line = "";
-    if (house.E.heat[i] !== 0.0) line += `  ${E_name[i]} heat: ${house.E.heat[i].toFixed(1)}  `;
-    if (house.E.cool[i] !== 0.0) line += `  ${E_name[i]} cool: ${house.E.cool[i].toFixed(1)}  `;
-    if (house.E.watr[i] !== 0.0) line += `  ${E_name[i]} watr: ${house.E.watr[i].toFixed(1)}  `;
-    if (house.E.fast[i] !== 0.0) line += `  ${E_name[i]} fast: ${house.E.fast[i].toFixed(1)}  `;
-    if (line) console.log(line);
-  }
-  const ep = EPpet(house);
-  console.log(`Calculated EP: ${ep}`);
-  const lim = limit(house);
-  console.log(`Limits → EP: ${lim.EP.toFixed(1)}, EL: ${lim.EL.toFixed(1)}, UM: ${lim.UM.toFixed(2)}, LL: ${lim.LL.toFixed(2)}`);
-}
 
 // Export for Node.js testing
 if (typeof module !== 'undefined' && module.exports) {
@@ -364,7 +338,6 @@ if (typeof module !== 'undefined' && module.exports) {
     ep4,
     el5,
     EPpet,
-    limit,
-    printHouse
+    limit
   };
 }
