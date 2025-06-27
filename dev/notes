@@ -1,5 +1,9 @@
 
 
+#ref
+https://www.rockwool.com/se/
+https://energiberakning.se/ 
+#release
 git checkout release
 git merge master
 git push releaseRepo release
