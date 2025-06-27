@@ -32,7 +32,7 @@ just serve the files in your preferred way, all the logic happens client side
 - Flerbostadshus, lokal, fotnoter bör dubbelkollas. 
 
 ### Usablility
-- lack of clear user story n shit
+- lack of clear user story n shit, until such a thing can be established the ui is garbage
 - Languages other than Swedish are auto translated.
 - the caltulate/manual toggle is not as elegant a solution as i would want. look into improvements
 - Should A-G class colours be displayin in high contrast mode? 
